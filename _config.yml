@@ -16,7 +16,7 @@
 title: 'Work Samples of Elvin Ouyang'
 description: >
   All of Elvin Ouyang's work samples in data analytics in one place. As a student in Data Science and an ethusiast in international business and policy analsis, Elvin is devoted to bring advanced technologies in data mining, natural language processing, machine learning, and geospatial modeling to international business.
-baseurl: "/work_samples" # the subpath of your site, e.g. /blog
+# baseurl: the subpath of your site, e.g. /blog
 url: "https://elvinouyang.github.io" # the base hostname & protocol for your site
 github_repo: work_samples # the GitHub repo name for your project
 github_username: ElvinOuyang
