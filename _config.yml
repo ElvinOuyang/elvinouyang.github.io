@@ -13,12 +13,12 @@
 # you will see them accessed via {{ site.title }}, {{ site.github_repo }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: 'Work Samples of Elvin Ouyang'
+title: "Elvin Ouyang's Blog"
 description: >
-  All of Elvin Ouyang's work samples in data analytics in one place. As a student in Data Science and an ethusiast in international business and policy analsis, Elvin is devoted to bring advanced technologies in data mining, natural language processing, machine learning, and geospatial modeling to international business.
+  Chuanye "Elvin" Ouyang's personal blog. Includes all past posts, work samples, and project pages.
 # baseurl: the subpath of your site, e.g. /blog
 url: "https://elvinouyang.github.io" # the base hostname & protocol for your site
-github_repo: work_samples # the GitHub repo name for your project
+github_repo: elvinouyang.github.io # the GitHub repo name for your project
 github_username: ElvinOuyang
 
 # Optional social link, you can choose from the following options:
