@@ -1,0 +1,353 @@
+---
+layout: post
+title: "Exploratory Data Analytics on Capital Bikeshare Data 2015"
+date: 2016-12-05
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+The data exploration stage focused on visualizing the relationships between variables and exploring  patterns within the dataset. 
+
+The following sequence of commentary and code showcases the EDA that was conducted.
+
+
+```{r, include=FALSE, message=FALSE, warning=FALSE}
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(MASS)
+library(ggmap) # Extracting address information from gps info
+library(stringr) # Extracting zipcodes from gps info
+library(caret) # For data partition
+library(plotly) # For interactive mapping and visuals
+library(leaflet)
+library(cowplot)
+library(ggthemes)
+library(viridis)
+library(knitr)
+library(scales)
+library(lubridate)
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# Factorize variables
+master_df$CloudCover<- as.factor(master_df$CloudCover)
+master_df$Zip<- as.factor(master_df$Zip)
+master_df$hour<- as.factor(master_df$hour)
+master_df$weekend<- as.factor(master_df$weekend)
+master_df$rushhour<- as.factor(master_df$rushhour)
+master_df$holiday<- as.factor(master_df$holiday)
+master_df$weekend_holiday<- as.factor(master_df$weekend_holiday)
+```
+```{r}
+# Fine tune master_df before creating EDAs
+master_df %>%
+  mutate(
+    date = ymd(date),
+    weekday = factor(weekday,
+                     levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")),
+    season = factor(season, levels = c("Spring", "Summer", "Fall", "Winter")),
+    hour = factor(hour, levels = 0:23),
+    duration.min = round(Total.duration..ms. / 60000, digits = 2)
+  ) %>%
+  dplyr::select(X, Start.station, date, duration.min, End.station, Subscription.Type, CloudCover, Events, LATITUDE, LONGITUDE, Address, City, Zip, hour, weekday, weekend, rushhour, holiday, season, AdverseWeather, BeautifulWeather, weekend_holiday) -> map_df
+```
+The first thing we'll do is to run distribution analysis on the main continuous variables in the dataset: total.rides and avg.duration. We will use levels of five categorical variables, i.e. Subscription.Type, weekend_holiday, rushhour, season, and AdverseWeather, as group coloring to generate high level between-group distribution comparison.
+
+```{r}
+map_df %>%
+  group_by(date, hour, Subscription.Type) %>%
+  summarise(
+    total.rides = n(),
+    avg.duration = mean(duration.min), 
+    weekend_holiday = first(weekend_holiday),
+    weekday = first(weekday),
+    rushhour = first(rushhour),
+    season = first(season),
+    AdverseWeather = first(AdverseWeather)
+  ) -> day_hour_rides
+```
+```{r}
+# Create distribution histograms
+g1 <- ggplot(data=day_hour_rides)
+g1 + geom_histogram(mapping = aes(total.rides, fill = Subscription.Type), binwidth = 0.5) -> g2
+g1 + geom_histogram(mapping = aes(log(day_hour_rides$avg.duration), fill = Subscription.Type), bins = 100) -> g3
+g1 + geom_histogram(mapping = aes(total.rides, fill = weekend_holiday), binwidth = 0.5) -> g4
+g1 + geom_histogram(mapping = aes(log(day_hour_rides$avg.duration), fill = weekend_holiday), bins = 100) -> g5
+g1 + geom_histogram(mapping = aes(total.rides, fill = as.factor(rushhour)), binwidth = 0.5) -> g6
+g1 + geom_histogram(mapping = aes(log(day_hour_rides$avg.duration), fill = as.factor(rushhour)), bins = 100) -> g7
+g1 + geom_histogram(mapping = aes(total.rides, fill = as.factor(season)), binwidth = 0.5) -> g8
+g1 + geom_histogram(mapping = aes(log(day_hour_rides$avg.duration), fill = as.factor(season)), bins = 100) -> g9
+g1 + geom_histogram(mapping = aes(total.rides, fill = as.factor(AdverseWeather)), binwidth = 0.5) -> g10
+g1 + geom_histogram(mapping = aes(log(day_hour_rides$avg.duration),
+                                  fill = as.factor(AdverseWeather)), bins = 100) -> g11
+```
+```{r}
+# Display the histograms
+plot_grid(g2, g3, nrow = 2, rel_widths = c(1/2, 1/2))
+plot_grid(g4, g5, nrow = 2, rel_widths = c(1/2, 1/2))
+plot_grid(g6, g7, nrow = 2, rel_widths = c(1/2, 1/2))
+plot_grid(g8, g9, nrow = 2, rel_widths = c(1/2, 1/2))
+plot_grid(g10, g11, nrow = 2, rel_widths = c(1/2, 1/2))
+```
+Our first impression is that the distribution of total.rides is skewing right, while the distribution of avg.duration has two modes.
+
+More specifically, the avg.duration distribution by Subscription.Type graph indicates that registered bikers are contributing to the lower duration mode while the casual bikers are contrbution to the higher mode. Casual bikers have much less total.rides than the registered bikers. In the distribution by rushhour graph, commuting hour rides are dominating hours that have higher count of total.rides. Rushhour rides are also contributing more to the lower avg.duration mode. Another interesting finding from the distribution by season graph is that winter has much more short-duration rides than other seasons, while spring and summer have more long-duration rides among casual riders.
+
+The above analysis indicates that time-related factors are having a strong impact on the dependent variables. In our next step, we will create heatmaps for hour of the day / day of the week to futher explore the patterns.
+
+```{r, message=FALSE, warning=FALSE}
+# Create a subset just for the time heatmap
+day_hour_rides %>%
+  ungroup() %>%
+  select(hour, weekday, total.rides, avg.duration) %>%
+  mutate(total_duration = total.rides * avg.duration, 
+         hour = factor(hour, levels = (0:23))) %>%
+  group_by(hour, weekday) %>%
+  summarise(count.rides = sum(total.rides), total.duration = sum(total_duration)) -> df.1
+```
+```{r, message=FALSE, warning=FALSE}
+# Create time based heatmaps
+g100 <- ggplot(data=df.1, aes(x=hour, y=weekday, fill=count.rides)) +
+  geom_tile(color="white", size=0.1)+ coord_equal() +
+  labs(x=NULL, y=NULL, title="Count of Rides Per Weekday & Hour of Day") +
+  theme_tufte(base_family="Calibri") + theme(plot.title=element_text(hjust=0.5, size = 10)) +
+  theme(axis.ticks=element_blank()) + theme(axis.text=element_text(size=7)) + theme(legend.position="none") +
+  scale_fill_gradient(low = "white", high = "steelblue")
+g101 <- ggplot(data=df.1, aes(x=hour, y=weekday, fill=total.duration)) +
+  geom_tile(color="white", size=0.1)+ coord_equal() +
+  labs(x=NULL, y=NULL, title="Total Duration Per Weekday & Hour of Day") +
+  theme_tufte(base_family="Calibri") + theme(plot.title=element_text(hjust=0.5, size = 10)) + theme(legend.position="none") +
+  theme(axis.ticks=element_blank()) + theme(axis.text=element_text(size=7)) +
+  scale_fill_gradient(low = "white", high = "firebrick")
+g102 <- ggplot(data=df.1, aes(x=hour, y=weekday, fill=total.duration/count.rides)) +
+  geom_tile(color="white", size=0.1)+ coord_equal() +
+  labs(x=NULL, y=NULL, title="Average Duration Per Weekday & Hour of Day") +
+  theme_tufte(base_family="Calibri") + theme(plot.title=element_text(hjust=0.5, size = 10)) + theme(legend.position="none") +
+  theme(axis.ticks=element_blank()) + theme(axis.text=element_text(size=7)) +
+  scale_fill_gradient(low = "white", high = "springgreen3")
+plot_grid(g100, g102, nrow = 2, rel_heights = c(1/2, 1/2))
+```
+Here we find some interesting patterns from the hour-weekday heatmap. It seems that more rides have taken place during rush hours on work days, while total.rides distributes evenly in day time on weekend. The avg.duration of the rides appears to be longer during day time over the weekend.
+
+After we have a general understanding of the data, we move on to explore the geospatial distribution of total.rides across the DC metro area. First let us plot the bike stations.
+```{r}
+# Create station list with coordinates, total count of rides, and total duration of rides
+map.stations <- map_df %>%
+  group_by(Start.station) %>%
+  summarise(total.rides = n(),
+            avg.duration = mean(duration.min),
+            subscriber.percentage = mean(Subscription.Type == "Registered"),
+            lat = first(LATITUDE),
+            lon = first(LONGITUDE)
+            )
+head(map.stations)
+```
+Below we can see the locations of all the bike share stations across the DMV area, with the circle size representing total.rides and color representing avg.rides. It appears that bike stations are spreading out well in the DMV area, with stations located in DMV ourskirts such as Alexandria, VA, Bethesda, MD, and Silver Spring, MD.
+```{r, message=FALSE, warning=FALSE}
+# download basic map layers for plotting
+base.map <- qmap("Wasington DC", zoom = 12, source= "google", maptype="roadmap", color = "bw", crop=FALSE, legend='topleft')
+base.map.1 <- qmap("Wasington DC", zoom = 13, source= "google", maptype="roadmap", color = "bw", crop=FALSE, legend='topleft')
+base.map.2 <- qmap("Wasington DC", zoom = 14, source= "google", maptype="roadmap", color = "bw", crop=FALSE, legend='topleft')
+```
+
+```{r, message=FALSE, warning=FALSE, fig.height=6, fig.width=6}
+base.map + geom_point(aes(x = lon, y = lat, size=total.rides, color=avg.duration), data = map.stations,
+ alpha = .5)+ scale_size(range = c(1, 5)) + scale_colour_gradient(low = "purple", high = "red")
+base.map.1 + geom_point(aes(x = lon, y = lat, size=total.rides, color=avg.duration), data = map.stations,
+ alpha = .5) + scale_size(range = c(1, 5)) + scale_colour_gradient(low = "purple", high = "red")
+base.map.2 + geom_point(aes(x = lon, y = lat, size=total.rides, color=avg.duration), data = map.stations,
+ alpha = .5) + scale_size(range = c(1, 10)) + scale_colour_gradient(low = "purple", high = "red")
+
+```
+But how does the actual count of total.rides distribute across the area? Will it go in line with the bike station locations? We then move on to create a heatmap based on the density of total.rides on the map. The graph below indicates that total.rides are way more condensed than the distribution of the bike stations, with the most rides happening in the DC heart area, such as Dupont Circle, Logan Circle, National Mall, Metro Center, Gallery Place, World Bank, and Lincoln Memorial.
+
+```{r, message=FALSE, warning=FALSE}
+# Create a ride data set with location and ride, will also keep sliceability with other factors
+# Adjust factor level names for better display in faceted visuals
+map_df %>%
+  mutate(lon = LONGITUDE, lat = LATITUDE) %>%
+  select(X, Subscription.Type, Events, lat, lon, hour,
+         weekday, weekend, rushhour, holiday, season, AdverseWeather, BeautifulWeather, weekend_holiday) %>%
+  mutate(
+    hour = as.numeric(hour),
+    AdverseWeather = as.factor(if_else(AdverseWeather=="True", "Adverse: Yes", "Adverse: No")),
+    BeautifulWeather = as.factor(if_else(BeautifulWeather == "True", "Beautiful: Yes", "Beautiful: No")),
+    holiday = as.factor(if_else(holiday == "1", "Holiday: Yes", "Holiday: No")),
+    weekend = as.factor(if_else(weekend == "1", "Weekend: Yes", "Weekend: No")),
+    rushhour = as.factor(if_else(rushhour == "1", "Rush Hour: Yes", "Rush Hour: No")),
+    weekend_holiday = as.factor(if_else(weekend_holiday == "1", "Leisure Day: Yes", "Leisure Day: No")),
+    time_of_day = factor(if_else(hour>4 & hour < 13, "Morning",
+                                    if_else(hour>12 & hour < 19, "Afternoon", 
+                                            if_else(hour >16 & hour <= 23, "Night", "Late Night"))),
+                            levels = c("Morning", "Afternoon", "Night", "Late Night")),
+    hour = factor(hour, levels = 0:23)) -> ride_df
+```
+```{r, message=FALSE, warning=FALSE, fig.height=6, fig.width=6}
+# Create ride density maps
+base.map + geom_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat), size = 0.4) + stat_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), size = 1, 
+    bins = 5, geom = "polygon", contour = TRUE) + scale_fill_gradient(low = "springgreen", high = "red") + 
+    scale_alpha(range = c(0, 0.3), guide = FALSE)
+
+base.map.1 + geom_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat), size = 0.4) + stat_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), size = 2, 
+    bins = 8, geom = "polygon", contour = TRUE) + scale_fill_gradient(low = "springgreen", high = "red") + 
+    scale_alpha(range = c(0, 0.3), guide = FALSE)
+
+base.map.2 + geom_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat), size = 0.5) + stat_density2d(data = ride_df[sample(1:nrow(ride_df), 10000),], 
+    aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), size = 3, 
+    bins = 15, geom = "polygon", contour = TRUE) + scale_fill_gradient(low = "springgreen", high = "red") + 
+    scale_alpha(range = c(0, 0.3), guide = FALSE)
+```
+Since we now have a general idea of where the most rides are happening in DC, our next step is to slice the ridership data with factors we generated from time and weather and compare the patterns. We wanted to see if the popularity of the stations changed under different time and weather conditions.
+```{r}
+# Create a subsliced ridership set of 15000 observations
+ride_df.sample <- ride_df[sample(1:nrow(ride_df), 15000),]
+```
+Our next step is to slice the ridership data accorindg to factors we generated from weather and time. We wanted to see if the popularity of the stations changed under different time and weather conditions.
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# Create base layers for faceted mapping
+dc.1 <- get_map('washington dc', zoom = 12, source = "google", maptype = "roadmap", crop=FALSE, color="bw")
+dc.2 <- get_map('washington dc', zoom = 13, source = "google", maptype = "roadmap", crop=FALSE, color="bw")
+dc.3 <- get_map('washington dc', zoom = 14, source = "google", maptype = "roadmap", crop=FALSE, color="bw")
+dc.map.1 <- ggmap(dc.1, base_layer = ggplot(aes(x = lon, y = lat), data = ride_df.sample))
+dc.map.2 <- ggmap(dc.2, base_layer = ggplot(aes(x = lon, y = lat), data = ride_df.sample))
+dc.map.3 <- ggmap(dc.3, base_layer = ggplot(aes(x = lon, y = lat), data = ride_df.sample))
+```
+```{r, message=FALSE, warning=FALSE, fig.height=3, fig.width=9}
+# Ride frequency heatmap by seasons
+dc.map.3 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~season, nrow = 1) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution by Seasons") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g13
+g13
+```
+
+The first graph shows the distribution of rides in each season of the year of 2015. In Spring and Summer, both Lincoln Memorial and National Mall enjoy more rides from other time of the year. During winter, however, it seems that more people are taking bike rides around Logan Circle, Foggy Bottom, and Metro Center, i.e. the inner center of the District.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3, fig.width=9}
+# Ride frequency heatmap by time of day
+dc.map.3 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~time_of_day, nrow = 1) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution by Time of Day") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g14
+g14
+```
+
+Another similar comparison based on time of the day shows that people are taking more rides in central to northeastern DC in the morning and more in central to southwestern DC in the afternoon. Bikers start their rides mostly around DuPont circle, Logan Circle, Metro Center, and Gallery Place at night. Few people will start their rides in late night, of course; but we are seeing relatively more rides in the central to northwestern DC area. It seems that people's daily routine is contributing to this pattern, considering that these areas correspond to the residence area, working area, and entertaining/event area in DC.
+
+```{r, message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+# Ride frequency heatmap by rush hour
+dc.map.3 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~rushhour) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution - Rush Hour?") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g15
+g15
+```
+
+Since time is creating interesting impact on total.rides and bikes can be a useful tool for commuting, we want to check out specifically the allocation of rides for rush hours againt other time of the day. In the above graph, we notice that more people are taking bike rides near Metro Center, Gallery Place, and Capital Hill during rush hours, while more people are taking rides near Lincoln Memorial and National Mall during non-rush hours. This information is interesting, since Metro center, Gallery place, and Capital Hill are places where many people go to work, while (apparently) Lincoln Memorial and National Mall are popular tourist sites.
+
+```{r, message=FALSE, warning=FALSE, fig.height=4, fig.width=9}
+# Ride frequency heatmap by weekend/holiday
+dc.map.3 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~weekend_holiday + BeautifulWeather, nrow = 1) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution - Leisure Days X Good Weather") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g16
+g16
+```
+Since Lincoln Memorial and National Mall are enjoying much love in non-rush hours, we are interested to check out if leisure time will have a different pattern for total.rides distribution. Comparing the left two graphs in the above chart, it is apparent that the distribution of ridership is sparse for leisure days in good weather: riders are of course starting their rides from many different stations across the District. Interestingly, the second left graph shows that bikers mostly still ride in the central DC during working days despite the good weather. Commuting really seems to be a major function of the shared bikes!
+
+Since commuting seems to be a really big factor for the distribution of rides, we are insterested to dig a bit deeper into the type of subscription for each ride. Since bike share subscribers are more likely to use bikes for commute, will we see a clear difference between casual and registered bikers?
+
+```{r, message=FALSE, warning=FALSE, fig.height=3, fig.width=9}
+# Ride frequency heatmap by Subscription Type
+dc.map.2 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~Subscription.Type + rushhour, nrow = 1) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution by Subscription Type & Rush Hour") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g17
+g17
+```
+
+The above graph shows that casual bikers are (apparently) taking more rides around the tourist attraction sites in DC, no matter if it's in rush hour or not. For the subscribers, however, the distribution of rides are surprisingly even no matter it's rush hour or not. If we really consider the nature of commuting, this actually makes sense: for people that ride bikes based on their daily commuting needs, they will need to use bikes to get to work or go home. The green area in the right two graphs actually shows the routine start stations for the registered users!
+
+```{r, message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+# Ride frequency heatmap by adverse weather
+dc.map.2 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~AdverseWeather) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution - Adverse Weather?") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g18
+g18
+```
+
+A quick comparison of adverse weather against non-adverse weather shows not much difference for the ridership. This might be due to the nature of our integrated weather data: the weather information is the mean values for a whole day, thus making it hard for the slicers to differentiate ridership distribution on a lower grain level. 
+```{r, message=FALSE, warning=FALSE, fig.height=3, fig.width=9}
+# Ride frequency heatmap by rush hour and adverse weather
+dc.map.3 + stat_density2d(aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+                          bins=7, geom="polygon", data=ride_df.sample) +
+  scale_fill_gradient(low="springgreen", high="tomato") + scale_alpha(range = c(0.1, 0.6), guide = FALSE) + 
+  facet_wrap(~AdverseWeather + rushhour, nrow = 1) +
+  guides(fill=guide_legend(title="ride\nfrequency")) +
+  ggtitle("Ride Distribution - Bad Weather X Rush Hour") +
+  theme(axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        legend.text = element_blank(),
+        plot.title = element_text(color="black", size=16, hjust=0)) -> g19
+g19
+```
+Again, in the graph shown above here, we observe a bigger differece from Rush Hour than the weather. This seems to be related to the same challenge we are having from the weather variables. 
+
