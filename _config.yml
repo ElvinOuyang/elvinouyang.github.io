@@ -32,3 +32,5 @@ theme_color: light
 
 # Build settings
 markdown: kramdown
+
+theme: jekyll-theme-minimal
