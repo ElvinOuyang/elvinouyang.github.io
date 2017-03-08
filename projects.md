@@ -8,4 +8,4 @@ All of Elvin Ouyang's project work samples in data analytics in one place. As a 
 
 | Project Name      | Project Description      | Project Post Page |
 |-----------|------------------|--------------------|
-| [Capital Bikeshare Explorative Analysis Using R]({% post_url 2016-12-05-capital-bikeshare-explorative-analysis-using-r %})   | An EDA with R on the bikeshare history data| |
+| [Capital Bikeshare Explorative Analysis Using R]({% post_url 2016-12-05-capital-bikeshare-explorative-analysis %})   | An EDA with R on the bikeshare history data| |
