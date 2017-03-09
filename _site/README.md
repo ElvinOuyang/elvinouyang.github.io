@@ -1,1 +1,1 @@
-Work Samples website for Elvin Ouyang.
+This is the repository for Elvin Ouyang's personal blog.
