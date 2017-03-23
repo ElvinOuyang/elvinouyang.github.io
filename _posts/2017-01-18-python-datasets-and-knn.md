@@ -1,7 +1,11 @@
 ---
-layout: post
 title: "Introduction to Machine Learning with Python - Chapter 2 - Datasets and kNN"
 date: 2017-01-18
+tags:
+  - Python
+  - machine-learning
+categories:
+  - Study Notes
 ---
 
 ```python
@@ -177,7 +181,7 @@ mglearn.plots.plot_knn_classification(n_neighbors=1)
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_18_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_18_0.png)
 
 
 
@@ -187,7 +191,7 @@ mglearn.plots.plot_knn_classification(n_neighbors=3)
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_19_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_19_0.png)
 
 
 ### 1.3.1 Steps to apply a k-NN model
@@ -277,7 +281,7 @@ axes[0].legend(loc=3)
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_31_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_31_1.png)
 
 
 In the case of *k-NN* models, the more neighbors used, the simpler the model is (represented by the smoother boundry for higher k value above).
@@ -327,7 +331,7 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_35_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_35_1.png)
 
 
 From above graph we can observe that the accuracy on the test set is best around k=6. Another thing to be noted is that since kNN models is the most complex when k=1, the trends of the two lines are flipped compared to standard complexity-accuracy chart for models.
@@ -342,7 +346,7 @@ mglearn.plots.plot_knn_regression(n_neighbors=1)
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_39_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_39_0.png)
 
 
 
@@ -351,7 +355,7 @@ mglearn.plots.plot_knn_regression(n_neighbors=3)
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_40_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_40_0.png)
 
 
 To use k-neighbors regression model, one should instantiate a **KNeighborsRegressor** class in scikit-learn.
@@ -431,7 +435,7 @@ axes[0].legend(["Model predictions", "Training data/target",
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_47_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_47_1.png)
 
 
 The predicted line becomes significantly smoother when the count of neighbors increases. It signifies a reduction in complexity compared to 1-NR and 3-NR.
@@ -478,7 +482,7 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_49_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Datasets%20and%20kNN_49_1.png)
 
 
 We can observe from above graph that the increase of *k* result in a reduction in training accuracy. It is also interesting to see that the accuracy for test set increases significantly, to a point it even surpasses training set accuracy. It certainly seems that at the point where *k* equals around 10 we can see the best model setting for k-NR.

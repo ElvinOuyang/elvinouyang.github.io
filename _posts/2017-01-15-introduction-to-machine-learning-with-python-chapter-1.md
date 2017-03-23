@@ -1,7 +1,11 @@
 ---
-layout: post
 title: "Introduction to Machine Learning with Python - Chapter 1"
 date: 2017-01-15
+tags:
+  - Python
+  - machine-learning
+categories:
+  - Study Notes
 ---
 
 # Essential Tools for Python Machine Learning
@@ -112,7 +116,7 @@ plt.plot(x, y, marker="x")
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_12_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_12_1.png)
 
 
 ## Pandas
@@ -305,7 +309,7 @@ grr = pd.scatter_matrix(iris_dataframe, c=y_train, figsize=(15,15),
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_37_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_37_0.png)
 
 
 A quick glance from the data confirms that the dot categories are well seperated for most of the feature pairs, indicating that a machine learning model is doable.

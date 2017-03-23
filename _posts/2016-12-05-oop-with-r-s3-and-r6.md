@@ -1,7 +1,12 @@
 ---
-layout: post
 title: "Object-Oriented Programming with R"
 date: 2016-12-05
+tags:
+  - R-programming
+  - Data-Camp
+  - OOP
+categories:
+  - Study Notes
 ---
 
 ## 1. Introduction to OOP in R

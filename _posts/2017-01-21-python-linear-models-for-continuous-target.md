@@ -1,7 +1,11 @@
 ---
-layout: post
 title: "Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Continuous Target"
 date: 2017-01-21
+tags:
+  - Python
+  - machine-learning
+categories:
+  - Study Notes
 ---
 
 ```python
@@ -62,7 +66,7 @@ mglearn.plots.plot_linear_regression_wave()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_3_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_3_1.png)
 
 
 **Definition of Linear Models**
@@ -225,7 +229,7 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_23_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_23_1.png)
 
 
 As we can see from above graph, the performance of Ridge Regression model on the test set hits the highest point when the natural logarithm of the alpha is between -2 and -1. Considering the decreasing nature of the training accuracy, we should prefer an alpha within this range that is as low as possible.
@@ -279,7 +283,7 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_29_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_29_1.png)
 
 
 From above graph we can see that with alpha larger, the coefficients are most condensed near the *w=0* line.
@@ -299,7 +303,7 @@ mglearn.plots.plot_ridge_n_samples()
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_32_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_32_0.png)
 
 
 > Because ridge is regularized, *the training
@@ -412,7 +416,7 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_42_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_42_1.png)
 
 
 Similarly to the *redge regression*, the "sweet spot" for this specific case comes at -6 < log(alpha) < -4. We can check it out by looking at the corresponding arrays.
@@ -460,7 +464,7 @@ plt.ylabel("Coefficient magnitude")
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_46_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_46_1.png)
 
 
 > In practice, **ridge regression** is usually the **first** choice between these two models.

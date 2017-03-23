@@ -1,7 +1,11 @@
 ---
-layout: post
 title: "Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification"
 date: 2017-01-24
+tags:
+  - Python
+  - machine-learning
+categories:
+  - Study Notes
 ---
 
 
@@ -91,7 +95,7 @@ axes[0].legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_7_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_7_1.png)
 
 
 In the above graphs, the line is the *decision boundary* that would determine the category of dots falling above or under the line. If the points fall above the line, they would be categorized as Category 1 and under as Category 0.
@@ -112,7 +116,7 @@ mglearn.plots.plot_linear_svc_regularization()
 ```
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_11_0.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_11_0.png)
 
 
 On the left, the strongly regularized model choose a relatively horizontal line by following only the general trend: that category 1 points are above and category 0 points are below.
@@ -204,7 +208,7 @@ plt.legend(loc=4)
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_21_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_21_1.png)
 
 
 As we can expect from the C settings, having more and more flexible model makes the training accuracy more and more accurate; however, the accuracy of the data on the test set hits a plateau at around C = 5.
@@ -232,4 +236,4 @@ plt.legend()
 
 
 
-![png](/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_24_1.png)
+![png](/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Classification_24_1.png)
