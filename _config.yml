@@ -12,7 +12,7 @@ title_separator          : "|"
 name                     : "Elvin Ouyang"
 description              : "Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages."
 url                      : "elvinouyang.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+baseurl                  : "/"
 repository               : "ElvinOuyang/elvinouyang.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # breadcrumbs            : false # true, false (default)
