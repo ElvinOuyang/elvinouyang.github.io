@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Continuous Target</title>
+  <meta name="description" content="```pythonimport sysprint(“Python version: {}”.format(sys.version))import pandas as pdprint(“pandas version: {}”.format(pd.version))import matplotlibprint(“ma...">
+
+  
+  
+  <link rel="stylesheet" href="http://localhost:4000/assets/style.css">
+
+  <link rel="canonical" href="http://localhost:4000/2017/01/21/python-linear-models-for-continuous-target.html">
+  <link rel="alternate" type="application/rss+xml" title="Elvin Ouyang's Blog" href="http://localhost:4000/feed.xml">
+
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+
+  
+  <!-- font-smoothing is only applied on dark themes -->
+  <body class="font-smoothing">
+
+    <header class="px-2 clearfix">
+  <!-- <div class="left-lg absolute-lg left-0 top-0 sm-width-full mt-2">
+    <a class="no-underline-hover px-1" href="/">
+      <span class="inline-block h4 hide-sm ml-2">&#x261c;</span>
+    </a>
+    <a class="italic no-underline" href="/">
+       home
+    </a>
+  </div> -->
+  <div class="right-lg absolute-lg right-0 top-0">
+    <ul class="mt-1 mt-lg-2 mr-2 mr-lg-3">
+      <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+        <a class="italic h4 bold no-underline" href="/">
+          <!-- Elvin Ouyang's Blog -->
+          Home
+        </a>
+      </li>
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/about/">
+            About
+          </a>
+        </li>
+        
+      
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/projects/">
+            Projects
+          </a>
+        </li>
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/resources/">
+            Resources
+          </a>
+        </li>
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/study-notes/">
+            Study Notes
+          </a>
+        </li>
+        
+      
+        
+      
+    </ul>
+  </div>
+</header>
+
+
+    <div>
+      <article class="container mx-auto px-2" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="mt-4 mb-2 clearfix header-text">
+    <h1 class="h0 inline-block py-2 mt-4 header-title">Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Continuous Target</h1>
+    <div class="clearfix mb-4 py-1">
+      <p class="h4 lh-condensed"><time datetime="2017-01-21T00:00:00-05:00" itemprop="datePublished">Jan 21, 2017</time></p>
+      <div class="col-1 sm-width-full border-top-thick">
+      </div>
+    </div>
+  </div>
+
+  <div class="prose py-4" itemprop="articleBody">
+      <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Python version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pandas version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"matplotlib version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"NumPy version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"SciPy version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"IPython version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">IPython</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"scikit-learn version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">mglearn</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"mglearn version: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mglearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Python version: 3.6.0 |Continuum Analytics, Inc.| (default, Dec 23 2016, 12:22:00)
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)]
+pandas version: 0.19.2
+matplotlib version: 1.5.3
+NumPy version: 1.11.3
+SciPy version: 0.18.1
+IPython version: 5.1.0
+scikit-learn version: 0.18.1
+mglearn version: 0.1.3
+</code></pre>
+</div>
+
+<h2 id="15-linear-models-for-regression">1.5 Linear Models for Regression</h2>
+
+<blockquote>
+  <p>For regression, the general prediction formula for a linear model looks as follows:</p>
+</blockquote>
+
+<blockquote>
+  <p><em>ŷ = w[0] * x[0] + w[1] * x[1] + … + w[p] * x[p] + b</em></p>
+</blockquote>
+
+<blockquote>
+  <p>Here, x[0] to x[p] denotes the features (in this example, the number of features is p)
+of a single data point, w and b are parameters of the model that are learned, and ŷ is
+the prediction the model makes. For a dataset with a single feature, this is:</p>
+</blockquote>
+
+<blockquote>
+  <p><em>ŷ = w[0] * x[0] + b</em></p>
+</blockquote>
+
+<p>For Linear Regression models, the bigger the absolute values of the coefficients, the more complex the model is. In other words, the flatter the linear line, the simpler the model is.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">mglearn</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">plot_linear_regression_wave</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>w[0]: 0.393906  b: -0.031804
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_3_1.png" alt="png" /></p>
+
+<p><strong>Definition of Linear Models</strong></p>
+<blockquote>
+  <p>Linear models for regression can be characterized as regression models for which the
+prediction is a line for a single feature, a plane when using two features, or a hyperplane
+in higher dimensions (that is, when using more features).</p>
+</blockquote>
+
+<p>Linear models can be extra powerful for a <em>wide dataset</em>, i.e. dataset with more features than training data points. We can start by learning the most popular regression model.</p>
+
+<h3 id="151-lenear-regression-aka-ordinary-least-squares-ols">1.5.1 Lenear regression (aka ordinary least squares, OLS)</h3>
+
+<blockquote>
+  <p>Linear regression finds the parameters w and b that <em>minimize
+the mean squared error</em> between predictions and the true regression targets, y, on the training set.</p>
+</blockquote>
+
+<p><strong>Features of OLS</strong></p>
+
+<ul>
+  <li>No parameters</li>
+  <li>Cannot control model complexity</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mglearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">make_wave</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>The fitted OLS model has two parameters, as below:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"lr.coef_: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"lr.intercept_: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">intercept_</span><span class="p">))</span>
+
+<span class="c"># parameters generated from the training data will have "_" at the</span>
+<span class="c"># tail, whereas parameters set by users don't</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>lr.coef_: [ 0.39390555]
+lr.intercept_: -0.03180434302675973
+</code></pre>
+</div>
+
+<p>The model’s performance on training set and test set is as below:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.67
+Test set score: 0.66
+</code></pre>
+</div>
+
+<p>The linear regression’s performance on a simple dataset is not really impressive. But we will now test it on a complex <strong>Boston Housing</strong> dataset.</p>
+
+<h3 id="1511-ols-on-boston-housing-dataset">1.5.1.1 OLS on Boston Housing dataset</h3>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mglearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_extended_boston</span><span class="p">()</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.95
+Test set score: 0.61
+</code></pre>
+</div>
+
+<p>Since OLS does not give options to <strong>control complexity</strong>, this model is overfitting. We will then look at an alternative to OLS, which is <strong>Ridge Regression</strong>.</p>
+
+<h3 id="152-ridge-regression">1.5.2 Ridge Regression</h3>
+
+<p><strong>Ridge Regression</strong> is the basic OLS model plus the following restriction:</p>
+
+<blockquote>
+  <p>We also want <strong><em>the magnitude of coefficients
+to be as small as possible</em></strong>; in other words, all entries of w should be close to
+zero. Intuitively, this means each feature should have as little effect on the outcome as
+possible (which translates to having a small slope), while still predicting well.</p>
+</blockquote>
+
+<p>This process, called <strong><em>L2 regularization</em></strong> helps to explicitly avoid overfitting.</p>
+
+<p>The sklearn uses <strong>Ridge</strong> class to instantiate Ridge Regressions.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+
+<span class="n">ridge</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.89
+Test set score: 0.75
+</code></pre>
+</div>
+
+<p>The <em>default</em> parameter for Ridge model is alpha = 1.0. By changing the alpha value when instantiating the class, users can adjust the level of restrictions on the Ridge Regression.</p>
+
+<p><strong>Higher Alpha</strong> -&gt; <strong>Stronger restriction</strong> -&gt; <strong>Parameter magnitude closer to zero</strong></p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">ridge10</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge10</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge10</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+
+<span class="n">ridge01</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge01</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ridge01</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.79
+Test set score: 0.64
+
+Training set score: 0.93
+Test set score: 0.77
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mglearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_extended_boston</span><span class="p">()</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">training_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># try alpha from 0.01 to 10</span>
+<span class="n">alpha_settings</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alpha_settings</span><span class="p">:</span>
+    <span class="c"># build the model</span>
+    <span class="n">ridge</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">ridge</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c"># record training accuracy</span>
+    <span class="n">training_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
+    <span class="c"># record generalization accuracy</span>
+    <span class="n">test_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span>
+         <span class="n">training_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"training accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span>
+        <span class="n">test_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"test accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"alpha logs"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;matplotlib.legend.Legend at 0x7fd00d0c76d8&gt;
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_23_1.png" alt="png" /></p>
+
+<p>As we can see from above graph, the performance of Ridge Regression model on the test set hits the highest point when the natural logarithm of the alpha is between -2 and -1. Considering the decreasing nature of the training accuracy, we should prefer an alpha within this range that is as low as possible.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"log alpha array: {}"</span><span class="o">.</span>
+      <span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span><span class="mi">3</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"alpha array: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training performance: {:.5f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">training_accuracy</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test performance: {:.5f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>log alpha array: [-4.605 -2.996 -2.303 -1.609 -1.204 -0.916 -0.693 -0.511 -0.357 -0.223
+ -0.105  0.     0.693  1.099  1.386  1.609  1.792  1.946  2.079  2.197
+  2.303]
+alpha array: [  0.01   0.05   0.1    0.2    0.3    0.4    0.5    0.6    0.7    0.8    0.9
+   1.     2.     3.     4.     5.     6.     7.     8.     9.    10.  ]
+Training performance: 0.92028
+Test performance: 0.77468
+</code></pre>
+</div>
+
+<p>From the alpha arrays, we observe that the fourth alpha meets our conditions; i.e. <em>when alpha = 0.2</em>, we will see the optimized Ridge Model.</p>
+
+<h3 id="1521-under-the-hood-for-ridge-regressions">1.5.2.1 Under the Hood for Ridge Regressions</h3>
+
+<blockquote>
+  <p>We can also get a more qualitative insight into how the alpha parameter changes the
+model by inspecting the <strong>coef_ attribute of models with different values of alpha</strong>. A
+higher alpha means a more restricted model, so we expect the entries of coef_ to
+have smaller magnitude for a high value of alpha than for a low value of alpha.</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'s'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Ridge alpha=1"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge10</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'^'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Ridge alpha=10"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge01</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'v'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Ridge alpha=0.1"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"LinearRegression"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Coefficient index"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Coefficient magnitude"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;matplotlib.legend.Legend at 0x7fd00d019eb8&gt;
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_29_1.png" alt="png" /></p>
+
+<p>From above graph we can see that with alpha larger, the coefficients are most condensed near the <em>w=0</em> line.</p>
+
+<p><strong>Learning Curves</strong></p>
+<blockquote>
+  <p>Another way to understand the influence of regularization is to fix a value of alpha
+but vary the amount of training data available.</p>
+</blockquote>
+
+<blockquote>
+  <p>we subsampled the
+Boston Housing dataset and evaluated LinearRegression and Ridge(alpha=1) on
+subsets of increasing size (<strong>plots that show model performance as a function of dataset
+size are called learning curves</strong>)</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">mglearn</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">plot_ridge_n_samples</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_32_0.png" alt="png" /></p>
+
+<blockquote>
+  <p>Because ridge is regularized, <em>the training
+score of ridge is lower than the training score</em> for linear regression across the board.
+However, <strong>the test score for ridge is better, particularly for small subsets of the data</strong>.
+For less than 400 data points, linear regression is not able to learn anything. As more
+and more data becomes available to the model, both models improve, and linear
+regression catches up with ridge in the end.</p>
+</blockquote>
+
+<p><strong>Key Takeaway</strong></p>
+
+<p>With enough training data, regularization becomes less important, and given enough data, ridge and linear regression will have the same performance.</p>
+
+<h3 id="153-lasso-regression">1.5.3 Lasso Regression</h3>
+
+<p><strong>Lasso Regression</strong> uses <em>L1 Regualtion</em> to regularize the regression.</p>
+
+<blockquote>
+  <p>The consequence of L1 regularization
+is that when using the lasso, some coefficients are <strong>exactly zero</strong>. This means some features
+are entirely ignored by the model. This can be seen as <strong>a form of automatic feature
+selection</strong>. Having some coefficients be exactly zero often makes a model easier to
+interpret, and can <strong>reveal the most important features of your model</strong>.</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+
+<span class="n">lasso</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of features used: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.29
+Test set score: 0.21
+Number of features used: 4
+</code></pre>
+</div>
+
+<p>Apparently the default setting for this <em>lasso regression</em> is underfitting on the Houston Housing dataset.</p>
+
+<p>Similarly, <strong>Lasso Regression</strong> also has <em>alpha = 1.0</em> as its parameter. The larger alpha is, the simpler the model is.</p>
+
+<p>Another parameter, <em>max_iter</em> (maximum number of iterations to run) should also be defined. The smaller alpha is, the larger max_iter should be.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># We increase the default setting of max_iter</span>
+<span class="c"># And decrease alpha</span>
+<span class="n">lasso001</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso001</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso001</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of features used: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">lasso001</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.90
+Test set score: 0.77
+Number of features used: 33
+</code></pre>
+</div>
+
+<p>The adjusted model ended up using 33 out of the 105 features in the dataset. This makes it potentially easier to understand.</p>
+
+<p>If we set <em>alpha</em> too low, the model will become too complicated and more similar to OLS.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">lasso00001</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Training set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso00001</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test set score: {:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lasso00001</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of features used: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">lasso00001</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Training set score: 0.95
+Test set score: 0.64
+Number of features used: 94
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">training_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># try alpha from 0.00001 to 10</span>
+<span class="n">alpha_settings</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alpha_settings</span><span class="p">:</span>
+    <span class="c"># build the model</span>
+    <span class="n">lasso</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000000</span><span class="p">)</span>
+    <span class="n">lasso</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c"># record training accuracy</span>
+    <span class="n">training_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
+    <span class="c"># record generalization accuracy</span>
+    <span class="n">test_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span>
+         <span class="n">training_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"training accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span>
+        <span class="n">test_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"test accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Accuracy"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"alpha logs"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;matplotlib.legend.Legend at 0x7fd00cf92860&gt;
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_42_1.png" alt="png" /></p>
+
+<p>Similarly to the <em>redge regression</em>, the “sweet spot” for this specific case comes at -6 &lt; log(alpha) &lt; -4. We can check it out by looking at the corresponding arrays.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"log alpha array: {}"</span><span class="o">.</span>
+      <span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)),</span><span class="mi">3</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"alpha array: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">)))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Sweet spot alpha: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha_settings</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Training performance: {:.5f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">training_accuracy</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Test performance: {:.5f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>log alpha array: [-11.513  -9.21   -6.908  -4.605  -2.996  -2.303  -0.693   0.      0.693
+   1.386   2.079   2.303]
+alpha array: [  1.00000000e-05   1.00000000e-04   1.00000000e-03   1.00000000e-02
+   5.00000000e-02   1.00000000e-01   5.00000000e-01   1.00000000e+00
+   2.00000000e+00   4.00000000e+00   8.00000000e+00   1.00000000e+01]
+Sweet spot alpha: 0.01
+Training performance: 0.89651
+Test performance: 0.76565
+</code></pre>
+</div>
+
+<h3 id="1531-under-the-hood-for-lasso-regressions">1.5.3.1 Under the Hood for Lasso Regressions</h3>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'s'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Lasso alpha=1"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lasso001</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'^'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Lasso alpha=0.01"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lasso00001</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'v'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Lasso alpha=0.0001"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge01</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Ridge alpha=0.1"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Coefficient index"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Coefficient magnitude"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;matplotlib.text.Text at 0x7fd00ce0b2e8&gt;
+</code></pre>
+</div>
+
+<p><img src="/assets/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%202%20-%20Linear%20Models%20for%20Continuous%20Target_46_1.png" alt="png" /></p>
+
+<blockquote>
+  <p>In practice, <strong>ridge regression</strong> is usually the <strong>first</strong> choice between these two models.</p>
+</blockquote>
+
+<blockquote>
+  <p>However, if you have <strong>a large amount of features and expect only a few of them to be
+important, Lasso</strong> might be a better choice. Similarly, if you would like to have a
+model that is <strong>easy to interpret, Lasso will provide a model that is easier to understand</strong>,
+as it will select only a subset of the input features.</p>
+</blockquote>
+
+  </div>
+</article>
+
+<div class="container mx-auto px-2 py-2 clearfix">
+  <!-- Use if you want to show previous and next for all posts. -->
+
+
+
+  <div class="col-4 sm-width-full left mr-lg-4 mt-3">
+    <a class="no-underline-hover py-1 block" href="http://localhost:4000/2017/01/18/python-datasets-and-knn.html">
+      <span class="h5 bold">Previous</span>
+      <p class="bold h3 link-primary mb-1">Introduction to Machine Learning with Python - Chapter 2 - Datasets and kNN</p>
+      <p>import sys print("Python version: {}".format(sys.version)) import pandas as pd print("pandas version: {}".format(pd.__version__)) import matplotlib print("matplotlib version: {}".format(matplotlib.__version__)) import numpy as...</p>
+    </a>
+  </div>
+  
+  
+  <div class="col-4 sm-width-full left mt-3">
+    <a class="no-underline-hover py-1 block" href="http://localhost:4000/2017/01/24/python-linear-models-for-classification.html">
+      <span class="h5 bold">Next</span>
+      <p class="bold h3 link-primary mb-1">Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification</p>
+      <p>```python import sys print("Python version: {}".format(sys.version)) import pandas as pd print("pandas version: {}".format(pd.__version__)) import matplotlib print("matplotlib version: {}".format(matplotlib.__version__)) import numpy...</p>
+    </a>
+  </div>
+
+
+</div>
+
+    </div>
+
+    <div class="container mx-auto clearfix mt-2 mt-lg-4 px-2">
+  <div class="border-top-thick">
+    <p class="col-8 sm-width-full left py-2 mb-0">This project is maintained by <a class="text-accent" href="https://github.com/ElvinOuyang">ElvinOuyang</a></p>
+    <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+      <li class="inline-block mr-1">
+        <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="Elvin Ouyang's Blog">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </li>
+      <li class="inline-block">
+        <a class="github-button" href="https://github.com/ElvinOuyang/elvinouyang.github.io" data-icon="octicon-star" data-count-href="ElvinOuyang//stargazers" data-count-api="/repos/ElvinOuyang/#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star ElvinOuyang/ on GitHub">Star</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+  </body>
+
+</html>

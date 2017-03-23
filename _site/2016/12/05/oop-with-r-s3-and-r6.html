@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Object-Oriented Programming with R</title>
+  <meta name="description" content="1. Introduction to OOP in RDifference between functional programming and OOP?">
+
+  
+  
+  <link rel="stylesheet" href="http://localhost:4000/assets/style.css">
+
+  <link rel="canonical" href="http://localhost:4000/2016/12/05/oop-with-r-s3-and-r6.html">
+  <link rel="alternate" type="application/rss+xml" title="Elvin Ouyang's Blog" href="http://localhost:4000/feed.xml">
+
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+
+  
+  <!-- font-smoothing is only applied on dark themes -->
+  <body class="font-smoothing">
+
+    <header class="px-2 clearfix">
+  <!-- <div class="left-lg absolute-lg left-0 top-0 sm-width-full mt-2">
+    <a class="no-underline-hover px-1" href="/">
+      <span class="inline-block h4 hide-sm ml-2">&#x261c;</span>
+    </a>
+    <a class="italic no-underline" href="/">
+       home
+    </a>
+  </div> -->
+  <div class="right-lg absolute-lg right-0 top-0">
+    <ul class="mt-1 mt-lg-2 mr-2 mr-lg-3">
+      <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+        <a class="italic h4 bold no-underline" href="/">
+          <!-- Elvin Ouyang's Blog -->
+          Home
+        </a>
+      </li>
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/about/">
+            About
+          </a>
+        </li>
+        
+      
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/projects/">
+            Projects
+          </a>
+        </li>
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/resources/">
+            Resources
+          </a>
+        </li>
+        
+      
+        
+        <li class="inline-block block-lg text-right ml-1 ml-lg-0">
+          <a class="italic no-underline h4" href="/study-notes/">
+            Study Notes
+          </a>
+        </li>
+        
+      
+        
+      
+    </ul>
+  </div>
+</header>
+
+
+    <div>
+      <article class="container mx-auto px-2" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="mt-4 mb-2 clearfix header-text">
+    <h1 class="h0 inline-block py-2 mt-4 header-title">Object-Oriented Programming with R</h1>
+    <div class="clearfix mb-4 py-1">
+      <p class="h4 lh-condensed"><time datetime="2016-12-05T00:00:00-05:00" itemprop="datePublished">Dec 5, 2016</time></p>
+      <div class="col-1 sm-width-full border-top-thick">
+      </div>
+    </div>
+  </div>
+
+  <div class="prose py-4" itemprop="articleBody">
+      <h2 id="1-introduction-to-oop-in-r">1. Introduction to OOP in R</h2>
+<p><strong>Difference between functional programming and OOP?</strong></p>
+
+<ul>
+  <li>Functional Programming: functions first, then object</li>
+  <li>OOP: data structures first, then functions (<em>methods</em>)</li>
+</ul>
+
+<h3 id="11-when-to-use-oop">1.1. When to use OOP?</h3>
+
+<p>When building tools <em>for</em> data analysis, use object-oreinted programming; otherwise, use functional programming for analyzing data.</p>
+
+<h3 id="12-a-taste-of-function-vs-objects">1.2. A taste of function vs. objects</h3>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create these variables
+</span><span class="n">a_numeric_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rlnorm</span><span class="p">(</span><span class="m">50</span><span class="p">)</span><span class="w">
+</span><span class="n">a_factor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+  </span><span class="n">sample</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="nb">LETTERS</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">],</span><span class="w"> </span><span class="kc">NA</span><span class="p">),</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">a_data_frame</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w">
+  </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a_numeric_vector</span><span class="p">,</span><span class="w">
+  </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a_factor</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">a_linear_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="n">cars</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Call summary() on the numeric vector
+</span><span class="n">summary</span><span class="p">(</span><span class="n">a_numeric_vector</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Do the same for the other three objects
+</span><span class="n">summary</span><span class="p">(</span><span class="n">a_factor</span><span class="p">)</span><span class="w">
+</span><span class="n">summary</span><span class="p">(</span><span class="n">a_data_frame</span><span class="p">)</span><span class="w">
+</span><span class="n">summary</span><span class="p">(</span><span class="n">a_linear_model</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+ 0.1031  0.4518  0.8609  1.4180  1.5990  7.5560
+</code></pre>
+</div>
+
+<p>&lt;dl class=dl-horizontal&gt;
+	&lt;dt&gt;A&lt;/dt&gt;
+		&lt;dd&gt;9&lt;/dd&gt;
+	&lt;dt&gt;B&lt;/dt&gt;
+		&lt;dd&gt;10&lt;/dd&gt;
+	&lt;dt&gt;C&lt;/dt&gt;
+		&lt;dd&gt;8&lt;/dd&gt;
+	&lt;dt&gt;D&lt;/dt&gt;
+		&lt;dd&gt;7&lt;/dd&gt;
+	&lt;dt&gt;E&lt;/dt&gt;
+		&lt;dd&gt;8&lt;/dd&gt;
+	&lt;dt&gt;NA’s&lt;/dt&gt;
+		&lt;dd&gt;8&lt;/dd&gt;
+&lt;/dl&gt;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>       n             f     
+ Min.   :0.1031   A   : 9  
+ 1st Qu.:0.4518   B   :10  
+ Median :0.8609   C   : 8  
+ Mean   :1.4176   D   : 7  
+ 3rd Qu.:1.5988   E   : 8  
+ Max.   :7.5557   NA's: 8  
+
+
+
+
+Call:
+lm(formula = dist ~ speed, data = cars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-29.069  -9.525  -2.272   9.215  43.201
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+speed         3.9324     0.4155   9.464 1.49e-12 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 15.38 on 48 degrees of freedom
+Multiple R-squared:  0.6511,	Adjusted R-squared:  0.6438
+F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12
+</code></pre>
+</div>
+
+<p>The same function <em>summary()</em> behaves differently on different types of objects, due to the underlying defined behaviors of these classes.</p>
+
+<h3 id="13-the-nine-systems">1.3. The Nine Systems</h3>
+
+<ul>
+  <li>S3: (Most recommended) Precurse of R, mature and widely used
+    <ul>
+      <li>Makes functions behave differently on different classes</li>
+    </ul>
+  </li>
+  <li>S4: Also prior to R
+    <ul>
+      <li>Hard to use, not recommended</li>
+      <li>Unless you use <em>Bioconductor</em></li>
+    </ul>
+  </li>
+  <li>ReferenceClasses: Has similar behaviors of other programming languages, not recommended</li>
+  <li>R6: More powerful than S3 (recommended)</li>
+</ul>
+
+<h3 id="14-how-does-r-distinguish-variables">1.4. How does R distinguish variables?</h3>
+
+<p>When using <strong>str()</strong> or <strong>class()</strong>, R returns the class of the variables.</p>
+
+<p>When one need more information of the basic element type of the class (for instance, what’s in a <em>matrix</em>), we use <strong>typeof()</strong> to determine the type of each element.</p>
+
+<p>Use <strong>mode()</strong> and <strong>storage.mode()</strong> are used in older codes, but not useful anymore.</p>
+
+<h3 id="15-assigning-classes-and-implicit-classes">1.5. Assigning Classes and Implicit Classes</h3>
+
+<p>Use <strong>class()</strong> to also <strong>assign</strong> a class to a variable. In other words, the “class” of an object can be overwritten.</p>
+
+<p>However, the underlying features of an existing class in R will continue to work, such as <em>length()</em>, <em>mean()</em>, <em>typeof()</em>.</p>
+
+<blockquote>
+  <p>This is particularly useful for lists, since lists can be used to combine other variables into more complex variables. (Remember the Lego analogy: individual variables are like Lego pieces, and you can use lists to build whatever you like.)</p>
+</blockquote>
+
+<h2 id="2-s3-how-to">2. S3 How-to</h2>
+
+<h3 id="21-function-overloading">2.1. Function Overloading</h3>
+<p>Having different behaviors for different classes for the same function. This is enabled by <strong>S3</strong> package.</p>
+
+<p>For the S3 package:</p>
+
+<ul>
+  <li>Functions are devided into two parts:</li>
+  <li>Generic function
+    <ul>
+      <li>print() and summary() are both generic fuctions</li>
+    </ul>
+  </li>
+  <li>method function for each class
+    <ul>
+      <li>Use generic.class() to call the method for the class</li>
+      <li>The arguments for the generic functions should also be included in the method functions</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Do not use dots in variable naming convention, which will confuse the S3 classes</strong></p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># To check if a function is a S3 method:
+</span><span class="n">library</span><span class="p">(</span><span class="n">pryr</span><span class="p">)</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">is_s3_generic</span><span class="p">(</span><span class="s2">"t"</span><span class="p">))</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">is_s3_method</span><span class="p">(</span><span class="s2">"t.data.frame"</span><span class="p">))</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">is_s3_method</span><span class="p">(</span><span class="s2">"t.data.frame"</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1] TRUE
+[1] TRUE
+[1] TRUE
+</code></pre>
+</div>
+
+<h3 id="22-step-1-to-create-a-s3-function-create-a-generic-function-using-usemethod-">2.2. Step 1 to create a S3 function: create a generic function using <em>UseMethod( )</em></h3>
+
+<p>You can create your own S3 functions. The first step is to <strong>write the generic</strong>. This is typically a <strong>single line function that calls UseMethod(), passing its name as a string.</strong></p>
+
+<p>The first argument to an S3 generic is usually called <em>x</em>, though this isn’t compulsory. It is also good practice to include a <em>… (“ellipsis”, or “dot-dot-dot”) argument, in case arguments need to be passed from one method to another</em>.</p>
+
+<p>Overall, the structure of an S3 generic looks like this.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>an_s3_generic &lt;- function(x, maybe = "some", other = "arguments", ...) {
+  UseMethod("an_s3_generic")
+}
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create get_n_elements
+</span><span class="n">get_n_elements</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+  </span><span class="nf">UseMethod</span><span class="p">(</span><span class="s2">"get_n_elements"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="23-step-2-to-create-a-s3-function-create-methods">2.3. Step 2 to create a S3 function: create methods</h3>
+
+<p>The generic function doesn’t do anything; it is simply a bucket that contains multiple method, each dealing with different class object.</p>
+
+<p>The <strong>methods</strong> are actually regular functions with two conditions:</p>
+
+<ul>
+  <li>The name of the method must be of the form <em>generic.class</em>.</li>
+  <li>The method signature - that is, the arguments that are passed in to the method - must <em>contain the signature of the generic</em>.</li>
+</ul>
+
+<p>The syntax should look like:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>generic.class &lt;- function(some, arguments, ...) {
+  #Do something
+}
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># View get_n_elements
+</span><span class="n">print</span><span class="p">(</span><span class="n">get_n_elements</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Create a data.frame method for get_n_elements
+</span><span class="n">get_n_elements.data.frame</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+  </span><span class="n">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">ncol</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+
+</span><span class="c1"># Call the method on the sleep dataset
+</span><span class="n">n_elements_cars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_n_elements.data.frame</span><span class="p">(</span><span class="n">cars</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># View the result
+</span><span class="n">print</span><span class="p">(</span><span class="n">n_elements_cars</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function(x, ...){
+  UseMethod("get_n_elements")
+}
+[1] 100
+</code></pre>
+</div>
+
+<h3 id="24-step-3-to-create-a-s3-function-create-default-method">2.4. Step 3 to create a S3 function: create default method</h3>
+
+<p>Create a default method to deal with classes without a specific method. It is similar to creating a S3 method function with the condition that the name of the default method should always be <strong>generic.default</strong>.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># View pre-defined objects
+</span><span class="n">ls.str</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Create a default method for get_n_elements
+</span><span class="n">get_n_elements.default</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+  </span><span class="nf">length</span><span class="p">(</span><span class="n">unlist</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c1"># Call the method on an array
+</span><span class="n">print</span><span class="p">(</span><span class="n">get_n_elements.default</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>a_data_frame : 'data.frame':	50 obs. of  2 variables:
+ $ n: num  0.536 0.303 1.774 1.12 4.316 ...
+ $ f: Factor w/ 5 levels "A","B","C","D",..: 1 3 5 4 3 1 4 2 3 NA ...
+a_factor :  Factor w/ 5 levels "A","B","C","D",..: 1 3 5 4 3 1 4 2 3 NA ...
+a_linear_model : List of 12
+ $ coefficients : Named num [1:2] -17.58 3.93
+ $ residuals    : Named num [1:50] 3.85 11.85 -5.95 12.05 2.12 ...
+ $ effects      : Named num [1:50] -303.914 145.552 -8.115 9.885 0.194 ...
+ $ rank         : int 2
+ $ fitted.values: Named num [1:50] -1.85 -1.85 9.95 9.95 13.88 ...
+ $ assign       : int [1:2] 0 1
+ $ qr           :List of 5
+ $ df.residual  : int 48
+ $ xlevels      : Named list()
+ $ call         : language lm(formula = dist ~ speed, data = cars)
+ $ terms        :Classes 'terms', 'formula'  language dist ~ speed
+ $ model        :'data.frame':	50 obs. of  2 variables:
+a_numeric_vector :  num [1:50] 0.536 0.303 1.774 1.12 4.316 ...
+env : &lt;environment: 0x19799d0&gt;
+env2 : &lt;environment: 0x19799d0&gt;
+get_n_elements : function (x, ...)  
+get_n_elements.data.frame : function (x, ...)  
+lst : List of 2
+ $ perfect: num [1:3] 6 28 496
+ $ bases  : chr [1:4] "A" "C" "G" "U"
+lst2 : List of 2
+ $ perfect: num [1:3] 6 28 496
+ $ bases  : chr [1:4] "A" "C" "G" "T"
+n_elements_cars :  int 100
+
+
+[1] 20
+</code></pre>
+</div>
+
+<h3 id="25-methodical-thinking">2.5. Methodical Thinking</h3>
+
+<p>To check the available methods of a function, call <strong>methods(‘function_name’)</strong> or <strong>methods(function_name)</strong>.</p>
+
+<p>To check the available method of a function for a given class of object, call <strong>methods(class = ‘class_name’)</strong> or <strong>methods(class = class_name)</strong>.</p>
+
+<p><strong>methods( )</strong> returns both <em>S3</em> and <em>S4</em> methods. To find only the <em>S3</em> methods, use <strong>.S3methods( )</strong>, and <strong>.S4methods( )</strong> for <em>S4</em> methods.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">print</span><span class="p">(</span><span class="n">methods</span><span class="p">(</span><span class="s1">'print'</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  [1] print.acf*                                        
+  [2] print.AES*                                        
+  [3] print.anova*                                      
+  [4] print.aov*                                        
+  [5] print.aovlist*                                    
+  [6] print.ar*                                         
+  [7] print.Arima*                                      
+  [8] print.arima0*                                     
+  [9] print.AsIs                                        
+ [10] print.aspell*                                     
+ [11] print.aspell_inspect_context*                     
+ [12] print.bibentry*                                   
+ [13] print.Bibtex*                                     
+ [14] print.browseVignettes*                            
+ [15] print.by                                          
+ [16] print.bytes*                                      
+ [17] print.changedFiles*                               
+ [18] print.check_code_usage_in_package*                
+ [19] print.check_compiled_code*                        
+ [20] print.check_demo_index*                           
+ [21] print.check_depdef*                               
+ [22] print.check_details*                              
+ [23] print.check_doi_db*                               
+ [24] print.check_dotInternal*                          
+ [25] print.check_make_vars*                            
+ [26] print.check_nonAPI_calls*                         
+ [27] print.check_package_code_assign_to_globalenv*     
+ [28] print.check_package_code_attach*                  
+ [29] print.check_package_code_data_into_globalenv*     
+ [30] print.check_package_code_startup_functions*       
+ [31] print.check_package_code_syntax*                  
+ [32] print.check_package_code_unload_functions*        
+ [33] print.check_package_compact_datasets*             
+ [34] print.check_package_CRAN_incoming*                
+ [35] print.check_package_datasets*                     
+ [36] print.check_package_depends*                      
+ [37] print.check_package_description*                  
+ [38] print.check_package_description_encoding*         
+ [39] print.check_package_license*                      
+ [40] print.check_packages_in_dir*                      
+ [41] print.check_packages_in_dir_changes*              
+ [42] print.check_packages_used*                        
+ [43] print.check_po_files*                             
+ [44] print.check_Rd_contents*                          
+ [45] print.check_Rd_line_widths*                       
+ [46] print.check_Rd_metadata*                          
+ [47] print.check_Rd_xrefs*                             
+ [48] print.check_so_symbols*                           
+ [49] print.check_T_and_F*                              
+ [50] print.check_url_db*                               
+ [51] print.check_vignette_index*                       
+ [52] print.checkDocFiles*                              
+ [53] print.checkDocStyle*                              
+ [54] print.checkFF*                                    
+ [55] print.checkRd*                                    
+ [56] print.checkReplaceFuns*                           
+ [57] print.checkS3methods*                             
+ [58] print.checkTnF*                                   
+ [59] print.checkVignettes*                             
+ [60] print.citation*                                   
+ [61] print.codoc*                                      
+ [62] print.codocClasses*                               
+ [63] print.codocData*                                  
+ [64] print.colorConverter*                             
+ [65] print.compactPDF*                                 
+ [66] print.condition                                   
+ [67] print.connection                                  
+ [68] print.CRAN_package_reverse_dependencies_and_views*
+ [69] print.crayon*                                     
+ [70] print.data.frame                                  
+ [71] print.Date                                        
+ [72] print.default                                     
+ [73] print.dendrogram*                                 
+ [74] print.density*                                    
+ [75] print.difftime                                    
+ [76] print.dist*                                       
+ [77] print.Dlist                                       
+ [78] print.DLLInfo                                     
+ [79] print.DLLInfoList                                 
+ [80] print.DLLRegisteredRoutines                       
+ [81] print.dummy_coef*                                 
+ [82] print.dummy_coef_list*                            
+ [83] print.ecdf*                                       
+ [84] print.envlist*                                    
+ [85] print.factanal*                                   
+ [86] print.factor                                      
+ [87] print.family*                                     
+ [88] print.fileSnapshot*                               
+ [89] print.findLineNumResult*                          
+ [90] print.formula*                                    
+ [91] print.fseq*                                       
+ [92] print.ftable*                                     
+ [93] print.function                                    
+ [94] print.getAnywhere*                                
+ [95] print.glm*                                        
+ [96] print.hclust*                                     
+ [97] print.help_files_with_topic*                      
+ [98] print.hexmode                                     
+ [99] print.HoltWinters*                                
+[100] print.hsearch*                                    
+[101] print.hsearch_db*                                 
+[102] print.htest*                                      
+[103] print.infl*                                       
+[104] print.inspect*                                    
+[105] print.inspect_NILSXP*                             
+[106] print.integrate*                                  
+[107] print.isoreg*                                     
+[108] print.json*                                       
+[109] print.kmeans*                                     
+[110] print.Latex*                                      
+[111] print.LaTeX*                                      
+[112] print.libraryIQR                                  
+[113] print.listof                                      
+[114] print.lm*                                         
+[115] print.loadings*                                   
+[116] print.loess*                                      
+[117] print.logLik*                                     
+[118] print.ls_str*                                     
+[119] print.medpolish*                                  
+[120] print.MethodsFunction*                            
+[121] print.mtable*                                     
+[122] print.NativeRoutineList                           
+[123] print.news_db*                                    
+[124] print.nls*                                        
+[125] print.noquote                                     
+[126] print.numeric_version                             
+[127] print.object_size*                                
+[128] print.octmode                                     
+[129] print.packageDescription*                         
+[130] print.packageInfo                                 
+[131] print.packageIQR*                                 
+[132] print.packageStatus*                              
+[133] print.pairwise.htest*                             
+[134] print.PDF_Array*                                  
+[135] print.PDF_Dictionary*                             
+[136] print.pdf_doc*                                    
+[137] print.pdf_fonts*                                  
+[138] print.PDF_Indirect_Reference*                     
+[139] print.pdf_info*                                   
+[140] print.PDF_Keyword*                                
+[141] print.PDF_Name*                                   
+[142] print.PDF_Stream*                                 
+[143] print.PDF_String*                                 
+[144] print.person*                                     
+[145] print.POSIXct                                     
+[146] print.POSIXlt                                     
+[147] print.power.htest*                                
+[148] print.ppr*                                        
+[149] print.prcomp*                                     
+[150] print.princomp*                                   
+[151] print.proc_time                                   
+[152] print.R6*                                         
+[153] print.R6ClassGenerator*                           
+[154] print.raster*                                     
+[155] print.Rcpp_stack_trace*                           
+[156] print.Rd*                                         
+[157] print.recordedplot*                               
+[158] print.restart                                     
+[159] print.RGBcolorConverter*                          
+[160] print.rle                                         
+[161] print.roman*                                      
+[162] print.scalar*                                     
+[163] print.sessionInfo*                                
+[164] print.simple.list                                 
+[165] print.smooth.spline*                              
+[166] print.socket*                                     
+[167] print.srcfile                                     
+[168] print.srcref                                      
+[169] print.stepfun*                                    
+[170] print.stl*                                        
+[171] print.StructTS*                                   
+[172] print.subdir_tests*                               
+[173] print.summarize_CRAN_check_status*                
+[174] print.summary.aov*                                
+[175] print.summary.aovlist*                            
+[176] print.summary.ecdf*                               
+[177] print.summary.glm*                                
+[178] print.summary.lm*                                 
+[179] print.summary.loess*                              
+[180] print.summary.manova*                             
+[181] print.summary.nls*                                
+[182] print.summary.packageStatus*                      
+[183] print.summary.ppr*                                
+[184] print.summary.prcomp*                             
+[185] print.summary.princomp*                           
+[186] print.summary.table                               
+[187] print.summaryDefault                              
+[188] print.table                                       
+[189] print.tables_aov*                                 
+[190] print.terms*                                      
+[191] print.ts*                                         
+[192] print.tskernel*                                   
+[193] print.TukeyHSD*                                   
+[194] print.tukeyline*                                  
+[195] print.tukeysmooth*                                
+[196] print.undoc*                                      
+[197] print.vignette                                    
+[198] print.warnings                                    
+[199] print.xgettext*                                   
+[200] print.xngettext*                                  
+[201] print.xtabs*                                      
+see '?methods' for accessing help and source code
+</code></pre>
+</div>
+
+<h3 id="26-s3-and-primitive-functions">2.6. S3 and Primitive Functions</h3>
+
+<p>Functions that needs faster performance are usually written in C codes. However, C codes takes longer to write and harder to debug.</p>
+
+<p>Functions written in <strong>C</strong> codes are called <strong>Primitive Functions</strong>. Check primitive generics using <strong>.S3PrimitiveGenerics</strong> to show all the primitive S3 functions.</p>
+
+<p>The primitive generic functions behave differently than the normal generic functions, in that:</p>
+
+<ul>
+  <li>Primitive functions will remain functional on a new class if the underlying C codes can find applicable codes to analyze the new class</li>
+</ul>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create data.frame hair
+</span><span class="n">hair</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"black"</span><span class="p">,</span><span class="s2">"brown"</span><span class="p">,</span><span class="s2">"blonde"</span><span class="p">,</span><span class="s2">"ginger"</span><span class="p">,</span><span class="s2">"grey"</span><span class="p">),</span><span class="w">
+                   </span><span class="n">styles</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"afro"</span><span class="p">,</span><span class="s2">"beehive"</span><span class="p">,</span><span class="s2">"crew cut"</span><span class="p">,</span><span class="s2">"mohawk"</span><span class="p">,</span><span class="s2">"mullet"</span><span class="p">))</span><span class="w">
+</span><span class="nf">class</span><span class="p">(</span><span class="n">hair</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"hairstylist"</span><span class="w">
+</span><span class="c1"># View the structure of hair
+</span><span class="n">str</span><span class="p">(</span><span class="n">hair</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># What primitive generics are available?
+</span><span class="n">print</span><span class="p">(</span><span class="n">.S3PrimitiveGenerics</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Does length.hairstylist exist?
+</span><span class="n">exists</span><span class="p">(</span><span class="s1">'length.hairstylist'</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># What is the length of hair?
+</span><span class="nf">length</span><span class="p">(</span><span class="n">hair</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>List of 2
+ $ color : chr [1:5] "black" "brown" "blonde" "ginger" ...
+ $ styles: chr [1:5] "afro" "beehive" "crew cut" "mohawk" ...
+ - attr(*, "class")= chr "hairstylist"
+ [1] "anyNA"          "as.character"   "as.complex"     "as.double"     
+ [5] "as.environment" "as.integer"     "as.logical"     "as.numeric"    
+ [9] "as.raw"         "c"              "dim"            "dim&lt;-"         
+[13] "dimnames"       "dimnames&lt;-"     "is.array"       "is.finite"     
+[17] "is.infinite"    "is.matrix"      "is.na"          "is.nan"        
+[21] "is.numeric"     "length"         "length&lt;-"       "levels&lt;-"      
+[25] "names"          "names&lt;-"        "rep"            "seq.int"       
+[29] "xtfrm"         
+</code></pre>
+</div>
+
+<p>FALSE</p>
+
+<p>2</p>
+
+<p><em>length()</em> is a primitive function, which is why it will not throw an error even when there is no method for class <em>“hairstylist”</em>.</p>
+
+<h3 id="27-assigning-more-than-one-class-to-an-object">2.7. Assigning more than one class to an object</h3>
+
+<p>Use a list and the <em>class()</em> function to assign more than one “class” to an object. The <strong>more specific class</strong> should always come before <strong>more generic class</strong>. It’s good practice to keep the original class as the <strong>final class</strong>.</p>
+
+<p>When there’s a specific function to check an object’s class, use it. If the class is newly created, use <strong>inherits(object_name, “class_name”)</strong> to check if an object is of certain class.</p>
+
+<p><strong>How to chain the methods if an object have more than one applicable class?</strong>
+Use <strong>NextMethod()</strong> when defining the functions, so that the method will automatically go over all existing classes an object can have.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">kitty</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Miaow!"</span><span class="p">)</span><span class="w">
+
+</span><span class="nf">class</span><span class="p">(</span><span class="n">kitty</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"cat"</span><span class="p">,</span><span class="s2">"mammal"</span><span class="p">,</span><span class="s2">"character"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">kitty</span><span class="p">,</span><span class="w"> </span><span class="s2">"cat"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">kitty</span><span class="p">,</span><span class="w"> </span><span class="s2">"mammal"</span><span class="p">)</span><span class="w">
+</span><span class="c1"># For existing class, both inherits and is.class()
+# functions work.
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">kitty</span><span class="p">,</span><span class="w"> </span><span class="s2">"character"</span><span class="p">)</span><span class="w">
+</span><span class="nf">is.character</span><span class="p">(</span><span class="n">kitty</span><span class="p">)</span><span class="w">
+
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">kitty</span><span class="p">,</span><span class="w"> </span><span class="s2">"dog"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>FALSE</p>
+
+<p>When objects have <em>multiple</em> classes, you may wish to call methods for several of these classes. This is done using <strong>NextMethod()</strong>.</p>
+
+<p>The S3 methods now take the form:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>an_s3_method.some_class &lt;- function(x, ...){
+  #Act on some_class, then
+  NextMethod("an_s3_method")
+}
+</code></pre>
+</div>
+<p>That is, <strong>NextMethod()</strong> should be the last line of the method.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Define a generic function what_am_i( )
+</span><span class="n">what_am_i</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+    </span><span class="nf">UseMethod</span><span class="p">(</span><span class="s2">"what_am_i"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c1"># Define a cat method for function what_am_i
+</span><span class="n">what_am_i.cat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+    </span><span class="n">message</span><span class="p">(</span><span class="s2">"I'm a cat"</span><span class="p">)</span><span class="w">
+    </span><span class="n">NextMethod</span><span class="p">(</span><span class="s2">"what_am_i"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c1"># Define a mammal method for function what_am_i
+</span><span class="n">what_am_i.mammal</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+    </span><span class="n">message</span><span class="p">(</span><span class="s2">"I'm a mammal"</span><span class="p">)</span><span class="w">
+    </span><span class="n">NextMethod</span><span class="p">(</span><span class="s2">"what_am_i"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c1"># Define a character method for what_am_i
+</span><span class="n">what_am_i.character</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">){</span><span class="w">
+    </span><span class="n">message</span><span class="p">(</span><span class="s2">"I'm a character vector"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">what_am_i</span><span class="p">(</span><span class="n">kitty</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>I'm a cat
+I'm a mammal
+I'm a character vector
+</code></pre>
+</div>
+
+<h2 id="3-r6-how-to">3. R6 How-to</h2>
+
+<p>R6 enables the storage of data and object within one variable. We will use R6 following two steps as below:</p>
+
+<ul>
+  <li><strong>Step 1</strong>: Use R6Class( ) to create a <strong>class generator</strong> as templates for objects. <strong>Class generator</strong> is also called <strong>factories</strong>.
+    <ul>
+      <li>Name of the factory should be in <strong>UpperCamelCase</strong></li>
+      <li>Data fields are stored in <strong>private</strong> list</li>
+    </ul>
+  </li>
+  <li><strong>Step 2</strong>: Use factory to create new objects, by calling <strong>new()</strong> method from the factory</li>
+</ul>
+
+<h3 id="31-creating-a-r6-factory-microwave-oven">3.1. Creating a R6 factory (Microwave Oven)</h3>
+
+<p><strong>R6Class( )</strong> function is used to create a <em>factory</em> for a class:</p>
+
+<ul>
+  <li>The first argument to R6Class() is the name of the class of the objects that are created, written in UpperCamelCase</li>
+  <li>Another argument is called <strong>private</strong> and holds the data fields of the object as <strong>a list</strong>, with names for each of its elements
+    <div class="highlighter-rouge"><pre class="highlight"><code>thing_factory &lt;- R6Class("Thing",
+private = list(
+  ..a_field = "a value",
+  ..another_field = 123
+)
+)
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Load R6 package for the programming
+</span><span class="n">library</span><span class="p">(</span><span class="n">R</span><span class="m">6</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Define microwave_oven_factory
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+  </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+  </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="32-making-objects-microwave-ovens">3.2. Making Objects (Microwave Ovens)</h3>
+
+<p>To make an object, you create a factory, then call its <em>new()</em> method. Note that you don’t need to define this method; <em>all factories have a new() method by default</em>.</p>
+
+<p><code class="highlighter-rouge">a_thing &lt;- thing_factory$new()</code></p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="33-hiding-complexity-with-encapsulation-ie-public-list">3.3. Hiding Complexity with Encapsulation (i.e. public list)</h3>
+
+<p><strong>Encapsulation</strong>:</p>
+
+<ul>
+  <li>Seperating the implementation of the object from the user interface</li>
+  <li>All details of the implementation is hiding inside the <em>private</em> element</li>
+  <li>All details of the user interface is stored inside the <em>public</em> element
+    <ul>
+      <li>These details are always functions</li>
+      <li>Use <strong>private<code class="highlighter-rouge">$</code>element</strong> to access private elements</li>
+      <li>use <strong>self<code class="highlighter-rouge">$</code>element</strong> to access public elements</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Code for factories with public elements should be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>thing_factory &lt;- R6Class(
+  "Thing",
+  private = list(
+    ..a_field = "a value",
+    ..another_field = 123
+  ),
+  public = list(
+    do_something = function(x, y, z) {
+      # Do something here
+    }
+  )
+)
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Add a cook method to the factory definition
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+  </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="w">
+  </span><span class="p">),</span><span class="w">
+  </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+  </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+    </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+    </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Create microwave oven object
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Call cook method for 1 second
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1] "Your food is cooked!"
+</code></pre>
+</div>
+
+<p>To access elements stored in <em>private</em> list, use <code class="highlighter-rouge">private$element_name</code>.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Add another open_door method to the factory
+# definition by working on door_is_open element
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+  </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+    </span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+  </span><span class="p">),</span><span class="w">
+  </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+  </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+    </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+    </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)},</span><span class="w">
+    </span><span class="n">open_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">},</span><span class="w">
+    </span><span class="n">close_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">}</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>One <strong>special public method</strong> for factories is called <code class="highlighter-rouge">initialize()</code>, which runs automatically whenever a <code class="highlighter-rouge">.new()</code> method is used for the factory. The pattern for an initialize() function should be:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>--snip--
+public = list(
+    initialize = function(a_field, another_field) {
+      if(!missing(a_field)) {
+        private$..a_field &lt;- a_field
+      }
+      if(!missing(another_field)) {
+        private$..another_field &lt;- another_field
+      }
+    }
+  )
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Add an initialize method
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+  </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+    </span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+  </span><span class="p">),</span><span class="w">
+  </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+      </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="n">open_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="n">close_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="c1"># Add initialize() method here
+</span><span class="w">    </span><span class="n">initialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="p">,</span><span class="w"> </span><span class="n">door_is_open</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="p">))</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">power_rating_watts</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">door_is_open</span><span class="p">))</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">door_is_open</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Make a microwave
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">(</span><span class="w">
+  </span><span class="n">power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">650</span><span class="p">,</span><span class="w">
+  </span><span class="n">door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="34-getting-and-setting-read-and-write-with-active-bindings">3.4. Getting and setting (read and write) with Active Bindings</h3>
+
+<p>The <em>active</em> element list is to allow controlled access to the objects by users on elements in other lists.</p>
+
+<ul>
+  <li>For read-only access, copy the value stored in private list with a condition for missing values:</li>
+  <li>For read-write access, give a “value” argument in the method and tells the function to give the value (if defined) to the element</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>--snip--
+active = list(
+    a_field = function(){
+    # read-only access
+        private$..a_field
+    },
+    another_field = function(value){
+    # read-write access
+        if(missing(value)){
+            private$..another_field
+        } else {
+        check_condition_function(value)
+        private$..another_field &lt;- value
+        }
+    }
+)
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">devtools</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">assertive.numbers</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">assertive</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Attaching package: ‘assertive’
+
+The following objects are masked from ‘package:pryr’:
+
+    is_s3_generic, is_s3_method
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Add a binding for power rating
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+  </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+  </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+    </span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="w">
+  </span><span class="p">),</span><span class="w">
+  </span><span class="c1"># Add active list containing an active binding
+</span><span class="w">  </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w">
+      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">assert_is_a_number</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="c1"># function from "assertive" package
+</span><span class="w">        </span><span class="n">assert_all_are_in_closed_range</span><span class="p">(</span><span class="w">  </span><span class="c1"># function from "assertive.numbers" package
+</span><span class="w">          </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">lower</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w">
+        </span><span class="p">)</span><span class="w">
+        </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Make a microwave
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Get the power level
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="w">
+
+</span><span class="c1"># Try to set the power level to "400"
+# a_microwave_oven$power_level_watts &lt;- "400"
+</span><span class="w">
+</span><span class="c1"># Try to set the power level to 1600 watts
+# a_microwave_oven$power_level_watts &lt;- 1600
+</span><span class="w">
+</span><span class="c1"># Set the power level to 400 watts
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">400</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>800</p>
+
+<h3 id="35-propagating-copying-functionality-with-inheritance">3.5. Propagating (Copying) functionality with Inheritance</h3>
+
+<p>To enable automated connection between different layers of settings for classes, factories should be able to inherit functionality from “parent class”. Defining a “child class” using <code class="highlighter-rouge">inherit</code> argument to R6Class().</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>child_class_factory &lt;- R6Class(
+    "ChildClass",
+    inherit = parent_class_factory,
+    # Any additional elements for the child class
+)
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># First we define a parent class MicrowaveOven
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+             </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+             </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">open_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">close_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">initialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="o">=</span><span class="m">800</span><span class="p">,</span><span class="w"> </span><span class="n">door_is_open</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">power_rating_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">door_is_open</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">door_is_open</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">assert_is_a_number</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Create a child class FancyMicrowaveOven that inherits from MicrowaveOven
+</span><span class="n">fancy_microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">inherit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">microwave_oven_factory</span><span class="w">
+</span><span class="n">fancy_microwave_oven_factory</span><span class="w">
+
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+</span><span class="n">a_fancy_microwave</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fancy_microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;MicrowaveOven&gt; object generator
+  Public:
+    cook: function (time_seconds)
+    open_door: function ()
+    close_door: function ()
+    initialize: function (power_rating_watts = 800, door_is_open = TRUE)
+    clone: function (deep = FALSE)
+  Active bindings:
+    power_rating_watts: function ()
+    power_level_watts: function (value)
+  Private:
+    ..power_rating_watts: 800
+    ..power_level_watts: 800
+    ..door_is_open: FALSE
+  Parent env: &lt;environment: R_GlobalEnv&gt;
+  Locked objects: TRUE
+  Locked class: FALSE
+  Portable: TRUE
+
+
+
+&lt;FancyMicrowaveOven&gt; object generator
+  Inherits from: &lt;microwave_oven_factory&gt;
+  Public:
+    clone: function (deep = FALSE)
+  Parent env: &lt;environment: R_GlobalEnv&gt;
+  Locked objects: TRUE
+  Locked class: FALSE
+  Portable: TRUE
+</code></pre>
+</div>
+
+<p>Using <strong><code class="highlighter-rouge">inherits(object_name, class_name)</code></strong> will determine if an object inherits a class.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="n">inherits</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="p">,</span><span class="w"> </span><span class="s2">"MicrowaveOven"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="p">,</span><span class="w"> </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">a_fancy_microwave</span><span class="p">,</span><span class="w"> </span><span class="s2">"MicrowaveOven"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">a_fancy_microwave</span><span class="p">,</span><span class="w"> </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">a_fancy_microwave</span><span class="p">,</span><span class="w"> </span><span class="s2">"R6"</span><span class="p">)</span><span class="w">
+</span><span class="n">inherits</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="p">,</span><span class="w"> </span><span class="s2">"R6"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>TRUE</p>
+
+<p>FALSE</p>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>Objects of parent and child class behave the same when using the shared methods on either class.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Get power rating for each microwave
+</span><span class="n">microwave_power_rating</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_rating_watts</span><span class="w">
+</span><span class="n">fancy_microwave_power_rating</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_fancy_microwave</span><span class="o">$</span><span class="n">power_rating_watts</span><span class="w">
+
+</span><span class="c1"># Verify that these are the same
+</span><span class="n">identical</span><span class="p">(</span><span class="n">microwave_power_rating</span><span class="p">,</span><span class="w"> </span><span class="n">fancy_microwave_power_rating</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Cook with each microwave
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">a_fancy_microwave</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>TRUE</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1] "Your food is cooked!"
+[1] "Your food is cooked!"
+</code></pre>
+</div>
+
+<h3 id="36-embrace-extend-override">3.6. Embrace, extend, override</h3>
+<p>For <em>child classes</em>:</p>
+
+<p><strong>Override</strong>: change the functionality of certain functions</p>
+
+<p><strong>Extend</strong>: add brand-new functionalities to the class with <em>different function names</em></p>
+
+<p>Child classes can access <strong>public fields in the parent class</strong> by using <strong><code class="highlighter-rouge">public$field_name</code></strong> syntax</p>
+
+<h4 id="sample-to-extend-functionality-in-child-class">Sample to Extend Functionality in Child Class:</h4>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Redefine the FancyMicrowaveOven factory with extended functionality
+</span><span class="n">fancy_microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">inherit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Add more functionalities to public field
+</span><span class="w">    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">cook_baked_potato</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+        </span><span class="n">self</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Instantiate a FancyMicrowaveOven object
+</span><span class="n">a_fancy_microwave</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fancy_microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Call the extended cook_baked_potato() function
+</span><span class="n">a_fancy_microwave</span><span class="o">$</span><span class="n">cook_baked_potato</span><span class="p">()</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1] "Your food is cooked!"
+</code></pre>
+</div>
+
+<h4 id="sample-to-override-functionality-in-child-class">Sample to Override Functionality in Child Class:</h4>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Redefine the FancyMicrowaveOven factory by overriding functionality
+</span><span class="n">fancy_microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">inherit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Add more functionalities to public field
+</span><span class="w">    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">cook_baked_potato</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">self</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+            </span><span class="n">super</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+            </span><span class="c1"># Access function
+</span><span class="w">            </span><span class="n">message</span><span class="p">(</span><span class="s2">"Enjoy your dinner!"</span><span class="p">)</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Instantiate a FancyMicrowaveOven object
+</span><span class="n">a_fancy_microwave</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fancy_microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Call the extended cook_baked_potato() function
+</span><span class="n">a_fancy_microwave</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[1] "Your food is cooked!"
+
+
+Enjoy your dinner!
+</code></pre>
+</div>
+
+<h3 id="37-multiple-levels-of-inheritance">3.7. Multiple levels of inheritance</h3>
+
+<p>In a scenario where more than one level of inheritance happens, each child level can only use <code class="highlighter-rouge">super$</code> to access the <strong>direct parent</strong> of itself. Multiple <code class="highlighter-rouge">super$</code> access is not allowed.</p>
+
+<p>To work around this limitation, the <strong>intermediate classes</strong> should expose their parents through <strong>active binding</strong>, using name <code class="highlighter-rouge">super_</code> and should simply return <code class="highlighter-rouge">super</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>--snip--
+active = list(
+  super_ = function() super
+)
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Adjust the fancy_microwave_oven_factory to expose parent functionality
+</span><span class="n">fancy_microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"FancyMicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">inherit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># Add more functionalities to public field
+</span><span class="w">    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">cook_baked_potato</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">self</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+            </span><span class="n">super</span><span class="o">$</span><span class="n">cook</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+            </span><span class="c1"># Access function
+</span><span class="w">            </span><span class="n">message</span><span class="p">(</span><span class="s2">"Enjoy your dinner!"</span><span class="p">)</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+    </span><span class="n">super_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="n">super</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Instantiate a fancy microwave object
+</span><span class="n">a_fancy_microwave</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fancy_microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Call the fancy microwave's super_ binding
+</span><span class="n">a_fancy_microwave</span><span class="o">$</span><span class="n">super_</span><span class="w">
+
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;environment: 0x35572e8&gt;
+</code></pre>
+</div>
+
+<p>Once intermediate classes have exposed their parent functionality with <em>super_</em> active bindings, you can access methods across several generations of R6 class. The syntax is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>parent_method &lt;- super$method()
+grand_parent_method &lt;- super$super_$method()
+great_grand_parent_method &lt;- super$super_$super_$method()
+</code></pre>
+</div>
+
+<h3 id="38-use-environments-env-to-share-variables">3.8. Use environments (env) to share variables</h3>
+
+<p>The <em>environment</em> variable type is similar to a <em>list</em> in that it can contain other variables.</p>
+
+<p>You can create a new environment using <code class="highlighter-rouge">new.env()</code>. <strong>However, one needs to create an empty <em>env</em> before adding variables into it</strong>.</p>
+
+<p>Variables can be added to the environment using the same syntax as for lists, that is, you can use the <code class="highlighter-rouge">$</code> and <code class="highlighter-rouge">[[</code> operators.</p>
+
+<p>One can check the contents of an <code class="highlighter-rouge">env</code> object by using <code class="highlighter-rouge">ls.str()</code> function.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Define a new environment
+</span><span class="n">env</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">new.env</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Add an element named perfect
+</span><span class="n">env</span><span class="o">$</span><span class="n">perfect</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="m">496</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Add an element named bases
+</span><span class="n">env</span><span class="p">[[</span><span class="s1">'bases'</span><span class="p">]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'C'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Show the contents of env
+</span><span class="n">ls.str</span><span class="p">(</span><span class="n">env</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bases :  chr [1:4] "A" "C" "G" "T"
+perfect :  num [1:3] 6 28 496
+</code></pre>
+</div>
+
+<p><strong>Change by value vs. Change by reference</strong>:</p>
+
+<p>Most types of R variable use “copy by value”, meaning that when you take a copy of them, the new variable has its own copy of the values. In this case, <em>changing one variable does not affect the other</em>.</p>
+
+<p>Environments use a different system, known as “copy by reference”, so that <em>all copies are identical; changing one copy changes all the copies</em>.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Assign lst and env
+</span><span class="n">lst</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+  </span><span class="n">perfect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">28</span><span class="p">,</span><span class="w"> </span><span class="m">496</span><span class="p">),</span><span class="w">
+  </span><span class="n">bases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span><span class="w"> </span><span class="s2">"C"</span><span class="p">,</span><span class="w"> </span><span class="s2">"G"</span><span class="p">,</span><span class="w"> </span><span class="s2">"T"</span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">env</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">list2env</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Copy lst
+</span><span class="n">lst2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lst</span><span class="w">
+
+</span><span class="c1"># Change lst's bases element
+</span><span class="n">lst</span><span class="o">$</span><span class="n">bases</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'C'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">,</span><span class="s1">'U'</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Test lst and lst2 identical
+</span><span class="n">identical</span><span class="p">(</span><span class="n">lst</span><span class="o">$</span><span class="n">bases</span><span class="p">,</span><span class="w"> </span><span class="n">lst2</span><span class="o">$</span><span class="n">bases</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Copy env
+</span><span class="n">env2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">env</span><span class="w">
+
+</span><span class="c1"># Change env's bases element
+</span><span class="n">env2</span><span class="o">$</span><span class="n">bases</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'C'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">,</span><span class="s1">'U'</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Test env and env2 identical
+</span><span class="n">identical</span><span class="p">(</span><span class="n">env</span><span class="o">$</span><span class="n">bases</span><span class="p">,</span><span class="w"> </span><span class="n">env2</span><span class="o">$</span><span class="n">bases</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>FALSE</p>
+
+<p>TRUE</p>
+
+<p>R6 classes can use environments’ copy by reference behavior to <strong>share fields between objects</strong>. To set this up, define a private field named shared. This field takes several lines to define. It should:</p>
+
+<ul>
+  <li>Create a new environment.</li>
+  <li>Assign any shared fields to that environment.</li>
+  <li>Return the environment.</li>
+</ul>
+
+<p>The shared fields should be accessed via <strong>active bindings</strong>. These work in the same way as other active bindings that you have seen, but retrieve the fields using a <code class="highlighter-rouge">private$shared$</code> prefix.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>R6Class(
+  "Thing",
+  private = list(
+    shared = {
+      e &lt;- new.env()
+      e$a_shared_field &lt;- 123
+      e
+    }
+  ),
+  active = list(
+    a_shared_field = function(value) {
+      if(missing(value)) {
+        private$shared$a_shared_field
+      } else {
+        private$shared$a_shared_field &lt;- value
+      }
+    }
+  )
+)
+</code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Update MicrowaveOven class to include env elements
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+        </span><span class="n">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">new.env</span><span class="p">()</span><span class="w">
+            </span><span class="n">e</span><span class="o">$</span><span class="n">safety_warning</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Warning. Do not try to cook metal objects."</span><span class="w">
+            </span><span class="n">e</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+             </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+             </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">open_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">close_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">initialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="o">=</span><span class="m">800</span><span class="p">,</span><span class="w"> </span><span class="n">door_is_open</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">power_rating_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">door_is_open</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">door_is_open</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">assert_is_a_number</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">safety_warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">shared</span><span class="o">$</span><span class="n">safety_warning</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">shared</span><span class="o">$</span><span class="n">safety_warning</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Instantiate two different MicrowaveOven
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+</span><span class="n">another_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Change the env element in one
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">safety_warning</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Warning. If the food is too hot you may scald yourself."</span><span class="w">
+
+</span><span class="c1"># Check the env element in the other object
+</span><span class="n">another_microwave_oven</span><span class="o">$</span><span class="n">safety_warning</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>‘Warning. If the food is too hot you may scald yourself.’</p>
+
+<h3 id="39-copy-or-clone-r6objects">3.9. Copy or clone R6Objects</h3>
+
+<p>R6Ojects follow the same rule for <strong>copy by reference</strong>. When assigned using <code class="highlighter-rouge">a_reference_copy &lt;- an_r6_object</code>, the <code class="highlighter-rouge">a_reference_copy</code> will remain exactly the same with the <code class="highlighter-rouge">an_r6_object</code>.</p>
+
+<p>Instead, to <strong>copy by value</strong>, use <code class="highlighter-rouge">a_value &lt;- an_r6_object$clone()</code> to copy the values of an object.</p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a microwave oven
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Copy a_microwave_oven using &lt;-
+</span><span class="n">assigned_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_microwave_oven</span><span class="w">
+
+</span><span class="c1"># Copy a_microwave_oven using clone()
+</span><span class="n">cloned_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">clone</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Change a_microwave_oven's power level  
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">400</span><span class="w">
+
+</span><span class="c1"># Check a_microwave_oven &amp; assigned_microwave_oven same
+</span><span class="n">identical</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="p">,</span><span class="w">
+         </span><span class="n">assigned_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Check a_microwave_oven &amp; cloned_microwave_oven different
+</span><span class="o">!</span><span class="n">identical</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="p">,</span><span class="w">
+           </span><span class="n">cloned_microwave_oven</span><span class="o">$</span><span class="n">power_level_watts</span><span class="p">)</span><span class="w">  
+</span></code></pre>
+</div>
+
+<p>TRUE</p>
+
+<p>TRUE</p>
+
+<p>A <strong>container</strong> object is a class that also contains anther class. This is realized by using <code class="highlighter-rouge">thing_factory$new()</code> to create another object as a variable in the container.</p>
+
+<p>When cloning (coping by object) an container object, <code class="highlighter-rouge">container_object$clone()</code> will only <strong>copy by value</strong> on the container, but keep the “thing” as a <strong>shared object</strong>. To copy by value both the container and the included objects, use <code class="highlighter-rouge">a_deep_copy &lt;- an_r6_object$clone(deep = TRUE)</code></p>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a power_plug_factory for PowerPlug class
+</span><span class="n">power_plug_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"PowerPlug"</span><span class="p">,</span><span class="w">
+    </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">..type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"American"</span><span class="p">,</span><span class="w">
+        </span><span class="n">..plug_in_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">plug_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..plug_in_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">unplug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..plug_in_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">add_adapter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">type</span><span class="p">){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">type</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">initialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">plug_in_status</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="s2">"American"</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">plug_in_status</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..plug_in_status</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">plug_in_status</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">type</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..type</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">type</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">plug_in_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..plug_in_status</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..type</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..type</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Update the MicrowaveOven to include PowerPlug object
+</span><span class="n">microwave_oven_factory</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">R</span><span class="m">6</span><span class="n">Class</span><span class="p">(</span><span class="w">
+    </span><span class="s2">"MicrowaveOven"</span><span class="p">,</span><span class="w">
+    </span><span class="n">private</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">800</span><span class="p">,</span><span class="w">
+        </span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+        </span><span class="n">..power_plug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">power_plug_factory</span><span class="o">$</span><span class="n">new</span><span class="p">(),</span><span class="w">
+        </span><span class="n">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">new.env</span><span class="p">()</span><span class="w">
+            </span><span class="n">e</span><span class="o">$</span><span class="n">safety_warning</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Warning. Do not try to cook metal objects."</span><span class="w">
+            </span><span class="n">e</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">cook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">){</span><span class="w">
+             </span><span class="n">Sys.sleep</span><span class="p">(</span><span class="n">time_seconds</span><span class="p">)</span><span class="w">
+             </span><span class="n">print</span><span class="p">(</span><span class="s2">"Your food is cooked!"</span><span class="p">)</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">open_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">close_door</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">initialize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="o">=</span><span class="m">800</span><span class="p">,</span><span class="w"> </span><span class="n">door_is_open</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">power_rating_watts</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">power_rating_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">missing</span><span class="p">(</span><span class="n">door_is_open</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..door_is_open</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">door_is_open</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w">
+        </span><span class="n">power_rating_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..power_rating_watts</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_level_watts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">assert_is_a_number</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_level_watts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">safety_warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">shared</span><span class="o">$</span><span class="n">safety_warning</span><span class="w">
+            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">shared</span><span class="o">$</span><span class="n">safety_warning</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_plug_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..power_plug</span><span class="o">$</span><span class="n">plug_in_status</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_plug_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">value</span><span class="p">){</span><span class="w">
+            </span><span class="k">if</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">value</span><span class="p">)){</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_plug</span><span class="o">$</span><span class="n">type</span><span class="w">
+                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="n">assert_is_a_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w">
+                </span><span class="n">private</span><span class="o">$</span><span class="n">..power_plug</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">value</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="n">power_plug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(){</span><span class="w">
+            </span><span class="n">private</span><span class="o">$</span><span class="n">..power_plug</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-R highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a microwave oven
+</span><span class="n">a_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">microwave_oven_factory</span><span class="o">$</span><span class="n">new</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Look at its power plug
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_plug_type</span><span class="w">
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_plug</span><span class="w">
+</span><span class="c1"># Copy a_microwave_oven using clone(), no args
+</span><span class="n">cloned_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">clone</span><span class="p">()</span><span class="w">
+
+</span><span class="c1"># Copy a_microwave_oven using clone(), deep = TRUE
+</span><span class="n">deep_cloned_microwave_oven</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">clone</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Change a_microwave_oven's power plug type  
+</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_plug_type</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"British"</span><span class="w">
+
+
+</span><span class="c1"># Check a_microwave_oven &amp; cloned_microwave_oven same
+</span><span class="n">identical</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_plug</span><span class="o">$</span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">cloned_microwave_oven</span><span class="o">$</span><span class="n">power_plug</span><span class="o">$</span><span class="n">type</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Check a_microwave_oven &amp; deep_cloned_microwave_oven different
+</span><span class="o">!</span><span class="n">identical</span><span class="p">(</span><span class="n">a_microwave_oven</span><span class="o">$</span><span class="n">power_plug</span><span class="o">$</span><span class="n">type</span><span class="p">,</span><span class="w">
+</span><span class="n">deep_cloned_microwave_oven</span><span class="o">$</span><span class="n">power_plug</span><span class="o">$</span><span class="n">type</span><span class="p">)</span><span class="w">  
+</span></code></pre>
+</div>
+
+<p>‘British’</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;PowerPlug&gt;
+  Public:
+    add_adapter: function (type)
+    clone: function (deep = FALSE)
+    initialize: function (plug_in_status = FALSE, type = "American")
+    plug_in: function ()
+    plug_in_status: active binding
+    type: active binding
+    unplug: function ()
+  Private:
+    ..plug_in_status: FALSE
+    ..type: British
+</code></pre>
+</div>
+
+<p>TRUE</p>
+
+<p>FALSE</p>
+
+<h3 id="310-finalize-clean-up-r6-objects">3.10. Finalize (Clean up) R6 Objects</h3>
+
+<p>Just as an R6 class can define a public <strong><code class="highlighter-rouge">initialize()</code></strong> method to run custom code when objects are created, they can also define a public <strong><code class="highlighter-rouge">finalize()</code></strong> method to run custom code when objects are destroyed.</p>
+
+<p><code class="highlighter-rouge">finalize()</code> should take no arguments. It is typically used to close connections to databases or files, or undo side-effects such as changing global <code class="highlighter-rouge">options()</code> or graphics <code class="highlighter-rouge">par()</code>ameters.</p>
+
+<p>The template for the code should be as follows.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>thing_factory &lt;- R6Class(
+  "Thing",
+  public = list(
+    initialize = function(x, y, z) {
+      # do something
+    },
+    finalize = function() {
+      # undo something
+    }
+  )
+)
+</code></pre>
+</div>
+
+<p>The finalize() method is called when the object is removed from memory by R’s <strong>automated garbage collector</strong>. You can force a garbage collection by typing <strong><code class="highlighter-rouge">gc()</code></strong>.</p>
+
+  </div>
+</article>
+
+<div class="container mx-auto px-2 py-2 clearfix">
+  <!-- Use if you want to show previous and next for all posts. -->
+
+
+
+  <div class="col-4 sm-width-full left mr-lg-4 mt-3">
+    <a class="no-underline-hover py-1 block" href="http://localhost:4000/2016/12/05/capital-bikeshare-explorative-analysis.html">
+      <span class="h5 bold">Previous</span>
+      <p class="bold h3 link-primary mb-1">Exploratory Data Analytics on Capital Bikeshare Data 2015</p>
+      <p>Project Introduction In the last decade there has been increasing concern regarding the environment and the quality of life, especially...</p>
+    </a>
+  </div>
+  
+  
+  <div class="col-4 sm-width-full left mt-3">
+    <a class="no-underline-hover py-1 block" href="http://localhost:4000/2017/01/15/introduction-to-machine-learning-with-python-chapter-1.html">
+      <span class="h5 bold">Next</span>
+      <p class="bold h3 link-primary mb-1">Introduction to Machine Learning with Python - Chapter 1</p>
+      <p># Essential Tools for Python Machine Learning ## NumPy Arrays ```python %matplotlib inline ``` ```python import numpy as np x...</p>
+    </a>
+  </div>
+
+
+</div>
+
+    </div>
+
+    <div class="container mx-auto clearfix mt-2 mt-lg-4 px-2">
+  <div class="border-top-thick">
+    <p class="col-8 sm-width-full left py-2 mb-0">This project is maintained by <a class="text-accent" href="https://github.com/ElvinOuyang">ElvinOuyang</a></p>
+    <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+      <li class="inline-block mr-1">
+        <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="Elvin Ouyang's Blog">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </li>
+      <li class="inline-block">
+        <a class="github-button" href="https://github.com/ElvinOuyang/elvinouyang.github.io" data-icon="octicon-star" data-count-href="ElvinOuyang//stargazers" data-count-api="/repos/ElvinOuyang/#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star ElvinOuyang/ on GitHub">Star</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+  </body>
+
+</html>
