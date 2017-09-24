@@ -1,0 +1,746 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.3.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>            Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning      Elvin Ouyang’s Blog      </title>
+
+
+
+
+<meta name="description" content="Introduction">
+
+
+
+
+<meta name="author" content="Chuanye (Elvin) Ouyang">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Elvin Ouyang's Blog">
+<meta property="og:title" content="Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning">
+
+
+  <link rel="canonical" href="http://localhost:4000/project/gtd-data-cleaning/">
+  <meta property="og:url" content="http://localhost:4000/project/gtd-data-cleaning/">
+
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/gtd/GTD_photo.png">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-05-30T00:00:00-04:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Elvin Ouyang",
+      "url" : "http://localhost:4000",
+      "sameAs" : ["https://twitter.com/elvinouyang","https://www.linkedin.com/in/ouyangchuanye/"]
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Elvin Ouyang's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://localhost:4000/">Elvin Ouyang's Blog</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/projects/">Projects</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/study-notes/">Study Notes</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/categories/">Category</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/tags/">Tag</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/resources/">Resources</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/sitemap/">Sitemap</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" "
+>
+  
+    <img src="http://localhost:4000/assets/images/gtd/GTD_photo.png" alt="Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning" class="page__hero-image">
+  
+  
+    <span class="page__hero-caption">Photo credit - Global Terrorism Database Website
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://localhost:4000/assets/images/bio-photo.jpeg" class="author__avatar" alt="Chuanye (Elvin) Ouyang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Chuanye (Elvin) Ouyang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        Chuanye (Elvin) Ouyang is a young professional in data science, risk analysis, compliance evaluation, and forensic analytics.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Washington, DC</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/elvinouyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/ouyangchuanye" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/ElvinOuyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="May 30, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <h1 id="introduction">Introduction</h1>
+
+<p>In the coming three posts, I will show my explrative data analytics work on the <a href="https://www.start.umd.edu/gtd/">Global Terrorism Database (GTD)</a>, a database maintained by the <a href="http://www.start.umd.edu/">National Consortium for the Study of Terrorism (START)</a> at the University of Maryland, College Park. I used the <a href="https://www.kaggle.com/START-UMD/gtd">version published on Kaggle</a> in early 2017 for this project, which covers terrorist attacks happened between 1970 and 2015. (This database has been updated in July 2017 to include incidents in 2016.)</p>
+
+<p>From the GTD exlporative analysis, I hoped to gather some insights from the 45 years of data on terrorism and global public safety. More specifically, I intend to answer the following questions:</p>
+
+<ul>
+  <li>Since 1970, how many terrorist attacks have occurred in the United States? How does it look from a global scale?</li>
+  <li>Of those attacks happened in the U.S., what are their attack methods and targets?</li>
+  <li>How did these attacks change over time? Where did these attacks happen and what were their motives?</li>
+</ul>
+
+<p>I selected this dataset, and these questions in particular, because of their relevancy to current debates. I am interested in finding out where are the significant terrorist threats coming from and how have these threats changed over the years. The database relies on materials that are <strong><em>publicly available and unclassified</em></strong>, covering terrorism incidents that happened between 1 January 1970 and 31 December 2015, with more recent incidents not published by START yet. As of now, the database includes over 2,600 terrorist attacks which have occurred in the United States. Additionally, it includes information about the target, perpetrator, and motivations. This makes the dataset ideal for my purposes.</p>
+
+<p>In this post, I will step through the data cleaning and preprocessing techniques with R programming on the GTD database to make it ready for explorative data analysis and visualizations.</p>
+
+<h2 id="load-database-into-r-environment">Load database into R environment</h2>
+
+<p>First, I will load the flat file from the original GTD database into an dataframe object.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Load data
+</span><span class="n">db</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"globalterrorismdb_0616dist.csv"</span><span class="p">,</span><span class="w"> </span><span class="n">na.string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="s2">"NA"</span><span class="p">,</span><span class="w"> </span><span class="s2">" "</span><span class="p">))</span><span class="w">
+</span><span class="nf">class</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>## [1] "data.frame"
+</code></pre>
+</div>
+
+<p>This dataframe object contains 156772 incidents from the year of 1970 to the year of 2015, with 137 variables. There are 2693 incidents that happened in the U.S., while around 2164 cases are surely terrorism incidents. Since our core question is where the terrorism attacks in the US originate from, we will make these cases our primary focus on this project and trim down the incidents and variables accordingly.</p>
+
+<h2 id="clean-up-data-type-and-format-based-on-gtd-code-book">Clean up data type and format based on <a href="https://www.start.umd.edu/gtd/downloads/Codebook.pdf">GTD Code Book</a></h2>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a dataframe for attacks in the US
+</span><span class="n">dt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">iday</span><span class="p">,</span><span class="w"> </span><span class="n">extended</span><span class="p">,</span><span class="w"> </span><span class="n">summary</span><span class="p">,</span><span class="w"> </span><span class="n">doubtterr</span><span class="p">,</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span><span class="w"> </span><span class="n">related</span><span class="p">,</span><span class="w"> </span><span class="n">country_txt</span><span class="p">,</span><span class="w"> </span><span class="n">region_txt</span><span class="p">,</span><span class="w"> </span><span class="n">provstate</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">suicide</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype4_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target1</span><span class="p">,</span><span class="w"> </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">natlty1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target2</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">natlty2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target3</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="n">natlty3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">gname2</span><span class="p">,</span><span class="w"> </span><span class="n">gname3</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain1</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain2</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain3</span><span class="p">,</span><span class="w"> </span><span class="n">nperps</span><span class="p">,</span><span class="w"> </span><span class="n">nperpcap</span><span class="p">,</span><span class="w"> </span><span class="n">claimed</span><span class="p">,</span><span class="w"> </span><span class="n">compclaim</span><span class="p">,</span><span class="w"> </span><span class="n">motive</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">nkillter</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">nwoundte</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="p">,</span><span class="w"> </span><span class="n">propextent</span><span class="p">,</span><span class="w"> </span><span class="n">ishostkid</span><span class="p">,</span><span class="w"> </span><span class="n">nhostkid</span><span class="p">,</span><span class="w"> </span><span class="n">INT_LOG</span><span class="p">,</span><span class="w"> </span><span class="n">INT_IDEO</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MISC</span><span class="p">,</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">doubtterr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">country_txt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"United States"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Create a dataframe with same structure for the world, for reference purpose
+</span><span class="n">dt_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">iday</span><span class="p">,</span><span class="w"> </span><span class="n">extended</span><span class="p">,</span><span class="w"> </span><span class="n">summary</span><span class="p">,</span><span class="w"> </span><span class="n">doubtterr</span><span class="p">,</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span><span class="w"> </span><span class="n">related</span><span class="p">,</span><span class="w"> </span><span class="n">country_txt</span><span class="p">,</span><span class="w"> </span><span class="n">region_txt</span><span class="p">,</span><span class="w"> </span><span class="n">provstate</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">suicide</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype4_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target1</span><span class="p">,</span><span class="w"> </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">natlty1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target2</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">natlty2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">target3</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="n">natlty3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">gname2</span><span class="p">,</span><span class="w"> </span><span class="n">gname3</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain1</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain2</span><span class="p">,</span><span class="w"> </span><span class="n">guncertain3</span><span class="p">,</span><span class="w"> </span><span class="n">nperps</span><span class="p">,</span><span class="w"> </span><span class="n">nperpcap</span><span class="p">,</span><span class="w"> </span><span class="n">claimed</span><span class="p">,</span><span class="w"> </span><span class="n">compclaim</span><span class="p">,</span><span class="w"> </span><span class="n">motive</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">nkillter</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">nwoundte</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="p">,</span><span class="w"> </span><span class="n">propextent</span><span class="p">,</span><span class="w"> </span><span class="n">ishostkid</span><span class="p">,</span><span class="w"> </span><span class="n">nhostkid</span><span class="p">,</span><span class="w"> </span><span class="n">INT_LOG</span><span class="p">,</span><span class="w"> </span><span class="n">INT_IDEO</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MISC</span><span class="p">,</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">doubtterr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="c1"># 217 is the country code for United States
+</span></code></pre>
+</div>
+
+<p>The water-downed version of the database contains 2164 incidents and 55 variables.</p>
+
+<h3 id="check-out-the-variables">Check out the variables</h3>
+
+<p>I selected the most relevant details in the database for my EDA purposes. For each incident, the database includes variables that describe the incidents from nine different aspects:</p>
+
+<table style="width:94%;">
+<colgroup>
+<col width="23%" />
+<col width="23%" />
+<col width="25%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Incident Aspect</th>
+<th>Variable Names</th>
+<th>Incident Aspect</th>
+<th>Variable Names</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GTD ID and Date</td>
+<td>eventid, iyear, imonth, iday, extended</td>
+<td>Target/Victim Information</td>
+<td>target1, targtype1_txt, natlty1_txt, target2, targtype2_txt, natlty2_txt, target3, targtype3_txt, natlty3_txt</td>
+</tr>
+<tr class="even">
+<td>Incident Information</td>
+<td>summary, doubtterr, multiple, related</td>
+<td>Perpetrator Information</td>
+<td>gname, gname2, gname3, guncertain1, guncertain2, guncertain3, nperps, nperpcap, claimed, compclaim</td>
+</tr>
+<tr class="odd">
+<td>Incident Location</td>
+<td>country_txt, region_txt, provstate, latitude, longitude</td>
+<td>Casualties and Consequences</td>
+<td>nkill, nkillter, nwound, nwoundte, property, propextent, ishostkid, nhostkid</td>
+</tr>
+<tr class="even">
+<td>Attack Information</td>
+<td>attacktype1_txt, attacktype2_txt, attacktype3_txt, success, suicide</td>
+<td>Additional Information and Sources</td>
+<td>INT_LOG, INT_IDEO, INT_MISC, INT_ANY</td>
+</tr>
+<tr class="odd">
+<td>Weapon Information</td>
+<td>weaptype1_txt, weaptype2_txt, weaptype3_txt, weaptype4_txt</td>
+</tr>
+</tbody>
+</table>
+
+<p>Please refer to the GTD code book if you are interested to know more about each variable listed here.</p>
+
+<h3 id="double-check-variable-types-and-deal-with-data-quality">Double check variable types and deal with data quality</h3>
+
+<p>My next step is to make sure the data I am using are of consistent format. I will also create a few extra variables to fulfill following steps in data exploration.</p>
+
+<p>After a quick glimpse at the data, I should conduct the following changes to the dataframe:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Change variables with strings back to character vector
+</span><span class="n">dt</span><span class="o">$</span><span class="n">summary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">summary</span><span class="p">)</span><span class="w">
+</span><span class="n">dt</span><span class="o">$</span><span class="n">target1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">target1</span><span class="p">)</span><span class="w">
+</span><span class="n">dt</span><span class="o">$</span><span class="n">target2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">target2</span><span class="p">)</span><span class="w">
+</span><span class="n">dt</span><span class="o">$</span><span class="n">target3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">target3</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Trim factor variables to only have included levels
+</span><span class="n">dt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dmap_if</span><span class="p">(</span><span class="n">is.factor</span><span class="p">,</span><span class="w"> </span><span class="n">fct_drop</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># Recode -9 and -99 as NA in the dataframe
+</span><span class="n">dt</span><span class="p">[</span><span class="n">dt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-9</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-99</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NA</span><span class="w">
+
+</span><span class="c1"># Recode factors "." and "Unknown" into NA in the factors
+</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">dt</span><span class="p">)){</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is.factor</span><span class="p">(</span><span class="n">dt</span><span class="p">[,</span><span class="n">i</span><span class="p">])){</span><span class="w">
+     </span><span class="n">levels</span><span class="p">(</span><span class="n">dt</span><span class="p">[,</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sub</span><span class="p">(</span><span class="s2">"^.$"</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="p">(</span><span class="n">dt</span><span class="p">[,</span><span class="n">i</span><span class="p">]))</span><span class="w">
+     </span><span class="n">levels</span><span class="p">(</span><span class="n">dt</span><span class="p">[,</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sub</span><span class="p">(</span><span class="s2">"Unknown"</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="p">(</span><span class="n">dt</span><span class="p">[,</span><span class="n">i</span><span class="p">]))</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Run the same codes on the world reference dataframe
+# Change variables with strings back to character vector
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">summary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">summary</span><span class="p">)</span><span class="w">
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target1</span><span class="p">)</span><span class="w">
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target2</span><span class="p">)</span><span class="w">
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">target3</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Trim factor variables to only have included levels
+</span><span class="n">dt_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dmap_if</span><span class="p">(</span><span class="n">is.factor</span><span class="p">,</span><span class="w"> </span><span class="n">fct_drop</span><span class="p">)</span><span class="w">
+</span><span class="c1"># Recode -9 and -99 as NA in the dataframe
+</span><span class="n">dt_w</span><span class="p">[</span><span class="n">dt_w</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-9</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">dt_w</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">-99</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">NA</span><span class="w">
+</span><span class="c1"># Recode factors "." and "Unknown" into NA in the factors
+</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">dt_w</span><span class="p">)){</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is.factor</span><span class="p">(</span><span class="n">dt_w</span><span class="p">[,</span><span class="n">i</span><span class="p">])){</span><span class="w">
+     </span><span class="n">levels</span><span class="p">(</span><span class="n">dt_w</span><span class="p">[,</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sub</span><span class="p">(</span><span class="s2">"^.$"</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="p">(</span><span class="n">dt_w</span><span class="p">[,</span><span class="n">i</span><span class="p">]))</span><span class="w">
+     </span><span class="n">levels</span><span class="p">(</span><span class="n">dt_w</span><span class="p">[,</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sub</span><span class="p">(</span><span class="s2">"Unknown"</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="p">(</span><span class="n">dt_w</span><span class="p">[,</span><span class="n">i</span><span class="p">]))</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Now that the data is cleaned and unified, I will generate a <strong>date</strong> feature that combines the <em>iyear, imonth, and iday features</em> in the dateframe for easier usage in date slicing. Since the dataframe has 28 incidents that does not have a clarified day, I will assign 1 to these incidents as an approximation in order to create a complete date object. (This won’t be a problem for my data exploration since I will only be using year and month on such a wide time span.)</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Replace unknown days (0 according to the code book) with 1
+</span><span class="n">dt</span><span class="o">$</span><span class="n">iday</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.integer</span><span class="p">(</span><span class="n">gsub</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">dt</span><span class="o">$</span><span class="n">iday</span><span class="p">))</span><span class="w">
+
+</span><span class="c1"># Create a new variable "idate"
+</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.Date</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">iyear</span><span class="p">,</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">imonth</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">iday</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">)),</span><span class="w"> </span><span class="s2">"%Y%m%d"</span><span class="p">)</span><span class="w">
+</span><span class="c1"># There are 23 incidents where the date object fails to show
+# a closer look finds that these are incidents where iday = 31
+# when the month actually won't have 31 days.
+# We will treat these idays as 30, i.e. end of the month
+</span><span class="n">dt</span><span class="o">$</span><span class="n">iday</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="p">)]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">30</span><span class="w">
+</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.Date</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">iyear</span><span class="p">,</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">imonth</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">iday</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">)),</span><span class="w"> </span><span class="s2">"%Y%m%d"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Repeat Same Step for the World Refernce Dataframe
+# Replace unknown days (0 according to the code book) with 1
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iday</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.integer</span><span class="p">(</span><span class="n">gsub</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">dt_w</span><span class="o">$</span><span class="n">iday</span><span class="p">))</span><span class="w">
+
+</span><span class="c1"># Create a new variable "idate"
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">idate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.Date</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iyear</span><span class="p">,</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">imonth</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iday</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">)),</span><span class="w"> </span><span class="s2">"%Y%m%d"</span><span class="p">)</span><span class="w">
+</span><span class="c1"># There are 23 incidents where the date object fails to show
+# a closer look finds that these are incidents where iday = 31
+# when the month actually won't have 31 days.
+# We will treat these idays as 30, i.e. end of the month
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iday</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">idate</span><span class="p">)]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">30</span><span class="w">
+</span><span class="n">dt_w</span><span class="o">$</span><span class="n">idate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.Date</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iyear</span><span class="p">,</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">imonth</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">),</span><span class="w">
+                       </span><span class="n">stringr</span><span class="o">::</span><span class="n">str_pad</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">dt_w</span><span class="o">$</span><span class="n">iday</span><span class="p">),</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0"</span><span class="p">)),</span><span class="w"> </span><span class="s2">"%Y%m%d"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The polished dataframe should have variables that look like below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1">#Take a quick look at the variables
+</span><span class="n">glimpse</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>## Observations: 2,164
+## Variables: 56
+## $ eventid         &lt;dbl&gt; 197001010002, 197001020003, 197001030001, 1970...
+## $ iyear           &lt;int&gt; 1970, 1970, 1970, 1970, 1970, 1970, 1970, 1970...
+## $ imonth          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+## $ iday            &lt;dbl&gt; 1, 2, 3, 9, 12, 12, 13, 14, 19, 19, 19, 22, 25...
+## $ extended        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ summary         &lt;chr&gt; "1/1/1970: Unknown African American assailants...
+## $ doubtterr       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ multiple        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ related         &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ country_txt     &lt;fctr&gt; United States, United States, United States, ...
+## $ region_txt      &lt;fctr&gt; North America, North America, North America, ...
+## $ provstate       &lt;fctr&gt; Illinois, Wisconsin, Wisconsin, Michigan, New...
+## $ latitude        &lt;dbl&gt; 37.00511, 43.07659, 43.07295, 42.33169, 40.610...
+## $ longitude       &lt;dbl&gt; -89.17627, -89.41249, -89.38669, -83.04792, -7...
+## $ attacktype1_txt &lt;fctr&gt; Armed Assault, Facility/Infrastructure Attack...
+## $ attacktype2_txt &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, Armed...
+## $ attacktype3_txt &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ success         &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1...
+## $ suicide         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ weaptype1_txt   &lt;fctr&gt; Firearms, Incendiary, Incendiary, Incendiary,...
+## $ weaptype2_txt   &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, Firea...
+## $ weaptype3_txt   &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ weaptype4_txt   &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ target1         &lt;chr&gt; "Cairo Police Headquarters", "R.O.T.C. offices...
+## $ targtype1_txt   &lt;fctr&gt; Police, Military, Government (General), Gover...
+## $ natlty1_txt     &lt;fctr&gt; United States, United States, United States, ...
+## $ target2         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ targtype2_txt   &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ natlty2_txt     &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ target3         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ targtype3_txt   &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ natlty3_txt     &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ gname           &lt;fctr&gt; Black Nationalists, New Year's Gang, New Year...
+## $ gname2          &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ gname3          &lt;fctr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
+## $ guncertain1     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0...
+## $ guncertain2     &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ guncertain3     &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ nperps          &lt;int&gt; NA, 1, 1, NA, NA, NA, NA, NA, 3, 2, NA, NA, NA...
+## $ nperpcap        &lt;dbl&gt; NA, 1, 1, NA, NA, NA, NA, NA, NA, 2, NA, NA, N...
+## $ claimed         &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ compclaim       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ motive          &lt;fctr&gt; To protest the Cairo Illinois Police Deparmen...
+## $ nkill           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ nkillter        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ nwound          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0...
+## $ nwoundte        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ property        &lt;int&gt; 1, 1, 1, 1, 1, NA, 1, 1, 1, 0, 1, 1, 1, 1, 0, ...
+## $ propextent      &lt;int&gt; 3, 3, 3, 3, 3, 4, 3, 3, 3, NA, 3, 3, 3, 3, NA,...
+## $ ishostkid       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ nhostkid        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ INT_LOG         &lt;int&gt; NA, 0, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ INT_IDEO        &lt;int&gt; NA, 0, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ INT_MISC        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ INT_ANY         &lt;int&gt; NA, 0, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ idate           &lt;date&gt; 1970-01-01, 1970-01-02, 1970-01-03, 1970-01-0...
+</code></pre>
+</div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#data-quality" class="page__taxonomy-item" rel="tag">Data Quality</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#r-programming" class="page__taxonomy-item" rel="tag">R-programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/categories/#project" class="page__taxonomy-item" rel="tag">Project</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-05-30T00:00:00-04:00">May 30, 2017</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="http://localhost:4000/study%20notes/python-linear-models-for-classification/" class="pagination--pager" title="Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification
+">Previous</a>
+    
+    
+      <a href="http://localhost:4000/project/gtd-data-visualization/" class="pagination--pager" title="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/ElvinOuyang"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Elvin Ouyang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96112090-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'elvinouyang-github-io';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>

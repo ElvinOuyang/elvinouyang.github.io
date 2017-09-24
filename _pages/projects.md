@@ -8,3 +8,4 @@ All of Elvin Ouyang's project work samples in data analytics in one place. As a 
 | Project Name      | Project Description      |
 |-----------|------------------|
 | [Capital Bikeshare Explorative Analysis Using R]({% post_url 2016-12-05-capital-bikeshare-explorative-analysis %})   | An EDA with R on the bikeshare history data|
+| [Global Terrorism Database Explorative Data Analysis Using R]({% post_url 2017-05-30-gtd-data-cleaning %}) | An in-depth EDA with R on the GTD for terror attacks in the U.S. |

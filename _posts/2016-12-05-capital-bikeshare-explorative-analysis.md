@@ -13,9 +13,8 @@ categories:
   - Project
 ---
 ### Project Introduction
-In the last decade there has been increasing concern regarding the environment and the quality of life, especially in big cities. From increasing taxation to financial incentives, different approaches and public policies have been proposed and tested all around the world to address these concerns. In this scenario, shared cars and shared bicycles have became popular solutions in many cities to help mitigate traffic and environmental impact.  How can these programs be set up for success?
 
-Due to the increasing importance and popularity of the **Capital Bikeshare program** in the District of Columbia, this project aims to:
+In the last decade there has been increasing concern regarding the environment and the quality of life, especially in big cities. From increasing taxation to financial incentives, different approaches and public policies have been proposed and tested all around the world to address these concerns. In this scenario, shared cars and shared bicycles have became popular solutions in many cities to help mitigate traffic and environmental impact.  How can these programs be set up for success? Due to the increasing importance and popularity of the **Capital Bikeshare program** in the District of Columbia, this project aims to:
 
 1. Identify the variables that most impact hourly ridership
 2. Develop a model to predict hourly bikeshare demand in the Greater Washington DC region based on historical ridership and weather data for 2015.
@@ -100,4 +99,4 @@ A quick comparison of adverse weather against non-adverse weather shows not much
 
 ![plot of chunk unnamed-chunk-22](/assets/images/capital-bikeshare/unnamed-chunk-22-1.svg)
 
-Again, in the graph shown above here, we observe a bigger differece from Rush Hour than the weather. This seems to be related to the same challenge I was having from the weather variables.
+Again, in the graph shown above here, we observe a bigger difference from Rush Hour than the weather. This seems to be related to the same challenge I was having from the weather variables.

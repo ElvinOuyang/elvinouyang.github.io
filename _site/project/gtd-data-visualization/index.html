@@ -1,0 +1,928 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.3.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>            Global Terrorism Database (1970 - 2015) Descriptive Data Visualization      Elvin Ouyang’s Blog      </title>
+
+
+
+
+<meta name="description" content="This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+
+
+
+
+<meta name="author" content="Chuanye (Elvin) Ouyang">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Elvin Ouyang's Blog">
+<meta property="og:title" content="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization">
+
+
+  <link rel="canonical" href="http://localhost:4000/project/gtd-data-visualization/">
+  <meta property="og:url" content="http://localhost:4000/project/gtd-data-visualization/">
+
+
+
+  <meta property="og:description" content="This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+
+
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/gtd/GTD_photo.png">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-06-09T00:00:00-04:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Elvin Ouyang",
+      "url" : "http://localhost:4000",
+      "sameAs" : ["https://twitter.com/elvinouyang","https://www.linkedin.com/in/ouyangchuanye/"]
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Elvin Ouyang's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://localhost:4000/">Elvin Ouyang's Blog</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/projects/">Projects</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/study-notes/">Study Notes</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/categories/">Category</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/tags/">Tag</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/resources/">Resources</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/sitemap/">Sitemap</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" "
+>
+  
+    <img src="http://localhost:4000/assets/images/gtd/GTD_photo.png" alt="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization" class="page__hero-image">
+  
+  
+    <span class="page__hero-caption">Photo credit - Global Terrorism Database Website
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://localhost:4000/assets/images/bio-photo.jpeg" class="author__avatar" alt="Chuanye (Elvin) Ouyang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Chuanye (Elvin) Ouyang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        Chuanye (Elvin) Ouyang is a young professional in data science, risk analysis, compliance evaluation, and forensic analytics.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Washington, DC</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/elvinouyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/ouyangchuanye" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/ElvinOuyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization">
+    <meta itemprop="description" content="This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+    <meta itemprop="datePublished" content="June 09, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Global Terrorism Database (1970 - 2015) Descriptive Data Visualization
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post <a href="/project/gtd-data-cleaning/">Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning</a>.</p>
+
+<h1 id="understand-terror-attacks-in-the-us">Understand Terror Attacks in the U.S.</h1>
+
+<p>Now that I have cleaned and preprocessed the data frame for the analysis, I will get my feet wet with a glimpse of the trend of attacks in the U.S.. I start by looking at the terror attacks across time and geolocations.</p>
+
+<h2 id="question-1-how-have-the-attacks-in-the-us-changed-over-time">Question 1: How Have The Attacks In the U.S. Changed over Time?</h2>
+
+<p>To answer this question, I can check out how many incidents happened in the U.S. for each year, ever since 1970:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Attack Count"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Count of U.S. Terror Attacks Over Years"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">1</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count-by-year-1.png" alt="" /></p>
+
+<p>Above chart indicates that the number of terror attacks in the U.S. is decreasing since 1970; however, this might contradict with people’s recent memory since “9.11” was one of the biggest terror attacks on U.S. history. Therefore, we should instead use measurements that reflect the impact of the attacks, such as number of victims killed (<strong><em>nkill</em></strong>) or injured (<strong><em>nwound</em></strong>), to understand the scopes of the attacks.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Compare the attacks, kills, and wounds over years
+</span><span class="n">g</span><span class="m">2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">killed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">injured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="o">=</span><span class="s2">"iyear"</span><span class="p">,</span><span class="w"> </span><span class="n">measure.vars</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'killed'</span><span class="p">,</span><span class="s1">'injured'</span><span class="p">,</span><span class="s1">'count'</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">variable</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Count"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"U.S. Terror Attack Impact Over Years"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">2</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/nkill-by-year-1.png" alt="" /></p>
+
+<p>With the killed and injured considered, I now draw a better picture of the scope of the terror attacks in the U.S.. Apparently the biggest terror attack ever since 1970 in no doubt happened in 2001, i.e. the “9.11” attack. We are also seeing three spikes in number of injured victims (injured) in 1984, 1995, and 2013. To get a better understanding of what these attacks are, we can rank the terror attacks in terms of the impact and check out their details:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">t</span><span class="m">1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                     </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                     </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">n_killwound</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+         </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">idate</span><span class="p">,</span><span class="w"> </span><span class="n">provstate</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">summary</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>State</th>
+      <th>Killed</th>
+      <th>Injured</th>
+      <th>Terror Group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2001-09-11</td>
+      <td>New York</td>
+      <td>1381.5</td>
+      <td>0</td>
+      <td>Al-Qaida</td>
+    </tr>
+    <tr>
+      <td>2001-09-11</td>
+      <td>New York</td>
+      <td>1381.5</td>
+      <td>0</td>
+      <td>Al-Qaida</td>
+    </tr>
+    <tr>
+      <td>1995-04-19</td>
+      <td>Oklahoma</td>
+      <td>168</td>
+      <td>650</td>
+      <td>Unaffiliated Individual(s)</td>
+    </tr>
+    <tr>
+      <td>1984-09-21</td>
+      <td>Oregon</td>
+      <td>0</td>
+      <td>751</td>
+      <td>Rajneeshees</td>
+    </tr>
+    <tr>
+      <td>2001-09-11</td>
+      <td>Virginia</td>
+      <td>189</td>
+      <td>106</td>
+      <td>Al-Qaida</td>
+    </tr>
+    <tr>
+      <td>2013-04-15</td>
+      <td>Massachusetts</td>
+      <td>2</td>
+      <td>132</td>
+      <td>Unaffiliated Individual(s)</td>
+    </tr>
+    <tr>
+      <td>2013-04-15</td>
+      <td>Massachusetts</td>
+      <td>1</td>
+      <td>132</td>
+      <td>Unaffiliated Individual(s)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The above chart corresponds with our analysis from the chart. The biggest attacks in the U.S. includes not only the “9.11” series, but also attacks conducted by Rajneeshees and unaffiliated individuals in 1995, 1984, and 2013.</p>
+
+<h2 id="question-2-what-are-the-worldwide-attack-trend-compared-to-the-us">Question 2: What are the Worldwide Attack Trend Compared to the U.S.?</h2>
+
+<p>For reference purposes, I also checked the incident occurrence around the world. Interestingly enough, the count of terror attacks around the world are increasing in recent years, and even reached the exponential point after 2000. It seems that the year of 2001 (“9.11”) is not only a landmark for the attacks in the U.S., but also for those around the world. Moreover, it is noted that the terror attacks happening in the U.S. dwarf in front of the worldwide attacks: apparently there are places in the world that needs even more help in coping these attacks.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Display the attack count of the world over years
+</span><span class="n">g</span><span class="m">1</span><span class="err">_</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Attack Count"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"World Terror Attacks Over Years"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">1</span><span class="err">_</span><span class="n">w</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count-by-year-world-1.png" alt="" /></p>
+
+<p>I also created a graph of killed, injured, and attack count for incidents around the world:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Compare the attacks and casualties of the world over years
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">killed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">injured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="o">=</span><span class="s2">"iyear"</span><span class="p">,</span><span class="w"> </span><span class="n">measure.vars</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'killed'</span><span class="p">,</span><span class="s1">'injured'</span><span class="p">,</span><span class="s1">'count'</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">variable</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Count"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"World Terror Attack Impact Over Years"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/nkill-by-year-world-1.png" alt="" /></p>
+
+<p>Contrary to the U.S., terror attacks around the world not only claim more occurrence in recent decades, but also more death and injuries. What are the biggest single attacks around the world then?</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Identify the biggest attacks in the world in terms of casualties
+</span><span class="n">t</span><span class="m">1</span><span class="err">_</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                     </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                     </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">n_killwound</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+         </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">idate</span><span class="p">,</span><span class="w"> </span><span class="n">country_txt</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">summary</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<table style="width:67%;">
+<colgroup>
+<col width="8%" />
+<col width="11%" />
+<col width="12%" />
+<col width="13%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Date</th>
+<th>State</th>
+<th>Killed</th>
+<th>Injured</th>
+<th>Terror Group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1995-03-21</td>
+<td>Japan</td>
+<td>13</td>
+<td>5500</td>
+<td>Aum Shinri Kyo</td>
+</tr>
+<tr class="even">
+<td>1998-08-07</td>
+<td>Kenya</td>
+<td>224</td>
+<td>4000</td>
+<td>Al-Qaida</td>
+</tr>
+<tr class="odd">
+<td>2001-09-11</td>
+<td>United States</td>
+<td>1381.5</td>
+<td>0</td>
+<td>Al-Qaida</td>
+</tr>
+<tr class="even">
+<td>2001-09-11</td>
+<td>United States</td>
+<td>1381.5</td>
+<td>0</td>
+<td>Al-Qaida</td>
+</tr>
+<tr class="odd">
+<td>1996-01-31</td>
+<td>Sri Lanka</td>
+<td>90</td>
+<td>1272</td>
+<td>Liberation Tigers of Tamil Eelam (LTTE)</td>
+</tr>
+<tr class="even">
+<td>2008-02-02</td>
+<td>Chad</td>
+<td>160</td>
+<td>1001</td>
+<td>Rebels</td>
+</tr>
+<tr class="odd">
+<td>2004-09-01</td>
+<td>Russia</td>
+<td>344</td>
+<td>727</td>
+<td>Riyadus-Salikhin Reconnaissance and Sabotage Battalion of Chechen Martyrs</td>
+</tr>
+<tr class="even">
+<td>2006-07-11</td>
+<td>India</td>
+<td>188</td>
+<td>817</td>
+<td>Lashkar-e-Taiba (LeT)</td>
+</tr>
+<tr class="odd">
+<td>2007-08-14</td>
+<td>Iraq</td>
+<td>250</td>
+<td>750</td>
+<td>Al-Qaida in Iraq</td>
+</tr>
+<tr class="even">
+<td>2007-08-14</td>
+<td>Iraq</td>
+<td>250</td>
+<td>750</td>
+<td>Al-Qaida in Iraq</td>
+</tr>
+</tbody>
+</table>
+
+<p>The above table tells us that the “9.11” attack is still the biggest attacks around the world when it comes to the death of victims in the single attack. Other countries such as Japan, Kenya, Sri Lanka, Chad, Russia, India, and Iraq also suffers huge loss from major terror attacks.</p>
+
+<p>I then created regional breakdown graphs of attack impact as below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Look at attacks and casualties over the years by region
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">region</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">n_incident</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">region</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">region</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Occurence of Attacks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Count of Attacks by Region"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w">
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_1</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count-by-year-region-1.png" alt="" /></p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">region</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">region</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">region</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Victims Killed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Victim Deaths by Region"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w">
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_2</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/nkill-by-year-region-1.png" alt="" /></p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">region</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">region</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">region</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Victims Injured"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Victim Injured by Region"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w">
+</span><span class="n">g</span><span class="m">2</span><span class="err">_</span><span class="n">w_3</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/nwound-by-year-region-1.png" alt="" /></p>
+
+<p>From these graphs we can infer that Middle East &amp; North Africa, South Asia, and Sub-Saharan Africa are the regions most heavily infested by terror attacks in recent years.</p>
+
+<h2 id="question-3-are-there-any-attack-patterns-by-date-types-and-target">Question 3: Are There Any Attack Patterns by Date, Types, and Target?</h2>
+
+<p>I then tried to cross-tabulate the attack measurements with date and time, in order to see if I can identify any patterns between attack occurrence / impact and weekday / month.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Explore the attack freq pattern for day of week and month of year
+</span><span class="n">dt1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">iweekday</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">weekdays</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Sunday'</span><span class="p">,</span><span class="s1">'Monday'</span><span class="p">,</span><span class="s1">'Tuesday'</span><span class="p">,</span><span class="w">
+                                                 </span><span class="s1">'Wednesday'</span><span class="p">,</span><span class="s1">'Thursday'</span><span class="p">,</span><span class="s1">'Friday'</span><span class="p">,</span><span class="s1">'Saturday'</span><span class="p">)),</span><span class="w">
+                    </span><span class="n">imonth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">imonth</span><span class="p">),</span><span class="w">
+                    </span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                    </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                    </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">iweekday</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">n_killwound</span><span class="p">),</span><span class="w"> </span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w">
+
+</span><span class="n">g</span><span class="m">3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt1</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">iweekday</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">rev</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">iweekday</span><span class="p">))))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks Per Month by Weekday"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">3</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/heatmap-month-day-1.png" alt="" /></p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt1</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">iweekday</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">rev</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">iweekday</span><span class="p">))))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">n_killwound</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Number of Injuries or Wounds Per Month by Weekday"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">4</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/kill-injury-month-day-1.png" alt="" /></p>
+
+<p>Apparently Mondays and Fridays are weekdays when attacks are likely to happen regardless of which month it is. Weekends seem to have more attacks than the rest of the weekdays. November, August, and February seem to see less attacks than other months. For the wounds and injuries, since the extreme impacts by the biggest attacks are too dramatic comparing to smaller attacks, I can’t see much of a pattern in the heat map.</p>
+
+<p>Interested to see how attacks of different types are distributed over day of the week and month of the year, I created the following graphs for a detailed look.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a dataframe specifically for attacktypes and targettypes
+</span><span class="n">dt2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">iweekday</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">weekdays</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Sunday'</span><span class="p">,</span><span class="s1">'Monday'</span><span class="p">,</span><span class="s1">'Tuesday'</span><span class="p">,</span><span class="w">
+                                                 </span><span class="s1">'Wednesday'</span><span class="p">,</span><span class="s1">'Thursday'</span><span class="p">,</span><span class="s1">'Friday'</span><span class="p">,</span><span class="s1">'Saturday'</span><span class="p">)),</span><span class="w">
+                    </span><span class="n">imonth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">imonth</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">imonth</span><span class="p">,</span><span class="w"> </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'iweekday'</span><span class="p">,</span><span class="s1">'imonth'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="w">
+                  </span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'iweekday'</span><span class="p">,</span><span class="s1">'imonth'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">idecades</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2010</span><span class="p">,</span><span class="w"> </span><span class="s2">"Since 2010"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w">  </span><span class="s2">"2000s"</span><span class="p">,</span><span class="w">
+                                                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1990</span><span class="p">,</span><span class="w"> </span><span class="s2">"1990s"</span><span class="p">,</span><span class="w">
+                                                           </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1980</span><span class="p">,</span><span class="w"> </span><span class="s2">"1980s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1970s"</span><span class="p">))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a heatmap with weekday by attack type
+</span><span class="n">g</span><span class="m">5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="o">=</span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">n_incident</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="n">factor</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">rev</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">iweekday</span><span class="p">))),</span><span class="w">
+             </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks: Attack Type by Weekday"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lavenderblush"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">5</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count_by_type_weekday-1.png" alt="" /></p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a heatmap of attack type by era
+</span><span class="n">g</span><span class="m">6</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">idecades</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="o">=</span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">n_incident</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="o">=</span><span class="n">idecades</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks: Attack Type by Era"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lavenderblush"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w">
+</span><span class="n">g</span><span class="m">6</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count%20by%20type%20and%20era-1.png" alt="" /></p>
+
+<p>From these graphs I can infer that the most common attack types in the U.S. are Bombing/Explosion, Facility/Infrastructure Attack, and Armed Assault. Monday and Friday, again, seems to be the heavily condensed time slot for the attacks, especially for Bombing/Explosion attacks. In terms of the decades, Bombing/Explosion was a dominating attack type back in the 1970s and 1980s.</p>
+
+<p>I then created several graphs by attack target type and weekdays to explore the relations between target type and time.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a heatmap with weekday by target type
+</span><span class="n">g</span><span class="m">7</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="o">=</span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">n_incident</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">factor</span><span class="p">(</span><span class="n">iweekday</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">rev</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">iweekday</span><span class="p">))),</span><span class="w">
+             </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks: Target Type by Weekday"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lavenderblush"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">7</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count%20by%20target%20and%20weekday-1.png" alt="" /></p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a heatmap of target type by era
+</span><span class="n">g</span><span class="m">8</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">idecades</span><span class="p">,</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="o">=</span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">n_incident</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">idecades</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks: Target Type by Era"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lavenderblush"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">8</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count%20by%20target%20and%20era-1.png" alt="" /></p>
+
+<p>From the above graphs, I can infer that the most common targets for terror attacks are Business, Government(General), and Private Citizens &amp; Property. It is astonishing to see that “Abortion Related” targets are the top fourth common targets for the attacks. The above graphs also indicate that targets types are more spread-out than the attack type for terror attacks in the U.S..</p>
+
+<p>When exploring the attack count by decades, it’s apparent that attacks on Business are less frequent since 2000s, while the attacks on Abortion Related targets are relatively more frequent in the 1980s and 1990s.</p>
+
+<p>I did not observe too much of a pattern over weekdays or months, so I changed focus and created a heat map by attack types and target types, as below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a heatmap of targettype by attack type
+</span><span class="n">g</span><span class="m">9</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="o">=</span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">n_incident</span><span class="p">),</span><span class="w">
+             </span><span class="n">y</span><span class="o">=</span><span class="n">reorder</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">n_incident</span><span class="p">),</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">n_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_tile</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="n">coord_equal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Count of Attacks: Target Type by Attack Type"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">7</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lavenderblush"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkviolet"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">90</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">9</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-09-gtd-data-visualization_files/figure-markdown_github/count-by-targettype-attacktype-1.png" alt="" /></p>
+
+<p>The chart above does not bring in much additional knowledge. Unsurprisingly, the most frequent attack types (Bombing/Explosion, Facility/Infrastructure Attack) corresponds with the most frequent target types (Business, Abortion Related, Government(General)).</p>
+
+<p>In my next post, I will take a further step and examine the characteristics of attacks in the U.S. in greater detail to:</p>
+
+<ul>
+  <li>Focus more on recent attack features</li>
+  <li>Examine the geospacial locations of the attacks</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#eda" class="page__taxonomy-item" rel="tag">EDA</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#r-programming" class="page__taxonomy-item" rel="tag">R-programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/categories/#project" class="page__taxonomy-item" rel="tag">Project</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-09T00:00:00-04:00">June 09, 2017</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="http://localhost:4000/project/gtd-data-cleaning/" class="pagination--pager" title="Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/ElvinOuyang"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Elvin Ouyang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96112090-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'elvinouyang-github-io';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>
