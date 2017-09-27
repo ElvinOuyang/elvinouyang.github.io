@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-24T17:56:19-04:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Global Terrorism Database (1970 - 2015) Descriptive Data Visualization</title><link href="http://localhost:4000/project/gtd-data-visualization/" rel="alternate" type="text/html" title="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization" /><published>2017-06-09T00:00:00-04:00</published><updated>2017-06-09T00:00:00-04:00</updated><id>http://localhost:4000/project/gtd-data-visualization</id><content type="html" xml:base="http://localhost:4000/project/gtd-data-visualization/">&lt;p&gt;This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post &lt;a href=&quot;/project/gtd-data-cleaning/&quot;&gt;Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-27T12:06:49-04:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Global Terrorism Database (1970 - 2015) Descriptive Data Visualization</title><link href="http://localhost:4000/project/gtd-data-visualization/" rel="alternate" type="text/html" title="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization" /><published>2017-06-09T00:00:00-04:00</published><updated>2017-06-09T00:00:00-04:00</updated><id>http://localhost:4000/project/gtd-data-visualization</id><content type="html" xml:base="http://localhost:4000/project/gtd-data-visualization/">&lt;p&gt;This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post &lt;a href=&quot;/project/gtd-data-cleaning/&quot;&gt;Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;understand-terror-attacks-in-the-us&quot;&gt;Understand Terror Attacks in the U.S.&lt;/h1&gt;
 
@@ -689,7 +689,37 @@
 ## $ INT_ANY         &amp;lt;int&amp;gt; NA, 0, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
 ## $ idate           &amp;lt;date&amp;gt; 1970-01-01, 1970-01-02, 1970-01-03, 1970-01-0...
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="R-programming" /><category term="Data Quality" /><summary type="html">Introduction</summary></entry><entry><title type="html">Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification</title><link href="http://localhost:4000/study%20notes/python-linear-models-for-classification/" rel="alternate" type="text/html" title="Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification" /><published>2017-01-24T00:00:00-05:00</published><updated>2017-01-24T00:00:00-05:00</updated><id>http://localhost:4000/study%20notes/python-linear-models-for-classification</id><content type="html" xml:base="http://localhost:4000/study%20notes/python-linear-models-for-classification/">&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;/div&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="R-programming" /><category term="Data Quality" /><summary type="html">Introduction</summary></entry><entry><title type="html">ArcGIS Map Showcase: My Project Work from Introduction to GIS course</title><link href="http://localhost:4000/project/arcgis-work-showcase/" rel="alternate" type="text/html" title="ArcGIS Map Showcase: My Project Work from Introduction to GIS course" /><published>2017-04-15T00:00:00-04:00</published><updated>2017-04-15T00:00:00-04:00</updated><id>http://localhost:4000/project/arcgis-work-showcase</id><content type="html" xml:base="http://localhost:4000/project/arcgis-work-showcase/">&lt;p&gt;In this post I will lay out my project and assignment work from the course &lt;em&gt;Intro to GIS&lt;/em&gt; at The George Washington University. I used ArcGIS software by &lt;a href=&quot;www.esri.com&quot;&gt;ESRI&lt;/a&gt; to generate these maps.&lt;/p&gt;
+
+&lt;h2 id=&quot;maps-series-for-vietnam-demographics-in-1999&quot;&gt;Maps Series for Vietnam demographics in 1999:&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Vietnam: Population 1999&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Vietnam_Map Series_Page_1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Vietnam: Female Population&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Vietnam_Map Series_Page_2.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Vietnam: Population 1999 in Dot Density&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Vietnam_Map Series_Page_3.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Vietnam: Household Age by Region&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Vietnam_Map Series_Page_4.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Vietnam: Urban Population Percentage&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Vietnam_Map Series_Page_5.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mapping-a-region-using-geoprocessing-techniques&quot;&gt;Mapping a region using geoprocessing techniques:&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Nepal: Priority Districts in the Aftermath of 2015 Earthquake&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Nepal_Priority Districts Following 2015 Earthquake.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Ethopia: Sustainable Forest Regions Planning&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang_Ethiopia_Sustainable Forest Planning.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Northern Europe: Impact of Industrial Accident&lt;/strong&gt;
+&lt;img src=&quot;/assets/images/gis_showcase/Chuanye Ouyang__North Europe_Industrial Accident Impact.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="ArcGIS" /><category term="geospatial-analysis" /><summary type="html">In this post I will lay out my project and assignment work from the course Intro to GIS at The George Washington University. I used ArcGIS software by ESRI to generate these maps.</summary></entry><entry><title type="html">Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification</title><link href="http://localhost:4000/study%20notes/python-linear-models-for-classification/" rel="alternate" type="text/html" title="Introduction to Machine Learning with Python - Chapter 2 - Linear Models for Classification" /><published>2017-01-24T00:00:00-05:00</published><updated>2017-01-24T00:00:00-05:00</updated><id>http://localhost:4000/study%20notes/python-linear-models-for-classification</id><content type="html" xml:base="http://localhost:4000/study%20notes/python-linear-models-for-classification/">&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Python version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pd&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pandas version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
@@ -1951,7 +1981,7 @@ are 0 most of the time (so-called &lt;strong&gt;sparse datasets&lt;/strong&gt;).
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_12_1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/intro-ml-ch1/1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;pandas&quot;&gt;Pandas&lt;/h2&gt;
 
@@ -2137,7 +2167,7 @@ y_test shape: (38,)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_files/Introduction%20to%20Machine%20Learning%20with%20Python%20-%20Chapter%201_37_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/intro-ml-ch1/2.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;A quick glance from the data confirms that the dot categories are well seperated for most of the feature pairs, indicating that a machine learning model is doable.&lt;/p&gt;
 
