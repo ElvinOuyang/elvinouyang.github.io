@@ -14,19 +14,18 @@ categories:
 ---
 
 
-This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post [Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning]({% post_url 2017-05-30-gtd-data-cleaning %}).
+This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). All of the research questions were raised by me based on my background knowledge in international affairs. For more information regarding the details of GTD or the project in general, please check out my previous post [Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning]({% post_url 2017-05-30-gtd-data-cleaning %}).
 
 Digging into Attack Patterns
 ----------------------------
 
 ### Question 1: How Have the Major Attack Type and Target Type Changed over Years?
 
-With a rough understanding of the concentration of terror attacks in attack type and target type, it is worthwhile to see if there are any changes in these trends over the years. I will re-group the attacks by the most frequent categories and "other" category and develop a time-based visualization.
+With a rough understanding of the concentration of attacks in attack type and target type, it is worthwhile to see if these trends changed over the years. I regrouped the attacks by the most frequent categories and developed several time-based visualizations.
 
 For the terror attack type graph, I regrouped the attacks into *Bombing/Explosion*, *Facility/Infrastructure Attack* and *Other* and display attack count over the years.
 
 ``` r
-# Generate a dataframe for time by type
 dt3 <- dt %>%
   dplyr::select(eventid, iyear, targtype1_txt, targtype2_txt,
                 targtype3_txt, attacktype1_txt, attacktype2_txt, attacktype3_txt) %>%
@@ -46,7 +45,7 @@ dt3 <- dt %>%
       ifelse(attacktype_txt=="Bombing/Explosion", "Bombing/Explosion",
              ifelse(attacktype_txt=="Facility/Infrastructure Attack", "Facility/Infrastructure Attack",
                     "Other"))))
-# Look at the attack by attack type over the years
+
 g10 <- dt3 %>% mutate(attack_type = attacktype_txt) %>% dplyr::group_by(iyear, attack_type) %>% summarise(n_incident = n()) %>%
   ggplot(aes(x=iyear, y = n_incident, group = attack_type, color = attack_type)) + geom_line()+
   xlab("") + ylab("Occurence of Attacks") + ggtitle("Attack Occurence by Attack Type") +
@@ -60,7 +59,9 @@ g10
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png)
 
-The above graph indicates that *Bombing/Explosion* attacks were dominating back in the 1970s to 1980s, while *Facility/Infrastructure Attack* incidents picked up in the 1990s and early 2000s. In the recent decade, however, attacks are taking other types. I will revisit this "Other" type in following analysis. I then ploted the follwing graph for the attack count by target type while regrouping attack targets into *Busienss*, *Government(General)*, *Private Citizens & Property* and *Other*.
+The above graph indicates that *Bombing/Explosion* was a dominating type back in the 1970s and 1980s, while *Facility/Infrastructure Attack* picked up in the 1990s and early 2000s. In the most recent decade, however, attacks are taking other forms (as *Other* type). I will revisit this "Other" type in following analysis.
+
+I then regrouped *target type* into *Business*, *Government(General)*, *Private Citizens & Property* and *Other* and plotted the following graph for the attack count by target type.
 
 ``` r
 # Look at the attack by target type over the years
@@ -77,9 +78,11 @@ g11
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png)
 
-From the above graph I can infer that Busines has consistently been the target of terror attacks over the years, while "Other" targets take a large portion in the distribution. I will revisit this "Other" group in later analysis.
+From the above graph I can infer that *Business* has consistently been the target of terror attacks over the years, while *Other* targets take a large portion in the distribution. I will revisit this "Other" group in later analysis.
 
-After I plotted the attack count by attack types and target types over years in above charts, it is clear that these most frequent types claimed more attacks back in the 1970s to 1990s. "Other" attack types and target types becomes more crucial after the 2000s. To better understand terror attacks that happened in more recent time, I will zoom in the time coverage and compare the U.S. attacks with those around the world.
+After plotting the count by attack types and target types in above graphs, it is clear that these most frequent types claimed more attacks back in the 1970s to 1990s. *Other* attack types and target types became more crucial after the 2000s, indicating that **the attack type and target type pattern did change over the years**.
+
+To better understand terror attacks that happened in more recent years, I narrowed down the time span to years after 2000 and compared the U.S. attacks with those in the World.
 
 ``` r
 # Generate a dataframe for time by type
@@ -111,7 +114,9 @@ g12 <- dt4 %>% dplyr::group_by(iyear, attacktype_txt) %>% summarise(n_incident =
 g12
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png) The recent five years have seen the rise of *Armed Assault* as an Attack Type, together with *Facility/Infrastructure Attack* and *Unarmed Assault*. *Bombing/Explosion*, although still existing, is happening less often. When I combine this finding with the trend of the past 45 years, the reductions in traditionally "popular" attack type might be due to the fact that the government might have paid extra attention to the "typical" terror attacks, therefore terroists have to seek other methods in their attacks.
+![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png)
+
+The recent five years have seen the rise of *Armed Assault* as a major attack type, together with *Facility/Infrastructure Attack* and *Unarmed Assault*. *Bombing/Explosion* is happening less often than before. This reductions in traditionally "typical" attack types seems to related to the fact that the U.S. government might have paid extra attention to the "typical" terror attacks and the terrorists had to seek other approaches in their attacks.
 
 ``` r
 # Explore the most frequent target type in recent years
@@ -127,11 +132,11 @@ g13
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png)
 
-Similar to the attack types, recent years have seen the increase of terror attacks on the *Religious Figures/Institutions*, *Police*, and *Abortion Related*. Traditionally "popular" target, such as *Business*, was attacked less often, while *Private Citizens & Property* remains to be a frequent target. The reason behind this, again, might be related to the public safety measurements placed by the government on the "typical" targets, leading to bigger variety in the target type in recent years.
+Similar to the attack types, recent years have seen the increase of terror attacks on the *Religious Figures/Institutions*, *Police*, and *Abortion Related* targets. Traditionally "popular" targets, such as *Business*, was attacked less often, while *Private Citizens & Property* remains to be a frequent target. The reason behind this, again, might be related to the public safety measurements placed by the government on the "typical" targets, leading to bigger variety in the target type in recent years.
 
-### Question 2: Did attacks with foreign connections happened in different locations?
+### Question 2: Did Attacks with Foreign Connections Happen in Different Locations?
 
-I will answer this question by first quickly look at the geolocation info for the incidents, tagged with whether they have any form of foreign connections. The first thing I do is to create a new dataframe from the dataset.
+I answered this question by first quickly looking at the coordinates of the incidents, tagged with whether they have any form of foreign connections. The first thing I did is to create a new dataframe from the dataset.
 
 ``` r
 # Generate geolocation-friendly dataframe for the analysis
@@ -148,7 +153,7 @@ dt5 <- dt %>% mutate(iweekday = factor(weekdays(dt$idate),
                                              ifelse(iyear >= 1990,  "1990s","1970~1980s"))))
 ```
 
-I then download an map directly from Google as some "canvases" for my geospatial analytics.
+I then downloaded an map directly from Google as the "canvas" for my geospatial analytics.
 
 ``` r
 basemap <- get_googlemap(center = c(lon = -97.5, lat = 40),
@@ -161,7 +166,7 @@ basemap + ggtitle("U.S. Base Map") + theme(plot.title = element_text(size=22))
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/5.png)
 
-Now that I have the map canvases ready, it's time to overlay data from my dataframe onto the map.
+Now that I had the map canvas ready, it's time to overlay data from my dataframe onto the map.
 
 ``` r
 g14 <- basemap + geom_point(aes(x = longitude, y = latitude,
@@ -181,9 +186,9 @@ g14
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/6.png)
 
-Although a large portion of the attacks do not have a certain connection with foreign entities, I do see some attacks that have clear international links. Not surprisingly, these attacks are more condensed near the coastal areas and the lake areas, where connections to abroad are more accessible. It is also noted that Utah and Colorado, two inland states, also experienced attacks with foreign links.
+Although a large portion of the attacks does not have a certain connection with foreign entities, I did see some attacks that have clear foreign connections. Not surprisingly, these attacks are more dense near the coastal areas and the lake areas, where overseas connections are more accessible. It is also noted that several inland states also experienced attacks with foreign links.
 
-Since it seems that attacks with foreign connections happened more often in coastal areas, I zoom in the map a bit to look at the U.S. East Coast and West Coast in greater details separately. First, I will look at East Coast where the attacks appear to be most condense: the Washington, D.C. to New York City area.
+Since it seems that attacks with foreign connections happened more often in coastal areas, I zoomed in on the U.S. East Coast and West Coast in greater details separately. First, I looked at East Coast where the attacks appear to be most dense: the Washington, D.C. to New York City area.
 
 ``` r
 basemap_east <- get_googlemap(center = c(lon = -75, lat = 40),
@@ -209,7 +214,7 @@ g14_e
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/7.png)
 
-The above graph clearly indicates that the New York City metro area has more attacks than the Washington, D.C. metro area. More importantly, there were more attacks with foreign connections happened in the NYC metro area. Interested in the locations of attacks in NYC? I created a map below:
+The above graph clearly indicates that the New York City metro area has more attacks than the Washington, D.C. metro area and Philadelphia. More importantly, there were more attacks with foreign connections in the NYC metro area. Interested in the locations of these attacks in NYC? I created a map below:
 
 ``` r
 basemap_nyc <- get_googlemap(center = c(lon = -74, lat = 40.8),
@@ -263,11 +268,11 @@ g14_w
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/9.png)
 
-It appears that attacks in the West Coast cluster around Portland, Northern California, and Los Angeles metro area. The map indicates that attacks with foreign connections happened more than those without foreign connections. This finding again supports that attacks with foreign connections cluster around coastal areas.
+It appears that attacks in the West Coast cluster around Portland, Northern California, and Los Angeles metro area. The map indicates that attacks with foreign connections happened more often than those without. This finding again supports that attacks with foreign connections cluster around coastal areas.
 
-### Question 3: Did attacks from different era happened in different locations?
+### Question 3: Did Attacks from Different Eras Happen in Different Locations?
 
-Another aspect I would like to explore on the map is how are attacks spreading out across the U.S. in different eras. I broke down the `iyear` variable into three eras - "1970s-1980s","1990s", and "Since 2000" - to roughly reflect the time before the Cold War ends, the 1990s, and the era after "9.11".
+Another aspect I would like to explore on the map is how are attacks spreading out across the U.S. in different eras. I broke down the `iyear` variable into three eras - *1970s-1980s*,*1990s*, and *Since 2000* - to roughly match the time before the Cold War ended, the 1990s, and the era after "9.11".
 
 ``` r
 g15 <- basemap + geom_point(aes(x = longitude, y = latitude,
@@ -287,7 +292,7 @@ g15
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/10.png)
 
-The above map indicates that later attacks in the 21 century distributes more condensely in the coastal areas and the lake area, whereas attacks in the 1970s to 1980s are all over the place across the nation. I created the zoomed map for East Coast and West Coast as below:
+The above map indicates that later attacks in the 21 century distributes more densely in the coastal areas and the lake area, whereas attacks in the 1970s to 1980s are all over the place across the nation. I created the zoomed map for East Coast and West Coast as below:
 
 ``` r
 g15_e <- basemap_east + geom_point(aes(x = longitude, y = latitude,
@@ -307,7 +312,7 @@ g15_e
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/11.png)
 
-For attacks that happened in the East Coast, it appears that more recent attacks are more condensed in the heart of the cities (this case is especially true for those happened in NYC metro area).
+For attacks that happened in the East Coast, it appears that more recent attacks are more dense in the heart of the cities (this case is especially true for those happened in NYC metro area).
 
 ``` r
 g15_w <- basemap_west + geom_point(aes(x = longitude, y = latitude,
@@ -327,13 +332,13 @@ g15_w
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/12.png)
 
-For attacks that happened in the West Coast, it seems that those of earlier decades are more condensed in the southern areas.
+For attacks that happened in the West Coast, it seems that those of earlier decades are more dense in the southern areas.
 
-### Question 4: Did attacks of different chracteristics happened in different locations?
+### Question 4: Did attacks of different characteristics happened in different locations?
 
-Now that I have learnt much more of where the attacks are happening, I want to create a more detailed map to compare attacks of different attack types and target types. These maps will help me better comprehend the findings identified in prior analytics. In order to make the geospatial distribution patterns more drastic, I will create heatmaps and contours based on count and location of attacks, with cross-tabulated categorical variables.
+Now that I have learnt much more of where the attacks are happening, I wanted to create a more detailed map to compare attacks of different types and targets. These maps will help me better comprehend previous findings in the context of geolocations. I created heatmaps and contour lines based on location density of attack counts and then cross-tabulated these maps with categorical variables.
 
-First thing I will do is to generate a dataframe for this analysis:
+The first thing I did is to generate a dataframe for this analysis:
 
 ``` r
 # Create a attack data set with location, nkill, and nwound, will also keep sliceability with other factors
@@ -376,12 +381,10 @@ dt6 <- dt %>%
     )
 ```
 
-Then I will customize the base map canvas for this analysis:
+Then I customized the base map canvas for this analysis:
 
 ``` r
 # download basic map layers for plotting
-# base.map <- qmap("United States", zoom = 4, source= "google", maptype="roadmap", color = "bw", crop=FALSE, legend='topleft')
-# base.map <- get_map('United States', zoom = 4, source = "google", maptype = "roadmap", crop=FALSE, color="bw")
 base.map <- get_googlemap(center = c(lon = -97.5, lat = 40),
                          zoom = 4,
                          size = c(640, 420),
@@ -389,7 +392,7 @@ base.map <- get_googlemap(center = c(lon = -97.5, lat = 40),
                          color = 'bw') %>% ggmap(base_layer = ggplot(aes(x = longitude, y = latitude), data = dt6))
 ```
 
-I will first explore the geospatial distribution by revisting some of the variables I used in the previous analysis. First, let's look at the distribution of attacks based on target type.
+I then explored the spatial distribution by revisiting some of the variables I used previously. First, I looked at the distribution of attacks based on target type.
 
 ``` r
 g17 <- base.map + stat_density2d(aes(x=longitude, y=latitude, fill=..level.., alpha=..level..),
@@ -406,9 +409,11 @@ g17 <- base.map + stat_density2d(aes(x=longitude, y=latitude, fill=..level.., al
 g17
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/13.png) Be noted that the attacks on Business mostly happened in the northeastern coastal area, while a smaller count happened in west coast. Attacks on government (general), private citizens & property, and other types spread out more evenly. It is also worth noticing the southern states such as Tennessee, Arkansas, and Mississippi only saw attacks targeting private citizen & property.
+![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/13.png)
 
-I then move forward to explore the attack location distribution by attack types, as shown below:
+Be noted that the attacks on *Business* are most dense in the northeastern coastal area. Attacks on *Government(general)*, *Private Citizens & Property*, and *Other* targets spread out more evenly. It is also worth noticing that the southern states such as Tennessee, Arkansas, and Mississippi only experienced attacks targeting *Private Citizen & Property*.
+
+I then moved forward to explore the attack locations by attack types, as shown below:
 
 ``` r
 # Create ride density maps
@@ -426,9 +431,11 @@ g18 <- base.map + stat_density2d(aes(x=longitude, y=latitude, fill=..level.., al
 g18
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/14.png) Although we did not observe much of a difference among the different attack types across the nation, **Bombing/Explosion** and **Armed Assault** appear to be more densely distributed in East Coast, while **Facility/Infrastructure** attacks appear to be the spreading out more evenly.
+![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/14.png)
 
-Another variable I have not analyzed yet is the `propextent` variable, which is the impact of how much property loss resulted from the incident.
+Although I did not observe much of a difference among the different attack types across the nation, *Bombing/Explosion* and *Armed Assault* appear to be more densely distributed in East Coast, while *Facility/Infrastructure* appears to be the spreading out more evenly.
+
+Another variable I have not analyzed yet is `propextent`,i.e., the property loss level resulted from the incident.
 
 ``` r
 # Create ride density maps
@@ -448,17 +455,17 @@ g19
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/15.png)
 
-It is apparent that the Catastrophic property loss only happened during the "9.11" attack. What's conterintuitive is the fact that Major property loss with more than USD 1 million loss happened across the country.
+It is apparent that the *Catastrophic* property loss only happened during the "9.11" attack. What is counterintuitive is the fact that attacks resulted in a *Major* property loss with more than USD 1 million spreaded out evenly across the nation.
 
-Question 5: What Are the Motives or the Group Affiliations of US Terror Attacks?
+Question 5: What Are the Motives or the Group Affiliations of U.S. Terror Attacks?
 --------------------------------------------------------------------------------
 
-In the last question, I am trying to explain the "rationale" behind the terror attacks in the U.S. over the years. Due to the limitation of the dataset, I will not be able to directly identify the connection between the prepertrators and the foreign terror groups (if any). However, the GTD does have `gname` (group claiming responsiblity of the attack) and `motive` (text explanation of possible motivation of the attack) variables. I will use these two variables to understand the "motivations" behind the US terror attacks.
+In the last question, I tried to explain the "rationale" behind the terror attacks in the U.S. over the years. Due to the limitation of the dataset, I was not able to directly identify the connections between the perpetrators and the foreign terror groups (if any). However, the GTD does have `gname` (group claiming responsibility of the attack) and `motive` (text explanation of possible motivation of the attack) variables. I will use these two variables to understand the "motivations" behind the U.S. terror attacks.
 
-I start by analyzing the incident counts in the U.S. and the world for each group and visualize the groups using scatterplots.
+I prepared my answer by analyzing the incident counts in the U.S. and the World for each terror group and visualizing the groups using scatterplots.
 
 ``` r
-# Create a long table for group-related data in the US
+# Create a long table for group-related data in the U.S.
 dt7 <- dt %>% mutate(nkill = ifelse(is.na(nkill), 0, nkill),
                      nwound = ifelse(is.na(nwound), 0, nwound),
                      n_killwound = nkill + nwound,
@@ -558,9 +565,11 @@ g20 <- dt7.1 %>% ggplot(aes(x=log(us_incident), y=log(world_incident))) +
 g20
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/16.png) The above chart indicates that terror groups tends to have **two different trends** when compared between their attacks in the U.S. and the world: some don't have much presence in the U.S. (groups shown on the left hand side of the graph going along the y axis) and some have major presence in the U.S. (groups shown along the regression line). For the groups that have major presence in the US, we can observe a clear linear relation between their attacks in the US and their attacks around the world . The "9.11" attack, which is the large red circle on the chart, appears to be **an outlier** (or "Black Swan" in international affairs terms), that goes against the general trend of group attack activeness.
+![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/16.png)
 
-I step further to dive deeper into the groups that are mostly active (in terms of attack count) in the U.S. How are these groups' activities around the world?
+The above chart indicates that terror groups tend to have **two different trends** when we compare their attacks in the U.S. with those in the World: some don't have much presence in the U.S. (groups on the left hand side of the graph going along the y axis) and some have major presence in the U.S. (groups shown along the regression line). For the groups that have presence in the U.S., we can observe a clear trend between their attacks in the U.S. and their attacks around the world. The "9.11" attack, which is the large red circle on the chart, appears to be **an outlier** (or "Black Swan" in international affairs terms) that goes against the general trend in the graph.
+
+I stepped further to dive deeper into the groups that are mostly active (in terms of attack count) in the U.S.: How are these groups' activities around the World?
 
 ``` r
 # Function to display percentage
@@ -568,7 +577,7 @@ percent <- function(x, digits = 2, format = "f", ...) {
   paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
 }
 
-# Identify the top 20 active groups in the US attacks
+# Identify the top 20 active groups in the U.S. attacks
 dt7.2 <- (dt7.1 %>% arrange(desc(us_incident)) %>%
    mutate(
      us_portion = us_incident / world_incident,
@@ -593,12 +602,12 @@ g21
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/17.png)
 
-Interestingly enough, almost all of the most actively terror groups (with the most responsible attacks) in the U.S. has conducted minor amount of attacks outside of the U.S. (with their U.S. attack / World attack close to 1). These most likely domestic terror groups did most of the property damage in the lower Minor scopes, although the "minor" here is nothing minor in our common sense; they are just scales to separate these attacks from the most deadly and catastrophic ones.
+Interestingly enough, almost all of the most active terror groups (with the most attack counts) in the U.S. has conducted minor amount of attacks outside of the U.S. (with their U.S. attack / World attack close to 1). These most likely domestic terror groups did most of the property damage in the lower *Minor* levels, although the "Minor" here is nothing minor in our common sense; they are just scales to separate these attacks from the most deadly and catastrophic ones.
 
 How about terror groups with the most attack count in the world? How many U.S. attacks are directly related to them? I created the following chart:
 
 ``` r
-# Identify the top 20 groups with attacks in the world that also attacks the US
+# Identify the top 20 groups with attacks in the world that also attacks the U.S.
 dt7.3 <- (dt7.1 %>% arrange(desc(world_incident)) %>%
    mutate(
      us_portion = us_incident / world_incident,
@@ -625,20 +634,22 @@ g22
 
 ![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/18.png)
 
-The most active worldwide terror groups, however, does not seem to have too much of a presence in the U.S. What I am observing here is that some of the groups on the right are clustered with a positive relation between U.S. attacks and world attacks, while other groups on the left does not have much of an presence in the U.S. The color (i.e. property loss) of those clustered on the right are among the Unknown and Minor levels, which is consistent with my previous chart.
+The most active worldwide terror groups, however, do not seem to have too much of a presence in the U.S. What I observed here is that some of the groups on the right are clustered with a positive relation between U.S. attacks and World attacks, while other groups on the left does not have much presense in the U.S. The color (i.e. property loss) of those clustered on the right are among the Unknown and Minor levels, which is consistent with my previous chart.
 
 Findings and Conclusions
 ------------------------
 
-My in-depth exploration of the GTD database provide me with a brand-new understanding of the U.S. terror attacks history, much of which is counterintuitive:
+My in-depth analytics of the GTD database provide me with a brand-new understanding of the U.S. terror attacks history, much of which is counterintuitive:
 
-1.  The certain and successful terror attacks in the US are decreasing; attack number in recent years are far less than that of the 1970s
+1.  The certain and successful terror attacks in the U.S. are decreasing; attack number in recent years are far less than that of the 1970s
 2.  The casualty of terror attacks in the U.S. dwarves in front of attacks around the world; however, "9.11" attacks are outliers and have the biggest life loss in the world terror attack history
 3.  On the contrary, terror attacks and resulted casualties increased exponentially in other parts of the world since 2000, with Middle East, South Asia, and Sub-Saharan Africa suffering the most
-4.  Attacks in the U.S. tend to happen more frequently on Mondays and Fridays, and often takes the form of Bombing/Explosion, Facility/Infrastructure Attack, or Armed Assault
-5.  Business and Government (General) tends of be targets of the attacks before 1990s. In recent years, however, Religious Figures/Institutions, Police, and Abortion Related entities seem to receive more hits
-6.  Around 682 attacks out of the 2164 have certain connections to foreign entities; these attacks tend to happen in populous area and coastal areas
-7.  Property loss of more than USD 1 million is often among attacks, but only the "9.11" attacks claimed more than USD 1 billion in property loss
-8.  The most active terror groups do majority of their attacks around the world in the U.S., indicating that they might be of domestic origin. "9.11" attacks, however, are conducted by less active group in terms of attack count, but claims the most significant loss in life and property. We call this "Black Swan" incidents.
+4.  Attacks in the U.S. tend to happen more frequently on Mondays and Fridays, and often takes the form of *Bombing/Explosion*, *Facility/Infrastructure Attack*, or *Armed Assault*
+5.  *Business* and *Government (General)* tends of be targets of the attacks before 1990s. In recent years, however, *Religious Figures/Institutions*, *Police*, and *Abortion Related* targets seem to receive more hits
+6.  Around 682 attacks out of the 2164 had certain foreign connections; these attacks tend to happen in populous area and coastal areas
+7.  Property loss of more than USD 1 million is usual among attacks, but only the "9.11" attacks claimed more than USD 1 billion in property loss
+8.  The most active terror groups in the U.S. do majority of their attacks around the world in the U.S., indicating that they might be of domestic origin (although might have been inspired or helped by foreign entities). "9.11" attack, however, is conducted by a less active group in the U.S. in terms of attack count, but claims the most significant loss in life and property. It is the biggest outlier / "Black Swan" in the world terror attack history
 
-It is worth noting that the GTD data was collected through openly available sources; the precision of these findings fully depend on the quality of the sources. Additionally, since the database was maintained over a long period of time by multiple institutions, data consistency could be a challenge. Last but not least, the reported attacks in this dataset might be be enough to objectively reflect the terrorism threats to the U.S., since the lack of information about attempted but failed attacks are not sufficiently reported. When comparing to situations in other parts of the world, it is important to acknowledge that the U.S. government's public safety measurements are effective.
+Disclaimer
+------------------------
+It is worth noting that the GTD data was collected through openly available sources; the precision of these findings fully depends on the quality of the sources. Additionally, since the database was maintained over a long period of time by multiple institutions, data consistency could be a challenge. Last but not least, the reported attacks in this dataset might not be enough to objectively reflect the terrorism threats to the U.S., since the information about attempted but failed attacks are not sufficiently reported.
