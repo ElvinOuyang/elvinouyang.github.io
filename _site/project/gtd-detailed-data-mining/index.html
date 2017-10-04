@@ -1,0 +1,1121 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.3.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>            Global Terrorism Database (1970 - 2015) Detailed Analytics      Elvin Ouyang’s Blog      </title>
+
+
+
+
+<meta name="description" content="This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+
+
+
+
+<meta name="author" content="Chuanye (Elvin) Ouyang">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Elvin Ouyang's Blog">
+<meta property="og:title" content="Global Terrorism Database (1970 - 2015) Detailed Analytics">
+
+
+  <link rel="canonical" href="http://localhost:4000/project/gtd-detailed-data-mining/">
+  <meta property="og:url" content="http://localhost:4000/project/gtd-detailed-data-mining/">
+
+
+
+  <meta property="og:description" content="This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+
+
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/gtd/GTD_photo.png">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-06-16T00:00:00-04:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Elvin Ouyang",
+      "url" : "http://localhost:4000",
+      "sameAs" : ["https://twitter.com/elvinouyang","https://www.linkedin.com/in/ouyangchuanye/"]
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Elvin Ouyang's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://localhost:4000/">Elvin Ouyang's Blog</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/projects/">Projects</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/study-notes/">Study Notes</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/categories/">Category</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/tags/">Tag</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/resources/">Resources</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/sitemap/">Sitemap</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" "
+>
+  
+    <img src="http://localhost:4000/assets/images/gtd/GTD_photo.png" alt="Global Terrorism Database (1970 - 2015) Detailed Analytics" class="page__hero-image">
+  
+  
+    <span class="page__hero-caption">Photo credit - Global Terrorism Database Website
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://localhost:4000/assets/images/bio-photo.jpeg" class="author__avatar" alt="Chuanye (Elvin) Ouyang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Chuanye (Elvin) Ouyang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        Chuanye (Elvin) Ouyang is a young professional in data science, risk analysis, compliance evaluation, and forensic analytics.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Washington, DC</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/elvinouyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/ouyangchuanye" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/ElvinOuyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Global Terrorism Database (1970 - 2015) Detailed Analytics">
+    <meta itemprop="description" content="This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning.">
+    <meta itemprop="datePublished" content="June 16, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Global Terrorism Database (1970 - 2015) Detailed Analytics
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  21 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post <a href="/project/gtd-data-cleaning/">Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning</a>.</p>
+
+<h2 id="digging-into-attack-patterns">Digging into Attack Patterns</h2>
+
+<h3 id="question-1-how-have-the-major-attack-type-and-target-type-changed-over-years">Question 1: How Have the Major Attack Type and Target Type Changed over Years?</h3>
+
+<p>With a rough understanding of the concentration of terror attacks in attack type and target type, it is worthwhile to see if there are any changes in these trends over the years. I will re-group the attacks by the most frequent categories and “other” category and develop a time-based visualization.</p>
+
+<p>For the terror attack type graph, I regrouped the attacks into <em>Bombing/Explosion</em>, <em>Facility/Infrastructure Attack</em> and <em>Other</em> and display attack count over the years.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Generate a dataframe for time by type
+</span><span class="n">dt3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w">
+                </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Business"</span><span class="p">,</span><span class="s2">"Business"</span><span class="p">,</span><span class="w">
+           </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Government (General)"</span><span class="p">,</span><span class="s2">"Government (General)"</span><span class="p">,</span><span class="w">
+                  </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Private Citizens &amp; Property"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Private Citizens &amp; Property"</span><span class="p">,</span><span class="s2">"Other"</span><span class="p">)))),</span><span class="w">
+    </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+      </span><span class="n">ifelse</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="o">==</span><span class="s2">"Bombing/Explosion"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Bombing/Explosion"</span><span class="p">,</span><span class="w">
+             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="o">==</span><span class="s2">"Facility/Infrastructure Attack"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Facility/Infrastructure Attack"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Other"</span><span class="p">))))</span><span class="w">
+</span><span class="c1"># Look at the attack by attack type over the years
+</span><span class="n">g</span><span class="m">10</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt3</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">attack_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">attack_type</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_incident</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attack_type</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attack_type</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Occurence of Attacks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Occurence by Attack Type"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.85</span><span class="p">,</span><span class="w"> </span><span class="m">0.83</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">10</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png" alt="" /></p>
+
+<p>The above graph indicates that <em>Bombing/Explosion</em> attacks were dominating back in the 1970s to 1980s, while <em>Facility/Infrastructure Attack</em> incidents picked up in the 1990s and early 2000s. In the recent decade, however, attacks are taking other types. I will revisit this “Other” type in following analysis. I then ploted the follwing graph for the attack count by target type while regrouping attack targets into <em>Busienss</em>, <em>Government(General)</em>, <em>Private Citizens &amp; Property</em> and <em>Other</em>.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Look at the attack by target type over the years
+</span><span class="n">g</span><span class="m">11</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt3</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">target_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">target_type</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_incident</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_type</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_type</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Occurence of Attacks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Occurence by Target Type"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.85</span><span class="p">,</span><span class="w"> </span><span class="m">0.83</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">11</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png" alt="" /></p>
+
+<p>From the above graph I can infer that Busines has consistently been the target of terror attacks over the years, while “Other” targets take a large portion in the distribution. I will revisit this “Other” group in later analysis.</p>
+
+<p>After I plotted the attack count by attack types and target types over years in above charts, it is clear that these most frequent types claimed more attacks back in the 1970s to 1990s. “Other” attack types and target types becomes more crucial after the 2000s. To better understand terror attacks that happened in more recent time, I will zoom in the time coverage and compare the U.S. attacks with those around the world.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Generate a dataframe for time by type
+</span><span class="n">dt4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w">
+                </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Explore the frequent attacktype in recent years
+</span><span class="n">g</span><span class="m">12</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt4</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_incident</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attacktype_txt</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Occurence of Attacks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Occurence by Attack Type (Since 2000)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.82</span><span class="p">,</span><span class="w"> </span><span class="m">0.80</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">12</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png" alt="" /> The recent five years have seen the rise of <em>Armed Assault</em> as an Attack Type, together with <em>Facility/Infrastructure Attack</em> and <em>Unarmed Assault</em>. <em>Bombing/Explosion</em>, although still existing, is happening less often. When I combine this finding with the trend of the past 45 years, the reductions in traditionally “popular” attack type might be due to the fact that the government might have paid extra attention to the “typical” terror attacks, therefore terroists have to seek other methods in their attacks.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Explore the most frequent target type in recent years
+</span><span class="n">g</span><span class="m">13</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt4</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">dplyr</span><span class="o">::</span><span class="n">group_by</span><span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_incident</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">targtype_txt</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_line</span><span class="p">()</span><span class="o">+</span><span class="w">
+  </span><span class="n">xlab</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ylab</span><span class="p">(</span><span class="s2">"Occurence of Attacks"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Occurence by Target Type (Since 2000)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_light</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+                        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+                        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">13</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png" alt="" /></p>
+
+<p>Similar to the attack types, recent years have seen the increase of terror attacks on the <em>Religious Figures/Institutions</em>, <em>Police</em>, and <em>Abortion Related</em>. Traditionally “popular” target, such as <em>Business</em>, was attacked less often, while <em>Private Citizens &amp; Property</em> remains to be a frequent target. The reason behind this, again, might be related to the public safety measurements placed by the government on the “typical” targets, leading to bigger variety in the target type in recent years.</p>
+
+<h3 id="question-2-did-attacks-with-foreign-connections-happened-in-different-locations">Question 2: Did attacks with foreign connections happened in different locations?</h3>
+
+<p>I will answer this question by first quickly look at the geolocation info for the incidents, tagged with whether they have any form of foreign connections. The first thing I do is to create a new dataframe from the dataset.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Generate geolocation-friendly dataframe for the analysis
+</span><span class="n">dt5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">iweekday</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">weekdays</span><span class="p">(</span><span class="n">dt</span><span class="o">$</span><span class="n">idate</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Sunday'</span><span class="p">,</span><span class="s1">'Monday'</span><span class="p">,</span><span class="s1">'Tuesday'</span><span class="p">,</span><span class="w">
+                                                 </span><span class="s1">'Wednesday'</span><span class="p">,</span><span class="s1">'Thursday'</span><span class="p">,</span><span class="s1">'Friday'</span><span class="p">,</span><span class="s1">'Saturday'</span><span class="p">)),</span><span class="w">
+                    </span><span class="n">imonth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">imonth</span><span class="p">),</span><span class="w">
+                    </span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                    </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                    </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w">
+                    </span><span class="n">INT_ANY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">INT_ANY</span><span class="p">),</span><span class="w"> </span><span class="s2">"Not Sure"</span><span class="p">,</span><span class="w">
+                                     </span><span class="n">ifelse</span><span class="p">(</span><span class="n">INT_ANY</span><span class="o">==</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="s2">"No Foreign Connections"</span><span class="p">,</span><span class="s2">"Has Foreign Connections"</span><span class="w"> </span><span class="p">))),</span><span class="w">
+                    </span><span class="n">idecades</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w"> </span><span class="s2">"Since 2000"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1990</span><span class="p">,</span><span class="w">  </span><span class="s2">"1990s"</span><span class="p">,</span><span class="s2">"1970~1980s"</span><span class="p">))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>I then download an map directly from Google as some “canvases” for my geospatial analytics.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">basemap</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_googlemap</span><span class="p">(</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-97.5</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">40</span><span class="p">),</span><span class="w">
+                         </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w">
+                         </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">640</span><span class="p">,</span><span class="w"> </span><span class="m">420</span><span class="p">),</span><span class="w">
+                         </span><span class="n">maptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'roadmap'</span><span class="p">,</span><span class="w">
+                         </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bw'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggmap</span><span class="p">()</span><span class="w">
+</span><span class="n">basemap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"U.S. Base Map"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/5.png" alt="" /></p>
+
+<p>Now that I have the map canvases ready, it’s time to overlay data from my dataframe onto the map.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">14</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">),</span><span class="w">
+                            </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Foreign Connections"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"Accent"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.78</span><span class="p">,</span><span class="w"> </span><span class="m">0.93</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">14</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/6.png" alt="" /></p>
+
+<p>Although a large portion of the attacks do not have a certain connection with foreign entities, I do see some attacks that have clear international links. Not surprisingly, these attacks are more condensed near the coastal areas and the lake areas, where connections to abroad are more accessible. It is also noted that Utah and Colorado, two inland states, also experienced attacks with foreign links.</p>
+
+<p>Since it seems that attacks with foreign connections happened more often in coastal areas, I zoom in the map a bit to look at the U.S. East Coast and West Coast in greater details separately. First, I will look at East Coast where the attacks appear to be most condense: the Washington, D.C. to New York City area.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">basemap_east</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_googlemap</span><span class="p">(</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-75</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">40</span><span class="p">),</span><span class="w">
+                              </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w">
+                              </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">640</span><span class="p">,</span><span class="w"> </span><span class="m">420</span><span class="p">),</span><span class="w">
+                              </span><span class="n">maptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'roadmap'</span><span class="p">,</span><span class="w">
+                              </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bw'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggmap</span><span class="p">()</span><span class="w">
+
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">e</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap_east</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                       </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">),</span><span class="w">
+                                   </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                                   </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.7</span><span class="p">,</span><span class="w">
+                                   </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Foreign Connections - East Coast"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"Accent"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.79</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">e</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/7.png" alt="" /></p>
+
+<p>The above graph clearly indicates that the New York City metro area has more attacks than the Washington, D.C. metro area. More importantly, there were more attacks with foreign connections happened in the NYC metro area. Interested in the locations of attacks in NYC? I created a map below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">basemap_nyc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_googlemap</span><span class="p">(</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-74</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">40.8</span><span class="p">),</span><span class="w">
+                         </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">,</span><span class="w">
+                         </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">640</span><span class="p">,</span><span class="w"> </span><span class="m">420</span><span class="p">),</span><span class="w">
+                         </span><span class="n">maptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'roadmap'</span><span class="p">,</span><span class="w">
+                         </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bw'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggmap</span><span class="p">()</span><span class="w">
+
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">nyc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap_nyc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">),</span><span class="w">
+                                </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                                </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.7</span><span class="p">,</span><span class="w">
+                                </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Foreign Connections - NYC Metro"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"Accent"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.79</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">nyc</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/8.png" alt="" /></p>
+
+<p>It appears that for attacks that the GTD provided confirmed information, almost all that happened in NYC metro area have foreign connections!</p>
+
+<p>I then zoomed in on the U.S. West Coast to check out the attack locations:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">basemap_west</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_googlemap</span><span class="p">(</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-120</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">40</span><span class="p">),</span><span class="w">
+                         </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w">
+                         </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">640</span><span class="p">,</span><span class="w"> </span><span class="m">420</span><span class="p">),</span><span class="w">
+                         </span><span class="n">maptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'roadmap'</span><span class="p">,</span><span class="w">
+                         </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bw'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggmap</span><span class="p">()</span><span class="w">
+
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap_west</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_ANY</span><span class="p">),</span><span class="w">
+                            </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Foreign Connections - West Coast"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"Accent"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="m">0.12</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">14</span><span class="err">_</span><span class="n">w</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/9.png" alt="" /></p>
+
+<p>It appears that attacks in the West Coast cluster around Portland, Northern California, and Los Angeles metro area. The map indicates that attacks with foreign connections happened more than those without foreign connections. This finding again supports that attacks with foreign connections cluster around coastal areas.</p>
+
+<h3 id="question-3-did-attacks-from-different-era-happened-in-different-locations">Question 3: Did attacks from different era happened in different locations?</h3>
+
+<p>Another aspect I would like to explore on the map is how are attacks spreading out across the U.S. in different eras. I broke down the <code class="highlighter-rouge">iyear</code> variable into three eras - “1970s-1980s”,”1990s”, and “Since 2000” - to roughly reflect the time before the Cold War ends, the 1990s, and the era after “9.11”.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idecades</span><span class="p">),</span><span class="w">
+                            </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Eras"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rev</span><span class="p">(</span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="s2">"RdYlGn"</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">]))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.88</span><span class="p">,</span><span class="w"> </span><span class="m">0.94</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">15</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/10.png" alt="" /></p>
+
+<p>The above map indicates that later attacks in the 21 century distributes more condensely in the coastal areas and the lake area, whereas attacks in the 1970s to 1980s are all over the place across the nation. I created the zoomed map for East Coast and West Coast as below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">15</span><span class="err">_</span><span class="n">e</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap_east</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idecades</span><span class="p">),</span><span class="w">
+                                </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                                </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.5</span><span class="p">,</span><span class="w">
+                                </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Eras - East Coast"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rev</span><span class="p">(</span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="s2">"RdYlGn"</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">]))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.88</span><span class="p">,</span><span class="w"> </span><span class="m">0.1</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">15</span><span class="err">_</span><span class="n">e</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/11.png" alt="" /></p>
+
+<p>For attacks that happened in the East Coast, it appears that more recent attacks are more condensed in the heart of the cities (this case is especially true for those happened in NYC metro area).</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">15</span><span class="err">_</span><span class="n">w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">basemap_west</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w">
+                                       </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idecades</span><span class="p">),</span><span class="w">
+                                   </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt5</span><span class="p">,</span><span class="w">
+                                   </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">.5</span><span class="p">,</span><span class="w">
+                                   </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack by Eras - West Coast"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rev</span><span class="p">(</span><span class="n">brewer.pal</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="s2">"RdYlGn"</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">]))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="m">0.11</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">15</span><span class="err">_</span><span class="n">w</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/12.png" alt="" /></p>
+
+<p>For attacks that happened in the West Coast, it seems that those of earlier decades are more condensed in the southern areas.</p>
+
+<h3 id="question-4-did-attacks-of-different-chracteristics-happened-in-different-locations">Question 4: Did attacks of different chracteristics happened in different locations?</h3>
+
+<p>Now that I have learnt much more of where the attacks are happening, I want to create a more detailed map to compare attacks of different attack types and target types. These maps will help me better comprehend the findings identified in prior analytics. In order to make the geospatial distribution patterns more drastic, I will create heatmaps and contours based on count and location of attacks, with cross-tabulated categorical variables.</p>
+
+<p>First thing I will do is to generate a dataframe for this analysis:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a attack data set with location, nkill, and nwound, will also keep sliceability with other factors
+# Adjust factor level names for better display in faceted visuals
+</span><span class="n">dt6</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">provstate</span><span class="p">,</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="p">,</span><span class="w"> </span><span class="n">propextent</span><span class="p">,</span><span class="n">INT_ANY</span><span class="p">,</span><span class="w">
+                </span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w">
+                </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="w"> </span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'provstate'</span><span class="p">,</span><span class="w"> </span><span class="s1">'latitude'</span><span class="p">,</span><span class="w"> </span><span class="s1">'longitude'</span><span class="p">,</span><span class="w"> </span><span class="s1">'success'</span><span class="p">,</span><span class="w"> </span><span class="s1">'nkill'</span><span class="p">,</span><span class="w"> </span><span class="s1">'nwound'</span><span class="p">,</span><span class="w"> </span><span class="s1">'property'</span><span class="p">,</span><span class="w"> </span><span class="s1">'propextent'</span><span class="p">,</span><span class="w"> </span><span class="s1">'INT_ANY'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="w"> </span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'provstate'</span><span class="p">,</span><span class="w"> </span><span class="s1">'latitude'</span><span class="p">,</span><span class="w"> </span><span class="s1">'longitude'</span><span class="p">,</span><span class="w"> </span><span class="s1">'success'</span><span class="p">,</span><span class="w"> </span><span class="s1">'nkill'</span><span class="p">,</span><span class="w"> </span><span class="s1">'nwound'</span><span class="p">,</span><span class="w"> </span><span class="s1">'property'</span><span class="p">,</span><span class="w"> </span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'INT_ANY'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Business"</span><span class="p">,</span><span class="s2">"Business"</span><span class="p">,</span><span class="w">
+           </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Government (General)"</span><span class="p">,</span><span class="s2">"Government (General)"</span><span class="p">,</span><span class="w">
+                  </span><span class="n">ifelse</span><span class="p">(</span><span class="n">targtype_txt</span><span class="o">==</span><span class="s2">"Private Citizens &amp; Property"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Private Citizens &amp; Property"</span><span class="p">,</span><span class="s2">"Other"</span><span class="p">)))),</span><span class="w">
+    </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+      </span><span class="n">ifelse</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="o">==</span><span class="s2">"Bombing/Explosion"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Bombing/Explosion"</span><span class="p">,</span><span class="w">
+             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="o">==</span><span class="s2">"Facility/Infrastructure Attack"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Facility/Infrastructure Attack"</span><span class="p">,</span><span class="w">
+                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="o">==</span><span class="s2">"Armed Assault"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Armed Assault"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Other"</span><span class="p">)))),</span><span class="w">
+    </span><span class="n">propextent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">propextent</span><span class="p">),</span><span class="w"> </span><span class="s1">'Unknown'</span><span class="p">,</span><span class="w">
+      </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Catastrophic (likely &gt; $1 billion)'</span><span class="p">,</span><span class="w">
+             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Major (likely &gt; $1 million but &lt; $1 billion)'</span><span class="p">,</span><span class="w">
+                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Minor (likely &lt; $1 million)'</span><span class="p">,</span><span class="s1">'Unknown'</span><span class="p">)))))),</span><span class="w">
+    </span><span class="n">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w">
+      </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">property</span><span class="p">),</span><span class="w"> </span><span class="s1">'Unknown'</span><span class="p">,</span><span class="w">
+             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">property</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="s1">'No Property Damage'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Has Property Damage'</span><span class="p">))),</span><span class="w">
+    </span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+    </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+    </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w">
+    </span><span class="n">INT_ANY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">INT_ANY</span><span class="p">),</span><span class="w"> </span><span class="s2">"Not Sure"</span><span class="p">,</span><span class="w">
+                            </span><span class="n">ifelse</span><span class="p">(</span><span class="n">INT_ANY</span><span class="o">==</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="s2">"No Foreign Connections"</span><span class="p">,</span><span class="s2">"Has Foreign Connections"</span><span class="w"> </span><span class="p">))),</span><span class="w">
+    </span><span class="n">idecades</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w"> </span><span class="s2">"Since 2000"</span><span class="p">,</span><span class="w">
+                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1990</span><span class="p">,</span><span class="w">  </span><span class="s2">"1990s"</span><span class="p">,</span><span class="s2">"1970~1980s"</span><span class="p">))),</span><span class="w">
+    </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">success</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Succeed'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Failed'</span><span class="p">))</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Then I will customize the base map canvas for this analysis:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># download basic map layers for plotting
+# base.map &lt;- qmap("United States", zoom = 4, source= "google", maptype="roadmap", color = "bw", crop=FALSE, legend='topleft')
+# base.map &lt;- get_map('United States', zoom = 4, source = "google", maptype = "roadmap", crop=FALSE, color="bw")
+</span><span class="n">base.map</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_googlemap</span><span class="p">(</span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-97.5</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">40</span><span class="p">),</span><span class="w">
+                         </span><span class="n">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w">
+                         </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">640</span><span class="p">,</span><span class="w"> </span><span class="m">420</span><span class="p">),</span><span class="w">
+                         </span><span class="n">maptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'roadmap'</span><span class="p">,</span><span class="w">
+                         </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bw'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggmap</span><span class="p">(</span><span class="n">base_layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt6</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>I will first explore the geospatial distribution by revisting some of the variables I used in the previous analysis. First, let’s look at the distribution of attacks based on target type.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="n">g</span><span class="m">17</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">base.map</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">stat_density2d</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">..level..</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="o">=</span><span class="n">..level..</span><span class="p">),</span><span class="w">
+                                 </span><span class="n">bins</span><span class="o">=</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="o">=</span><span class="s2">"polygon"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">dt6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="s2">"green1"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="o">=</span><span class="s2">"red1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_alpha</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.7</span><span class="p">),</span><span class="w"> </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">targtype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">guides</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Attack Density"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Density by Target Type"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">,</span><span class="w"> </span><span class="n">hjust</span><span class="o">=</span><span class="m">0</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">17</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/13.png" alt="" /> Be noted that the attacks on Business mostly happened in the northeastern coastal area, while a smaller count happened in west coast. Attacks on government (general), private citizens &amp; property, and other types spread out more evenly. It is also worth noticing the southern states such as Tennessee, Arkansas, and Mississippi only saw attacks targeting private citizen &amp; property.</p>
+
+<p>I then move forward to explore the attack location distribution by attack types, as shown below:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create ride density maps
+</span><span class="n">g</span><span class="m">18</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">base.map</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">stat_density2d</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">..level..</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="o">=</span><span class="n">..level..</span><span class="p">),</span><span class="w">
+                          </span><span class="n">bins</span><span class="o">=</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="o">=</span><span class="s2">"polygon"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">dt6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="s2">"green1"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="o">=</span><span class="s2">"red1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_alpha</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.7</span><span class="p">),</span><span class="w"> </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">attacktype_txt</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">guides</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Attack Density"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Density by Attack Type"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">18</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/14.png" alt="" /> Although we did not observe much of a difference among the different attack types across the nation, <strong>Bombing/Explosion</strong> and <strong>Armed Assault</strong> appear to be more densely distributed in East Coast, while <strong>Facility/Infrastructure</strong> attacks appear to be the spreading out more evenly.</p>
+
+<p>Another variable I have not analyzed yet is the <code class="highlighter-rouge">propextent</code> variable, which is the impact of how much property loss resulted from the incident.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create ride density maps
+</span><span class="n">g</span><span class="m">19</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">base.map</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">stat_density2d</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">..level..</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="o">=</span><span class="n">..level..</span><span class="p">),</span><span class="w">
+                          </span><span class="n">bins</span><span class="o">=</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="o">=</span><span class="s2">"polygon"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">dt6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="s2">"green1"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="o">=</span><span class="s2">"red1"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_alpha</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.6</span><span class="p">),</span><span class="w"> </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">propextent</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">guides</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Attack Density"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">ggtitle</span><span class="p">(</span><span class="s2">"Attack Density by Property Loss"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.text</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">axis.ticks</span><span class="o">=</span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="m">19</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/15.png" alt="" /></p>
+
+<p>It is apparent that the Catastrophic property loss only happened during the “9.11” attack. What’s conterintuitive is the fact that Major property loss with more than USD 1 million loss happened across the country.</p>
+
+<h2 id="question-5-what-are-the-motives-or-the-group-affiliations-of-us-terror-attacks">Question 5: What Are the Motives or the Group Affiliations of US Terror Attacks?</h2>
+
+<p>In the last question, I am trying to explain the “rationale” behind the terror attacks in the U.S. over the years. Due to the limitation of the dataset, I will not be able to directly identify the connection between the prepertrators and the foreign terror groups (if any). However, the GTD does have <code class="highlighter-rouge">gname</code> (group claiming responsiblity of the attack) and <code class="highlighter-rouge">motive</code> (text explanation of possible motivation of the attack) variables. I will use these two variables to understand the “motivations” behind the US terror attacks.</p>
+
+<p>I start by analyzing the incident counts in the U.S. and the world for each group and visualize the groups using scatterplots.</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Create a long table for group-related data in the US
+</span><span class="n">dt7</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                     </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                     </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w">
+                     </span><span class="n">propextent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">propextent</span><span class="p">),</span><span class="w"> </span><span class="s1">'Unknown'</span><span class="p">,</span><span class="w">
+                                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+                                                                    </span><span class="s1">'Catastrophic (likely &gt; $1 billion)'</span><span class="p">,</span><span class="w">
+                                                                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
+                                                                           </span><span class="s1">'Major (likely &gt; $1 million but &lt; $1 billion)'</span><span class="p">,</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Minor (likely &lt; $1 million)'</span><span class="p">,</span><span class="s1">'Unknown'</span><span class="p">)))))))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">n_killwound</span><span class="p">,</span><span class="n">propextent</span><span class="p">,</span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">gname2</span><span class="p">,</span><span class="w"> </span><span class="n">gname3</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype3_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname3'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w">
+                   </span><span class="s1">'gname3'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="s1">'attacktype_txt'</span><span class="p">,</span><span class="w">
+                   </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname3'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gname"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"weaptype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">idecades</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2010</span><span class="p">,</span><span class="w"> </span><span class="s2">"Since 2010"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w">  </span><span class="s2">"2000s"</span><span class="p">,</span><span class="w">
+                                                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1990</span><span class="p">,</span><span class="w"> </span><span class="s2">"1990s"</span><span class="p">,</span><span class="w">
+                                                           </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1980</span><span class="p">,</span><span class="w"> </span><span class="s2">"1980s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1970s"</span><span class="p">))))))</span><span class="w">
+</span><span class="c1"># Create a similar table for the world, as a reference data in following analysis
+</span><span class="n">dt7_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                     </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                     </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">,</span><span class="w">
+                     </span><span class="n">propextent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">propextent</span><span class="p">),</span><span class="w"> </span><span class="s1">'Unknown'</span><span class="p">,</span><span class="w">
+                                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+                                                                    </span><span class="s1">'Catastrophic (likely &gt; $1 billion)'</span><span class="p">,</span><span class="w">
+                                                                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
+                                                                           </span><span class="s1">'Major (likely &gt; $1 million but &lt; $1 billion)'</span><span class="p">,</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="n">propextent</span><span class="w"> </span><span class="o">==</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Minor (likely &lt; $1 million)'</span><span class="p">,</span><span class="s1">'Unknown'</span><span class="p">)))))))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span><span class="w"> </span><span class="n">iyear</span><span class="p">,</span><span class="w"> </span><span class="n">n_killwound</span><span class="p">,</span><span class="n">propextent</span><span class="p">,</span><span class="n">targtype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">targtype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">attacktype3_txt</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">gname2</span><span class="p">,</span><span class="w"> </span><span class="n">gname3</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype1_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype2_txt</span><span class="p">,</span><span class="w"> </span><span class="n">weaptype3_txt</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype3_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname3'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'targtype1_txt'</span><span class="p">,</span><span class="s1">'targtype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'targtype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"targtype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w">
+                   </span><span class="s1">'gname3'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'attacktype1_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype2_txt'</span><span class="p">,</span><span class="s1">'attacktype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"attacktype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="s1">'attacktype_txt'</span><span class="p">,</span><span class="w">
+                   </span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'gname'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'gname3'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gname"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">melt</span><span class="p">(</span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'eventid'</span><span class="p">,</span><span class="s1">'iyear'</span><span class="p">,</span><span class="s1">'n_killwound'</span><span class="p">,</span><span class="s1">'propextent'</span><span class="p">,</span><span class="s1">'targtype_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'attacktype_txt'</span><span class="p">,</span><span class="s1">'gname'</span><span class="p">),</span><span class="w">
+       </span><span class="n">measure.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'weaptype1_txt'</span><span class="p">,</span><span class="s1">'weaptype2_txt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'weaptype3_txt'</span><span class="p">),</span><span class="w">
+       </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"weaptype_txt"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">variable</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">targtype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">targtype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">attacktype_txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">attacktype_txt</span><span class="p">),</span><span class="w">
+                                      </span><span class="n">idecades</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2010</span><span class="p">,</span><span class="w"> </span><span class="s2">"Since 2010"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2000</span><span class="p">,</span><span class="w">  </span><span class="s2">"2000s"</span><span class="p">,</span><span class="w">
+                                                    </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1990</span><span class="p">,</span><span class="w"> </span><span class="s2">"1990s"</span><span class="p">,</span><span class="w">
+                                                           </span><span class="n">ifelse</span><span class="p">(</span><span class="n">iyear</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">1980</span><span class="p">,</span><span class="w"> </span><span class="s2">"1980s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1970s"</span><span class="p">))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Define function Mode() for easier summarization
+</span><span class="n">Mode</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">ux</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w">
+  </span><span class="n">ux</span><span class="p">[</span><span class="n">which.max</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ux</span><span class="p">)))][</span><span class="m">1</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">dt7.1_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt7_w</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">group_by</span><span class="p">(</span><span class="n">gname</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">world_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_distinct</span><span class="p">(</span><span class="n">eventid</span><span class="p">))</span><span class="w">
+</span><span class="n">dt7.1_c</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">group_by</span><span class="p">(</span><span class="n">gname</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">mutate</span><span class="p">(</span><span class="n">nkill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nkill</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nkill</span><span class="p">),</span><span class="w">
+                                             </span><span class="n">nwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ifelse</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">nwound</span><span class="p">),</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nwound</span><span class="p">),</span><span class="w">
+                                             </span><span class="n">n_killwound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nkill</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nwound</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">n_casualty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">n_killwound</span><span class="p">))</span><span class="w">
+</span><span class="n">dt7.1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt7</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">group_by</span><span class="p">(</span><span class="n">gname</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">summarise</span><span class="p">(</span><span class="n">us_incident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_distinct</span><span class="p">(</span><span class="n">eventid</span><span class="p">),</span><span class="w">
+                                               </span><span class="n">property_loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Mode</span><span class="p">(</span><span class="n">propextent</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">left_join</span><span class="p">(</span><span class="n">dt7.1_w</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">gname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gname"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">left_join</span><span class="p">(</span><span class="n">dt7.1_c</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">gname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gname"</span><span class="p">))</span><span class="w">
+
+</span><span class="n">g</span><span class="m">20</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt7.1</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">us_incident</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">world_incident</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_casualty</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property_loss</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">lm</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Terror Group Attacks in the World vs in the U.S."</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the U.S. (log)"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the World (log)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_discrete</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Property Loss"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_size_continuous</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Casualty Levels"</span><span class="p">,</span><span class="w"> </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2.5</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.72</span><span class="p">,</span><span class="w"> </span><span class="m">0.2</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+
+</span><span class="n">g</span><span class="m">20</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/16.png" alt="" /> The above chart indicates that terror groups tends to have <strong>two different trends</strong> when compared between their attacks in the U.S. and the world: some don’t have much presence in the U.S. (groups shown on the left hand side of the graph going along the y axis) and some have major presence in the U.S. (groups shown along the regression line). For the groups that have major presence in the US, we can observe a clear linear relation between their attacks in the US and their attacks around the world . The “9.11” attack, which is the large red circle on the chart, appears to be <strong>an outlier</strong> (or “Black Swan” in international affairs terms), that goes against the general trend of group attack activeness.</p>
+
+<p>I step further to dive deeper into the groups that are mostly active (in terms of attack count) in the U.S. How are these groups’ activities around the world?</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Function to display percentage
+</span><span class="n">percent</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"f"</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">paste0</span><span class="p">(</span><span class="n">formatC</span><span class="p">(</span><span class="m">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digits</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p">),</span><span class="w"> </span><span class="s2">"%"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c1"># Identify the top 20 active groups in the US attacks
+</span><span class="n">dt7.2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">dt7.1</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">us_incident</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+   </span><span class="n">mutate</span><span class="p">(</span><span class="w">
+     </span><span class="n">us_portion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">us_incident</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">world_incident</span><span class="p">,</span><span class="w">
+     </span><span class="n">us_percentage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">percent</span><span class="p">(</span><span class="n">us_incident</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">world_incident</span><span class="p">)))[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">,]</span><span class="w">
+
+</span><span class="n">g</span><span class="m">21</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt7.2</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">us_incident</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">world_incident</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">us_portion</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property_loss</span><span class="p">))</span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">lm</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_size_continuous</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Attacks in U.S. / Attacks in World"</span><span class="p">,</span><span class="w"> </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_text_repel</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">ifelse</span><span class="p">(</span><span class="n">us_incident</span><span class="o">&gt;</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">gname</span><span class="p">),</span><span class="w"> </span><span class="s1">''</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"20 Most Active Terror Group's Attacks in the U.S. vs in the World"</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the U.S."</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the World"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_discrete</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Property Loss"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+
+</span><span class="n">g</span><span class="m">21</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/17.png" alt="" /></p>
+
+<p>Interestingly enough, almost all of the most actively terror groups (with the most responsible attacks) in the U.S. has conducted minor amount of attacks outside of the U.S. (with their U.S. attack / World attack close to 1). These most likely domestic terror groups did most of the property damage in the lower Minor scopes, although the “minor” here is nothing minor in our common sense; they are just scales to separate these attacks from the most deadly and catastrophic ones.</p>
+
+<p>How about terror groups with the most attack count in the world? How many U.S. attacks are directly related to them? I created the following chart:</p>
+
+<div class="language-r highlighter-rouge"><pre class="highlight"><code><span class="c1"># Identify the top 20 groups with attacks in the world that also attacks the US
+</span><span class="n">dt7.3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">dt7.1</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">world_incident</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+   </span><span class="n">mutate</span><span class="p">(</span><span class="w">
+     </span><span class="n">us_portion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">us_incident</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">world_incident</span><span class="p">,</span><span class="w">
+     </span><span class="n">us_percentage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">percent</span><span class="p">(</span><span class="n">us_incident</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">world_incident</span><span class="p">)))[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">,]</span><span class="w">
+
+
+</span><span class="n">g</span><span class="m">22</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dt7.3</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">us_incident</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">world_incident</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">us_portion</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property_loss</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_size_continuous</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Attacks in U.S. / Attacks in World"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">lm</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_text_repel</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">ifelse</span><span class="p">(</span><span class="n">us_incident</span><span class="o">&gt;</span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">gname</span><span class="p">),</span><span class="s1">''</span><span class="p">)),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"20 Most Active Terror Group's Attacks in the World vs in the U.S."</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the U.S. (log)"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Group's Attacks in the World (log)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_discrete</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Property Loss"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.05</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span><span class="w">
+        </span><span class="n">legend.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'white'</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">22</span><span class="p">))</span><span class="w">
+
+</span><span class="n">g</span><span class="m">22</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><img src="/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/18.png" alt="" /></p>
+
+<p>The most active worldwide terror groups, however, does not seem to have too much of a presence in the U.S. What I am observing here is that some of the groups on the right are clustered with a positive relation between U.S. attacks and world attacks, while other groups on the left does not have much of an presence in the U.S. The color (i.e. property loss) of those clustered on the right are among the Unknown and Minor levels, which is consistent with my previous chart.</p>
+
+<h2 id="findings-and-conclusions">Findings and Conclusions</h2>
+
+<p>My in-depth exploration of the GTD database provide me with a brand-new understanding of the U.S. terror attacks history, much of which is counterintuitive:</p>
+
+<ol>
+  <li>The certain and successful terror attacks in the US are decreasing; attack number in recent years are far less than that of the 1970s</li>
+  <li>The casualty of terror attacks in the U.S. dwarves in front of attacks around the world; however, “9.11” attacks are outliers and have the biggest life loss in the world terror attack history</li>
+  <li>On the contrary, terror attacks and resulted casualties increased exponentially in other parts of the world since 2000, with Middle East, South Asia, and Sub-Saharan Africa suffering the most</li>
+  <li>Attacks in the U.S. tend to happen more frequently on Mondays and Fridays, and often takes the form of Bombing/Explosion, Facility/Infrastructure Attack, or Armed Assault</li>
+  <li>Business and Government (General) tends of be targets of the attacks before 1990s. In recent years, however, Religious Figures/Institutions, Police, and Abortion Related entities seem to receive more hits</li>
+  <li>Around 682 attacks out of the 2164 have certain connections to foreign entities; these attacks tend to happen in populous area and coastal areas</li>
+  <li>Property loss of more than USD 1 million is often among attacks, but only the “9.11” attacks claimed more than USD 1 billion in property loss</li>
+  <li>The most active terror groups do majority of their attacks around the world in the U.S., indicating that they might be of domestic origin. “9.11” attacks, however, are conducted by less active group in terms of attack count, but claims the most significant loss in life and property. We call this “Black Swan” incidents.</li>
+</ol>
+
+<p>It is worth noting that the GTD data was collected through openly available sources; the precision of these findings fully depend on the quality of the sources. Additionally, since the database was maintained over a long period of time by multiple institutions, data consistency could be a challenge. Last but not least, the reported attacks in this dataset might be be enough to objectively reflect the terrorism threats to the U.S., since the lack of information about attempted but failed attacks are not sufficiently reported. When comparing to situations in other parts of the world, it is important to acknowledge that the U.S. government’s public safety measurements are effective.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#data-mining" class="page__taxonomy-item" rel="tag">Data-Mining</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#eda" class="page__taxonomy-item" rel="tag">EDA</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#r-programming" class="page__taxonomy-item" rel="tag">R-programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/categories/#project" class="page__taxonomy-item" rel="tag">Project</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-16T00:00:00-04:00">June 16, 2017</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="http://localhost:4000/project/gtd-data-visualization/" class="pagination--pager" title="Global Terrorism Database (1970 - 2015) Descriptive Data Visualization
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/ElvinOuyang"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Elvin Ouyang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96112090-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'elvinouyang-github-io';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>
