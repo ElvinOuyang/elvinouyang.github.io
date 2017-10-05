@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-04T11:28:19-04:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Global Terrorism Database (1970 - 2015) Detailed Analytics</title><link href="http://localhost:4000/project/gtd-detailed-data-mining/" rel="alternate" type="text/html" title="Global Terrorism Database (1970 - 2015) Detailed Analytics" /><published>2017-06-16T00:00:00-04:00</published><updated>2017-06-16T00:00:00-04:00</updated><id>http://localhost:4000/project/gtd-detailed-data-mining</id><content type="html" xml:base="http://localhost:4000/project/gtd-detailed-data-mining/">&lt;p&gt;This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). All of the research questions were raised by me based on my background knowledge in international affairs. For more information regarding the details of GTD or the project in general, please check out my previous post &lt;a href=&quot;/project/gtd-data-cleaning/&quot;&gt;Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-05T14:15:15-04:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Global Terrorism Database (1970 - 2015) Detailed Analytics</title><link href="http://localhost:4000/project/gtd-detailed-data-mining/" rel="alternate" type="text/html" title="Global Terrorism Database (1970 - 2015) Detailed Analytics" /><published>2017-06-16T00:00:00-04:00</published><updated>2017-06-16T00:00:00-04:00</updated><id>http://localhost:4000/project/gtd-detailed-data-mining</id><content type="html" xml:base="http://localhost:4000/project/gtd-detailed-data-mining/">&lt;p&gt;This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). All of the research questions were raised by me based on my background knowledge in international affairs. For more information regarding the details of GTD or the project in general, please check out my previous post &lt;a href=&quot;/project/gtd-data-cleaning/&quot;&gt;Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note: some visuals created in this post does have an interactive HTML widget version. If you click on those graphs, you will see the interactive version in a new tab in your browser.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;digging-into-attack-patterns&quot;&gt;Digging into Attack Patterns&lt;/h2&gt;
 
@@ -40,7 +42,8 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: Interactive Visual Available for this graph, click on the graph to view.&lt;/strong&gt;
+&lt;a href=&quot;https://s3.amazonaws.com/elvinouyang.github.io/attack_by_attack_type.html&quot;&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;The above graph indicates that &lt;em&gt;Bombing/Explosion&lt;/em&gt; was a dominating type back in the 1970s and 1980s, while &lt;em&gt;Facility/Infrastructure Attack&lt;/em&gt; picked up in the 1990s and early 2000s. In the most recent decade, however, attacks are taking other forms (as &lt;em&gt;Other&lt;/em&gt; type). I will revisit this “Other” type in following analysis.&lt;/p&gt;
 
@@ -59,7 +62,8 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: Interactive Visual Available for this graph, click on the graph to view.&lt;/strong&gt;
+&lt;a href=&quot;https://s3.amazonaws.com/elvinouyang.github.io/attack_by_target_type.html&quot;&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;From the above graph I can infer that &lt;em&gt;Business&lt;/em&gt; has consistently been the target of terror attacks over the years, while &lt;em&gt;Other&lt;/em&gt; targets take a large portion in the distribution. I will revisit this “Other” group in later analysis.&lt;/p&gt;
 
@@ -96,8 +100,8 @@
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: Interactive Visual Available for this graph, click on the graph to view.&lt;/strong&gt;
+&lt;a href=&quot;https://s3.amazonaws.com/elvinouyang.github.io/attack_by_attack_type_2000.html&quot;&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;The recent five years have seen the rise of &lt;em&gt;Armed Assault&lt;/em&gt; as a major attack type, together with &lt;em&gt;Facility/Infrastructure Attack&lt;/em&gt; and &lt;em&gt;Unarmed Assault&lt;/em&gt;. &lt;em&gt;Bombing/Explosion&lt;/em&gt; is happening less often than before. This reductions in traditionally “typical” attack types seems to related to the fact that the U.S. government might have paid extra attention to the “typical” terror attacks and the terrorists had to seek other approaches in their attacks.&lt;/p&gt;
 
@@ -112,8 +116,8 @@
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: Interactive Visual Available for this graph, click on the graph to view.&lt;/strong&gt;
+&lt;a href=&quot;https://s3.amazonaws.com/elvinouyang.github.io/attack_by_target_type_2000.html&quot;&gt;&lt;img src=&quot;/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Similar to the attack types, recent years have seen the increase of terror attacks on the &lt;em&gt;Religious Figures/Institutions&lt;/em&gt;, &lt;em&gt;Police&lt;/em&gt;, and &lt;em&gt;Abortion Related&lt;/em&gt; targets. Traditionally “popular” targets, such as &lt;em&gt;Business&lt;/em&gt;, was attacked less often, while &lt;em&gt;Private Citizens &amp;amp; Property&lt;/em&gt; remains to be a frequent target. The reason behind this, again, might be related to the public safety measurements placed by the government on the “typical” targets, leading to bigger variety in the target type in recent years.&lt;/p&gt;
 

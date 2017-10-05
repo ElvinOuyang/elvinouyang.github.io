@@ -16,6 +16,8 @@ categories:
 
 This post is the third of my three posts about the explorative data analysis project on Global Terrorism Database (GTD). All of the research questions were raised by me based on my background knowledge in international affairs. For more information regarding the details of GTD or the project in general, please check out my previous post [Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning]({% post_url 2017-05-30-gtd-data-cleaning %}).
 
+**Note: some visuals created in this post does have an interactive HTML widget version. If you click on those graphs, you will see the interactive version in a new tab in your browser.**
+
 Digging into Attack Patterns
 ----------------------------
 
@@ -57,7 +59,8 @@ g10 <- dt3 %>% mutate(attack_type = attacktype_txt) %>% dplyr::group_by(iyear, a
 g10
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png)
+**Note: Interactive Visual Available for this graph, click on the graph to view.**
+[![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/1.png)](https://s3.amazonaws.com/elvinouyang.github.io/attack_by_attack_type.html)
 
 The above graph indicates that *Bombing/Explosion* was a dominating type back in the 1970s and 1980s, while *Facility/Infrastructure Attack* picked up in the 1990s and early 2000s. In the most recent decade, however, attacks are taking other forms (as *Other* type). I will revisit this "Other" type in following analysis.
 
@@ -76,7 +79,8 @@ g11 <- dt3 %>% mutate(target_type = targtype_txt) %>% dplyr::group_by(iyear, tar
 g11
 ```
 
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png)
+**Note: Interactive Visual Available for this graph, click on the graph to view.**
+[![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/2.png)](https://s3.amazonaws.com/elvinouyang.github.io/attack_by_target_type.html)
 
 From the above graph I can infer that *Business* has consistently been the target of terror attacks over the years, while *Other* targets take a large portion in the distribution. I will revisit this "Other" group in later analysis.
 
@@ -113,8 +117,8 @@ g12 <- dt4 %>% dplyr::group_by(iyear, attacktype_txt) %>% summarise(n_incident =
                         plot.title = element_text(size=22))
 g12
 ```
-
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png)
+**Note: Interactive Visual Available for this graph, click on the graph to view.**
+[![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/3.png)](https://s3.amazonaws.com/elvinouyang.github.io/attack_by_attack_type_2000.html)
 
 The recent five years have seen the rise of *Armed Assault* as a major attack type, together with *Facility/Infrastructure Attack* and *Unarmed Assault*. *Bombing/Explosion* is happening less often than before. This reductions in traditionally "typical" attack types seems to related to the fact that the U.S. government might have paid extra attention to the "typical" terror attacks and the terrorists had to seek other approaches in their attacks.
 
@@ -129,8 +133,8 @@ g13 <- dt4 %>% dplyr::group_by(iyear, targtype_txt) %>% summarise(n_incident = n
                         plot.title = element_text(size=22))
 g13
 ```
-
-![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png)
+**Note: Interactive Visual Available for this graph, click on the graph to view.**
+[![](/assets/images/gtd/2017-06-16-gtd-detailed-data-mining_files/figure-markdown_github/4.png)](https://s3.amazonaws.com/elvinouyang.github.io/attack_by_target_type_2000.html)
 
 Similar to the attack types, recent years have seen the increase of terror attacks on the *Religious Figures/Institutions*, *Police*, and *Abortion Related* targets. Traditionally "popular" targets, such as *Business*, was attacked less often, while *Private Citizens & Property* remains to be a frequent target. The reason behind this, again, might be related to the public safety measurements placed by the government on the "typical" targets, leading to bigger variety in the target type in recent years.
 
