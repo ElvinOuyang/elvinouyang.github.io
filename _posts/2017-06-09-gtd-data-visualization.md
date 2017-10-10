@@ -14,6 +14,8 @@ categories:
 
 This post is the second of my three posts on the explorative data analysis project on Global Terrorism Database (GTD). For more information regarding the details of GTD or the project in general, please check out my previous post [Global Terrorism Database (1970 - 2015) Preliminary Data Cleaning]({% post_url 2017-05-30-gtd-data-cleaning %}).
 
+All relevant codes used to generate visuals in these three posts can be found at [my GitHub GTD repository](https://github.com/ElvinOuyang/gtd-analytics).
+
 Understand Terror Attacks in the U.S.
 =====================================
 

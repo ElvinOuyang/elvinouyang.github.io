@@ -1,3 +1,13 @@
+---
+title: "Quick Guide to Create Frequency Table from Wide Table Using R"
+date: 2017-07-10
+tags:
+  - R-programming
+  - Data Manipulation Tips
+categories:
+  - Tutorials
+---
+
 ``` r
 library(dplyr)
 library(reshape2)

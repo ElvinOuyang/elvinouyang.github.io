@@ -17,7 +17,9 @@ Introduction
 
 In the coming three posts, I will show my explrative data analytics work on the [Global Terrorism Database (GTD)](https://www.start.umd.edu/gtd/), a database maintained by the [National Consortium for the Study of Terrorism (START)](http://www.start.umd.edu/) at the University of Maryland, College Park. I used the [version published on Kaggle](https://www.kaggle.com/START-UMD/gtd) in early 2017 for this project, which covers terrorist attacks happened between 1970 and 2015. (This database has been updated in July 2017 to include incidents in 2016.)
 
-From the GTD exlporative analysis, I hoped to gather some insights from the 45 years of data on terrorism and global public safety. More specifically, I intend to answer the following questions:
+All relevant codes used to generate visuals in these three posts can be found at [my GitHub GTD repository](https://github.com/ElvinOuyang/gtd-analytics).
+
+From the GTD explorative analysis, I hoped to gather some insights from the 45 years of data on terrorism and global public safety. More specifically, I intend to answer the following questions:
 
 -   Since 1970, how many terrorist attacks have occurred in the United States? How does it look from a global scale?
 -   Of those attacks happened in the U.S., what are their attack methods and targets?
