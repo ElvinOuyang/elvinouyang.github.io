@@ -305,7 +305,7 @@
       <section class="page__content" itemprop="text">
         <h2 id="introduction">Introduction</h2>
 
-<p>In this post, I will showcase the steps I took to create a continuous vector space based on the corpora included in the famous <a href="https://archive.ics.uci.edu/ml/datasets/reuters-21578+text+categorization+collection">Reuters-21578 dataset</a> (hereafter ‘reusters dataset’). The reuters dataset is a tagged text corpora with news excerpts from Reuters newswire in 1987. Although the contents of the news is somewhat outdated, the topic labels provided in this dataset is widely used as a benchmark for supervised learning tasks that involve natural language processing (NLP).</p>
+<p>In this post, I will showcase the steps I took to create a continuous vector space based on the corpora included in the famous <a href="https://archive.ics.uci.edu/ml/datasets/reuters-21578+text+categorization+collection">Reuters-21578 dataset</a> (hereafter ‘reuters dataset’). The reuters dataset is a tagged text corpora with news excerpts from Reuters newswire in 1987. Although the contents of the news is somewhat outdated, the topic labels provided in this dataset is widely used as a benchmark for supervised learning tasks that involve natural language processing (NLP).</p>
 
 <p><a href="https://en.wikipedia.org/wiki/Word2vec">Word2Vec</a>, among other word embedding models, is a neural network model that aims to generate numerical feature vectors for words in a way that maintains the relative meanings of the words in the mapped vectors. It provides a reliable method to reduce the feature dimensionality of the data, which is the biggest challenge for traditional NLP models such as the Bag of Words (BOW) model.</p>
 
@@ -316,9 +316,11 @@
   <li>The resulted features are sparse, making it harder to build predictive models with</li>
 </ul>
 
+<p>Although these two drawbacks could be fixed with n-gram and dimensionality reduction, it is an analyst’s dream to have a model like Word2Vec that gives you sensible vector representation of words that’s useful for semantic analysis.</p>
+
 <h2 id="load-reuters-dataset">Load Reuters Dataset</h2>
 
-<p>Before applying the models, I will generate a dataframe with the corpora. The first step is to download the reuters data and check what’s inside.</p>
+<p>Before applying the models, I will generate a dataframe with the corpora. The first step is to download the reuters data and check out what is inside.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
@@ -341,7 +343,7 @@
 </code></pre>
 </div>
 
-<p>The <code class="highlighter-rouge">reuters</code> from <code class="highlighter-rouge">nltk</code> comes with its specific sets of methods, making it hard to select and filter desired corpora. For my purpose in this report, I will only select 2 popular tags out of the 90 tags included in this corpora. Therefore, my next step is to generate a frequency table that summarizes the tags.</p>
+<p>The <code class="highlighter-rouge">reuters</code> from <code class="highlighter-rouge">nltk</code> package comes with its specific sets of methods, making it hard to select and filter desired corpora. For my purpose in this report, I will only select 2 popular tags out of the 90 tags included in this corpora. Therefore, my next step is to generate a frequency table that summarizes the tags.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># create counter to summarize</span>
 <span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
@@ -371,11 +373,10 @@
 </code></pre>
 </div>
 
-<p>I decide to chose the <strong>second and third</strong> tags on this top tags list, since the first <strong>earn</strong> tag is most likely the highly-standarized news pieces with earnings reports.</p>
+<p>I decide to chose the <strong>second and third</strong> tags on this top tags list, since the first <strong>earn</strong> tag is most likely the highly-standardized news pieces with earnings reports.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># Select documents that only contains top two labels with most documents</span>
 <span class="n">cat_start</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cat_end</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">category_filter</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">cat_start</span><span class="p">:</span><span class="n">cat_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"&gt;&gt;&gt; The following categories are selected for the analysis: </span><span class="se">\
 </span><span class="s">      {category_filter}"</span><span class="p">)</span>
@@ -588,7 +589,7 @@ This corpus has 11042 key words, and the 10 most frequent words are: [('say', 73
 </code></pre>
 </div>
 
-<p>A glimpse of the resulted word matrix indicates that the dataset is now filled with continous numeric values. I can now use more models to predict the labels of these news pieces. I will test the effectiveness of these two models in my upcoming posts.</p>
+<p>A glimpse of the resulted word matrix indicates that the dataset is now filled with continuous numeric values. I can now use more models to predict the labels of these news pieces. I will test the effectiveness of these two models in my upcoming posts.</p>
 
         
       </section>

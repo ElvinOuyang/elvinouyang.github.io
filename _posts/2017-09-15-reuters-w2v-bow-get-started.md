@@ -12,7 +12,7 @@ categories:
 
 ## Introduction
 
-In this post, I will showcase the steps I took to create a continuous vector space based on the corpora included in the famous [Reuters-21578 dataset](https://archive.ics.uci.edu/ml/datasets/reuters-21578+text+categorization+collection) (hereafter 'reusters dataset'). The reuters dataset is a tagged text corpora with news excerpts from Reuters newswire in 1987. Although the contents of the news is somewhat outdated, the topic labels provided in this dataset is widely used as a benchmark for supervised learning tasks that involve natural language processing (NLP).
+In this post, I will showcase the steps I took to create a continuous vector space based on the corpora included in the famous [Reuters-21578 dataset](https://archive.ics.uci.edu/ml/datasets/reuters-21578+text+categorization+collection) (hereafter 'reuters dataset'). The reuters dataset is a tagged text corpora with news excerpts from Reuters newswire in 1987. Although the contents of the news is somewhat outdated, the topic labels provided in this dataset is widely used as a benchmark for supervised learning tasks that involve natural language processing (NLP).
 
 [Word2Vec](https://en.wikipedia.org/wiki/Word2vec), among other word embedding models, is a neural network model that aims to generate numerical feature vectors for words in a way that maintains the relative meanings of the words in the mapped vectors. It provides a reliable method to reduce the feature dimensionality of the data, which is the biggest challenge for traditional NLP models such as the Bag of Words (BOW) model.
 
@@ -21,10 +21,11 @@ In this post, I will showcase the steps I took to create a continuous vector spa
 * The sequencing and relative positioning of the words are largely ignored
 * The resulted features are sparse, making it harder to build predictive models with
 
+Although these two drawbacks could be fixed with n-gram and dimensionality reduction, it is an analyst's dream to have a model like Word2Vec that gives you sensible vector representation of words that's useful for semantic analysis.
 
 ## Load Reuters Dataset
 
-Before applying the models, I will generate a dataframe with the corpora. The first step is to download the reuters data and check what's inside.
+Before applying the models, I will generate a dataframe with the corpora. The first step is to download the reuters data and check out what is inside.
 
 
 ```python
@@ -47,7 +48,7 @@ print(">>> The reuters corpus has {} documents".format(len(reuters.fileids())))
     >>> The reuters corpus has 10788 documents
 
 
-The `reuters` from `nltk` comes with its specific sets of methods, making it hard to select and filter desired corpora. For my purpose in this report, I will only select 2 popular tags out of the 90 tags included in this corpora. Therefore, my next step is to generate a frequency table that summarizes the tags.
+The `reuters` from `nltk` package comes with its specific sets of methods, making it hard to select and filter desired corpora. For my purpose in this report, I will only select 2 popular tags out of the 90 tags included in this corpora. Therefore, my next step is to generate a frequency table that summarizes the tags.
 
 
 ```python
@@ -77,13 +78,12 @@ print(df.head())
     17      crude         578
 
 
-I decide to chose the **second and third** tags on this top tags list, since the first **earn** tag is most likely the highly-standarized news pieces with earnings reports.
+I decide to chose the **second and third** tags on this top tags list, since the first **earn** tag is most likely the highly-standardized news pieces with earnings reports.
 
 
 ```python
 # Select documents that only contains top two labels with most documents
 cat_start = 1
-cat_end = 2
 category_filter = df.iloc[cat_start:cat_end + 1, 0].values.tolist()
 print(f">>> The following categories are selected for the analysis: \
       {category_filter}")
@@ -295,4 +295,4 @@ print(pd.DataFrame(test_matrix).head())
     [5 rows x 100 columns]
 
 
-A glimpse of the resulted word matrix indicates that the dataset is now filled with continous numeric values. I can now use more models to predict the labels of these news pieces. I will test the effectiveness of these two models in my upcoming posts.
+A glimpse of the resulted word matrix indicates that the dataset is now filled with continuous numeric values. I can now use more models to predict the labels of these news pieces. I will test the effectiveness of these two models in my upcoming posts.
