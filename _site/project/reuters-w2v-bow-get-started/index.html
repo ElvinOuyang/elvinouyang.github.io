@@ -19,7 +19,7 @@
 
 
 
-<title>            Applying Bag of Words and Word2Vec models on Reuters-21578 Text Categorization Collection Dataset      Elvin Ouyang’s Blog      </title>
+<title>            Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset      Elvin Ouyang’s Blog      </title>
 
 
 
@@ -33,7 +33,7 @@
 
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="Elvin Ouyang's Blog">
-<meta property="og:title" content="Applying Bag of Words and Word2Vec models on Reuters-21578 Text Categorization Collection Dataset">
+<meta property="og:title" content="Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset">
 
 
   <link rel="canonical" href="http://localhost:4000/project/reuters-w2v-bow-get-started/">
@@ -280,7 +280,7 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Applying Bag of Words and Word2Vec models on Reuters-21578 Text Categorization Collection Dataset">
+    <meta itemprop="headline" content="Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset">
     <meta itemprop="description" content="Introduction">
     <meta itemprop="datePublished" content="September 15, 2017">
     
@@ -288,7 +288,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 class="page__title" itemprop="headline">Applying Bag of Words and Word2Vec models on Reuters-21578 Text Categorization Collection Dataset
+          <h1 class="page__title" itemprop="headline">Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset
 </h1>
           
             <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
@@ -462,7 +462,7 @@ This corpus has 11042 key words, and the 10 most frequent words are: [('say', 73
 </code></pre>
 </div>
 
-<p>The BOW is a frequency table that records the word frequencies for each news piece in the corpora. If I turn it into a table view, it is clear that the most of the columns will be <code class="highlighter-rouge">NaN</code> due to the sparse nature of a BOW model. In fact, for the few rows of the <code class="highlighter-rouge">test_bow</code> table, all displayed cells below are NaN. Tables like this will make most of the data science models inprecise when we conduct predictive analysis.</p>
+<p>The BOW is a frequency table that records the word frequencies for each news piece in the corpora. If I turn it into a table view, it is clear that the most of the columns will be <code class="highlighter-rouge">NaN</code> due to the sparse nature of a BOW model. In fact, for the few rows of the <code class="highlighter-rouge">test_bow</code> table, all displayed cells below are NaN. Tables like this will make most of the data science models imprecise when we conduct predictive analysis.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_bow</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </code></pre>
@@ -555,7 +555,7 @@ This corpus has 11042 key words, and the 10 most frequent words are: [('say', 73
 </code></pre>
 </div>
 
-<p>Be noted that my <code class="highlighter-rouge">word2vec</code> model was trained with the <code class="highlighter-rouge">train_clean_token</code> corpus, but I use the model on the <code class="highlighter-rouge">test_clean_token</code> here. I did it on purpose because in real-life situation, you won’t know your test set when you train the model. If you need to evaluate how accurate the model can be, you need to seperate the train and test even on the word embedding stage.</p>
+<p>Be noted that my <code class="highlighter-rouge">word2vec</code> model was trained with the <code class="highlighter-rouge">train_clean_token</code> corpus, but I use the model on the <code class="highlighter-rouge">test_clean_token</code> here. I did it on purpose because in real-life situation, you won’t know your test set when you train the model. If you need to evaluate how accurate the model can be, you need to separate the train and test even on the word embedding stage.</p>
 
 <p>A work-around that I’ve thought of is to update the <code class="highlighter-rouge">word2vec</code> model on the fly by feeding it the new corpora that come with the new documents: in this way I only update the model with the information that I know of - the test document I’m dealing with and all the train documents. I will further elaborate on this idea in my future posts about word embedding applications.</p>
 
@@ -613,7 +613,7 @@ This corpus has 11042 key words, and the 10 most frequent words are: [('say', 73
     
       
       
-      <a href="http://localhost:4000/tags/#natural-language-processing" class="page__taxonomy-item" rel="tag">natural language processing</a><span class="sep">, </span>
+      <a href="http://localhost:4000/tags/#natural-language-processing" class="page__taxonomy-item" rel="tag">Natural Language Processing</a><span class="sep">, </span>
     
       
       

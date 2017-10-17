@@ -1,11 +1,11 @@
 ---
-title: "Applying Bag of Words and Word2Vec models on Reuters-21578 Text Categorization Collection Dataset"
+title: "Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset"
 date: 2017-09-15
 tags:
   - Python
   - gensim
   - Word2Vec
-  - natural language processing
+  - Natural Language Processing
 categories:
   - Project
 ---
@@ -168,7 +168,7 @@ train_bow, train_word_freq = tc.get_bow(train_clean_token)
     This corpus has 11042 key words, and the 10 most frequent words are: [('say', 7388), ('lt', 2802), ('share', 2306), ('dlrs', 2247), ('mln', 2172), ('pct', 2051), ('bank', 1983), ('company', 1942), ('inc', 1469), ('u', 1291)]
 
 
-The BOW is a frequency table that records the word frequencies for each news piece in the corpora. If I turn it into a table view, it is clear that the most of the columns will be `NaN` due to the sparse nature of a BOW model. In fact, for the few rows of the `test_bow` table, all displayed cells below are NaN. Tables like this will make most of the data science models inprecise when we conduct predictive analysis.
+The BOW is a frequency table that records the word frequencies for each news piece in the corpora. If I turn it into a table view, it is clear that the most of the columns will be `NaN` due to the sparse nature of a BOW model. In fact, for the few rows of the `test_bow` table, all displayed cells below are NaN. Tables like this will make most of the data science models imprecise when we conduct predictive analysis.
 
 
 ```python
@@ -262,7 +262,7 @@ test_matrix = get_doc_matrix(model, test_clean_token)
 train_matrix = get_doc_matrix(model, train_clean_token)
 ```
 
-Be noted that my `word2vec` model was trained with the `train_clean_token` corpus, but I use the model on the `test_clean_token` here. I did it on purpose because in real-life situation, you won't know your test set when you train the model. If you need to evaluate how accurate the model can be, you need to seperate the train and test even on the word embedding stage.
+Be noted that my `word2vec` model was trained with the `train_clean_token` corpus, but I use the model on the `test_clean_token` here. I did it on purpose because in real-life situation, you won't know your test set when you train the model. If you need to evaluate how accurate the model can be, you need to separate the train and test even on the word embedding stage.
 
 A work-around that I've thought of is to update the `word2vec` model on the fly by feeding it the new corpora that come with the new documents: in this way I only update the model with the information that I know of - the test document I'm dealing with and all the train documents. I will further elaborate on this idea in my future posts about word embedding applications.
 
