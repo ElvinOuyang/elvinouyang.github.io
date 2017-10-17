@@ -1,5 +1,5 @@
 ---
-title: "Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset"
+title: "Applying Bag of Words and Word2Vec models on Reuters 21578 Dataset"
 date: 2017-09-15
 tags:
   - Python
