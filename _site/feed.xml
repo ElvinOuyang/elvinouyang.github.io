@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-17T12:48:29-04:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset</title><link href="http://localhost:4000/project/reuters-w2v-bow-get-started/" rel="alternate" type="text/html" title="Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset" /><published>2017-09-15T00:00:00-04:00</published><updated>2017-09-15T00:00:00-04:00</updated><id>http://localhost:4000/project/reuters-w2v-bow-get-started</id><content type="html" xml:base="http://localhost:4000/project/reuters-w2v-bow-get-started/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="http://jekyllrb.com" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-08T12:48:32-05:00</updated><id>http://localhost:4000/</id><title type="html">Elvin Ouyang’s Blog</title><subtitle>Chuanye 'Elvin' Ouyang's personal blog. Includes all past posts, work samples, and project pages.</subtitle><author><name>Chuanye (Elvin) Ouyang</name></author><entry><title type="html">Creating a multi-layer perceptron to train on MNIST dataset</title><link href="http://localhost:4000/project/creating-a-multilayer-perceptron-with-lua-torch7/" rel="alternate" type="text/html" title="Creating a multi-layer perceptron to train on MNIST dataset" /><published>2017-09-30T00:00:00-04:00</published><updated>2017-09-30T00:00:00-04:00</updated><id>http://localhost:4000/project/creating-a-multilayer-perceptron-with-lua-torch7</id><content type="html" xml:base="http://localhost:4000/project/creating-a-multilayer-perceptron-with-lua-torch7/">&lt;p&gt;In this post I will share my work that I finished for the Machine Learning II (Deep Learning) course at GWU. The mini-project is written with Torch7, a package for Lua programming language that enables the calculation of tensors. The codes I’ve included in this post are a combination of borrowed codes from online tutorials, my course notes, and my own creation. In my following posts, I will create another post to explain the same model using PyTorch, an amazing equivalent package to Torch7 that is running on python.&lt;/p&gt;
+
+&lt;p&gt;The MNIST database contains 28 by 28 pixel pictures of hand-written numbers and labels of its number value. The database is a classic machine learning data prototype, with countless data science students and scholars trying to build models that can automatically tag the pictures with the true number. The data has been preloaded to a Torch7 package and can be easily retrieved for study, like below:&lt;/p&gt;
+
+&lt;div class=&quot;language-lua highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'dp'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- Load the mnist data set&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mnist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- Extract training, validation and test sets&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'train'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'inputs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bchw'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;trainTargets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'train'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'targets'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'valid'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'inputs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bchw'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validTargets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'valid'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'targets'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'inputs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bchw'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;testTargets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'targets'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note that the data, when retrieved, comes with a specific “view”. In tensors, the data is usually stored in a storage and retrieved with different views, since the world of neural network involves a constant reshaping of the data to match different calculation functions.&lt;/p&gt;
+
+&lt;p&gt;After the data is loaded as tensors, I then initiated a multi-layer perceptron using the &lt;code class=&quot;highlighter-rouge&quot;&gt;nn&lt;/code&gt; package. Since a multi-layer perceptron is a feed forward network with fully connected layers, I can construct the model using the &lt;code class=&quot;highlighter-rouge&quot;&gt;nn.Sequential()&lt;/code&gt; container. The container makes it possible for data scientist to plug in functions as if each function is a module. The underlying auto calculation of the gradient functions and network graph makes it extremely easy to code the core part of the network training/optimization.&lt;/p&gt;
+
+&lt;div class=&quot;language-lua highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'nn'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Module initiated:'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sequential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'bchw'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bf'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Linear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;28&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;28&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tanh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Linear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogSoftMax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This simple MLP consists of a hidden layer of 20 neurons that flattens the input 2-d matrices (of size 28*28, corresponding to each picture) into 1-d vectors, feeds it to a linear transformation matrix, and applies a Tanh() activation function. The output layer takes in the output of the hidden layer and applies linear transformation with 10 neurons, with each corresponding to a class in the classification. The output LogSoftMax() function then applies rescaling and logarithm to the transformed vector, preparing it for classification error estimation.&lt;/p&gt;
+
+&lt;p&gt;With the MLP structure in place, I then move forward to initiate an error estimation function that is crucial for error estimation. When training a supervised machine training network, one needs to find a way to evaluation the error of the output (i.e. how close is current model’s predictions compared to the desired outputs) and then adjust the models with respect to that error. The model update can be done with different optimization algorithms, but the core concept lies in the mathematical reasoning that the gap between output and prediction in the final stage of the model can be minimized by moving the model’s weights towards a “global minimum” of the error estimation function. Therefore, in order to implement the optimization of a neural network, an error estimation criterion function and a model parameter optimization algorithm are necessary.&lt;/p&gt;
+
+&lt;div class=&quot;language-lua highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'optim'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;criterion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ClassNLLCriterion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;trainEpoch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;criterion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batch_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idxs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;torch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randperm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- create a random list for indexing&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batch_size&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batch_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;narrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;narrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batch_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batchInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batchLabels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gradParams&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getParameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optimState&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;learningRate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;momentum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;feval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;gradParams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;batchInputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;criterion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batchLabels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dloss_doutputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;criterion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;backward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;batchLabels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;backward&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;batchInputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dloss_doutputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gradParams&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;optim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sgd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;feval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optimState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As displayed in above code chunk, I used &lt;code class=&quot;highlighter-rouge&quot;&gt;nn.ClassNLLCriterion()&lt;/code&gt; to estimate the classification errors; the function actually calculates the Cross Entropy Errors with the output from &lt;code class=&quot;highlighter-rouge&quot;&gt;nn.LogSoftMax()&lt;/code&gt;. In my main &lt;code class=&quot;highlighter-rouge&quot;&gt;trainEpoch&lt;/code&gt; function, I created a randomized mini-batch generator by packing the entries into small batches of equal size and feeding to the &lt;code class=&quot;highlighter-rouge&quot;&gt;module&lt;/code&gt;. Then I calculates the &lt;code class=&quot;highlighter-rouge&quot;&gt;outputs&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;loss&lt;/code&gt; (i.e. the errors) w.r.t. the &lt;code class=&quot;highlighter-rouge&quot;&gt;outputs&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;batchLabels&lt;/code&gt;, the most important &lt;code class=&quot;highlighter-rouge&quot;&gt;dloss_doutputs&lt;/code&gt; (gradient of the error with respect to the output), and the corresponding &lt;code class=&quot;highlighter-rouge&quot;&gt;gradParams&lt;/code&gt; (model parameter’s corresponding gradients w.r.t. the &lt;code class=&quot;highlighter-rouge&quot;&gt;batchInputs&lt;/code&gt; and the &lt;code class=&quot;highlighter-rouge&quot;&gt;dloss_doutputs&lt;/code&gt;). The weight gradient is then fed to &lt;code class=&quot;highlighter-rouge&quot;&gt;optim.sgd()&lt;/code&gt; for model parameter updates. Note that in real-life training, I will need to specify at least a learning rate for the &lt;code class=&quot;highlighter-rouge&quot;&gt;optim.sgd()&lt;/code&gt; algorithm so that the optimization function knows how much of a change needs to be applied to the model for each mini-batch.&lt;/p&gt;
+
+&lt;p&gt;After the function is created, all I need to do is to write a loop that can go over all the data in epochs, evaluate the module performance, and adjust the meta-parameters of the training loop. I have uploaded my complete project report &lt;a href=&quot;https://s3.amazonaws.com/elvinouyang.github.io/mid-term-chuanye-ouyang.html&quot;&gt;here&lt;/a&gt;. If you are interested in my full codes, please visit my GitHub project folder &lt;a href=&quot;https://github.com/ElvinOuyang/deep-learning-resouces/tree/master/lua%20torch%20mnist%20mlp%20training&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In my next post, I will recreate the module with python and PyTorch.&lt;/p&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="Lua" /><category term="Torch7" /><category term="Neural Network" /><category term="Deep Learning" /><summary type="html">In this post I will share my work that I finished for the Machine Learning II (Deep Learning) course at GWU. The mini-project is written with Torch7, a package for Lua programming language that enables the calculation of tensors. The codes I’ve included in this post are a combination of borrowed codes from online tutorials, my course notes, and my own creation. In my following posts, I will create another post to explain the same model using PyTorch, an amazing equivalent package to Torch7 that is running on python.</summary></entry><entry><title type="html">Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset</title><link href="http://localhost:4000/project/reuters-w2v-bow-get-started/" rel="alternate" type="text/html" title="Applying Bag of Words and Word2Vec models on Reuters-21578 Dataset" /><published>2017-09-15T00:00:00-04:00</published><updated>2017-09-15T00:00:00-04:00</updated><id>http://localhost:4000/project/reuters-w2v-bow-get-started</id><content type="html" xml:base="http://localhost:4000/project/reuters-w2v-bow-get-started/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;In this post, I will showcase the steps I took to create a continuous vector space based on the corpora included in the famous &lt;a href=&quot;https://archive.ics.uci.edu/ml/datasets/reuters-21578+text+categorization+collection&quot;&gt;Reuters-21578 dataset&lt;/a&gt; (hereafter ‘reuters dataset’). The reuters dataset is a tagged text corpora with news excerpts from Reuters newswire in 1987. Although the contents of the news is somewhat outdated, the topic labels provided in this dataset is widely used as a benchmark for supervised learning tasks that involve natural language processing (NLP).&lt;/p&gt;
 
@@ -2877,384 +2952,4 @@ large&lt;/strong&gt; (either in number of features or in number of samples) &lt;
   &lt;p&gt;This approach often does not perform well on &lt;strong&gt;datasets with many features&lt;/strong&gt;
 (hundreds or more), and it does particularly badly with datasets where most features
 are 0 most of the time (so-called &lt;strong&gt;sparse datasets&lt;/strong&gt;). Therefore this model is not good for practices such as text mining.&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="Python" /><category term="machine-learning" /><summary type="html">```python import sys print(“Python version: {}”.format(sys.version)) import pandas as pd print(“pandas version: {}”.format(pd.version)) import matplotlib print(“matplotlib version: {}”.format(matplotlib.version)) import numpy as np print(“NumPy version: {}”.format(np.version)) import scipy as sp print(“SciPy version: {}”.format(sp.version)) import IPython print(“IPython version: {}”.format(IPython.version)) import sklearn print(“scikit-learn version: {}”.format(sklearn.version)) import mglearn print(“mglearn version: {}”.format(mglearn.version)) import matplotlib.pyplot as plt</summary></entry><entry><title type="html">Introduction to Machine Learning with Python - Chapter 1</title><link href="http://localhost:4000/study%20notes/introduction-to-machine-learning-with-python-chapter-1/" rel="alternate" type="text/html" title="Introduction to Machine Learning with Python - Chapter 1" /><published>2017-01-15T00:00:00-05:00</published><updated>2017-01-15T00:00:00-05:00</updated><id>http://localhost:4000/study%20notes/introduction-to-machine-learning-with-python-chapter-1</id><content type="html" xml:base="http://localhost:4000/study%20notes/introduction-to-machine-learning-with-python-chapter-1/">&lt;h1 id=&quot;essential-tools-for-python-machine-learning&quot;&gt;Essential Tools for Python Machine Learning&lt;/h1&gt;
-
-&lt;h2 id=&quot;numpy-arrays&quot;&gt;NumPy Arrays&lt;/h2&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inline&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;np&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# .format() method will display the array within the {}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;x:
-[[1 2 3]
- [4 5 6]]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;scipy-sparse-matrix&quot;&gt;SciPy Sparse Matrix&lt;/h2&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scipy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparse&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Create a 2D NumPy array with a diagonal of ones,&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# and zeros everywhere else&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;NumPy array:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NumPy array:
-[[ 1.  0.  0.  0.]
- [ 0.  1.  0.  0.]
- [ 0.  0.  1.  0.]
- [ 0.  0.  0.  1.]]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Sparse Matrix in CSR Format:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Convert the NumPy array to a SciPy sparse matrix in CSR format&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Only the nonzero entries are stored&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sparse_matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csr_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;SciPy sparse CSR matrix:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparse_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# string[with{a},{b},{c}].format('a','b','c')&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SciPy sparse CSR matrix:
-  (0, 0)	1.0
-  (1, 1)	1.0
-  (2, 2)	1.0
-  (3, 3)	1.0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Sparse Matrix in COO Format:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Create the same sparse matrix using the COO format&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;row_indices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;col_indices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;eye_coo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coo_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col_indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;COO representation:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eye_coo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;COO representation:
-  (0, 0)	1.0
-  (1, 1)	1.0
-  (2, 2)	1.0
-  (3, 3)	1.0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;matplotlib&quot;&gt;Matplotlib&lt;/h2&gt;
-
-&lt;p&gt;Used to create scientific plotting in Python&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;plt&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Generate a sequence of numbers from -10 to 10 with 100 steps&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# in between&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linspace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Create a second array using sine&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# The plot function makes a line chart of one array against another&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;marker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[&amp;lt;matplotlib.lines.Line2D at 0x7f6934911e48&amp;gt;]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/intro-ml-ch1/1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;pandas&quot;&gt;Pandas&lt;/h2&gt;
-
-&lt;p&gt;Useful tool for data wragling and manipulation similar to &lt;strong&gt;R DataFrame&lt;/strong&gt; and &lt;strong&gt;SQL&lt;/strong&gt;. Also powerful in terms of importing data from a wide range of files.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pd&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# create a simple dataset of people&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;John&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Anna&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Peter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Linda&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;'Location'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;New York&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Paris&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Berlin&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;London&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;'Age'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;53&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;33&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;data_pandas&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# IPython.display allows &quot;pretty printing&quot; of dataframes&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# in the Jupyter notebook&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_pandas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   Age  Location   Name
-0   24  New York   John
-1   13     Paris   Anna
-2   53    Berlin  Peter
-3   33    London  Linda
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;mglearn&quot;&gt;mglearn&lt;/h2&gt;
-
-&lt;p&gt;Data package prepared specific for the text book &lt;em&gt;Introductino to Machine Learning with Python&lt;/em&gt; by &lt;strong&gt;Andreas C. Müller&lt;/strong&gt; &amp;amp; &lt;strong&gt;Sarah Guido&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;mglearn&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;checking-the-versions-of-packages-installed&quot;&gt;Checking the versions of packages installed&lt;/h2&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Python version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pd&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pandas version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;matplotlib version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matplotlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;np&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;NumPy version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scipy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sp&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SciPy version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;IPython&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;IPython version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IPython&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sklearn&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;scikit-learn version: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sklearn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__version__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Python version: 3.6.0 |Continuum Analytics, Inc.| (default, Dec 23 2016, 12:22:00)
-[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)]
-pandas version: 0.19.2
-matplotlib version: 1.5.3
-NumPy version: 1.11.3
-SciPy version: 0.18.1
-IPython version: 5.1.0
-scikit-learn version: 0.18.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;taste-of-machine-learning-with-iris&quot;&gt;Taste of Machine Learning with Iris&lt;/h1&gt;
-
-&lt;h3 id=&quot;step-1&quot;&gt;&lt;strong&gt;Step 1:&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Load iris data from scikit-learn package and explore the data.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sklearn.datasets&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_iris&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_iris&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Keys of iris_dataset:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Keys of iris_dataset:
-dict_keys(['data', 'target', 'target_names', 'DESCR', 'feature_names'])
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The returned iris dataset comes as a &lt;em&gt;bunch&lt;/em&gt; object, which is similar to a dictionary. The keys in this dictionary is listed above; we can check out  the feature names and target names.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;iris_dataset description:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'feature_names'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iris_dataset description:
-['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Target names:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target_names'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Target names:
-['setosa' 'versicolor' 'virginica']
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Apparently the main three “target categories” are ‘setosa’, ‘versicolor’, and ‘virginica’, and the variables included in the dataset are ‘sepal length’, ‘sepal width’, ‘petal length’, and ‘petal width’. We then need to check out the real data included in the dictionary.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Type of data: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the type of the value to the 'data' key&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Shape of data: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the .shape method of the numpy array&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;First five columns of data:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the first few rows&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Type of data: &amp;lt;class 'numpy.ndarray'&amp;gt;
-Shape of data: (150, 4)
-First five columns of data:
-[[ 5.1  3.5  1.4  0.2]
- [ 4.9  3.   1.4  0.2]
- [ 4.7  3.2  1.3  0.2]
- [ 4.6  3.1  1.5  0.2]
- [ 5.   3.6  1.4  0.2]]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Therefore, in the data (as NumPy array), we will see the numbers corresponding to the four features. What is the first five target values of these five flowers?&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Type of target: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the data type of the value with 'target' key&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Shape of target: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the dimension of the value&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Target:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Check out the contents of the array&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Type of target: &amp;lt;class 'numpy.ndarray'&amp;gt;
-Shape of target: (150,)
-Target:
-[0 0 0 0 0]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Out of the 150 flowers included in the dataset, the first five of them are all 0, i.e. setosa.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-2&quot;&gt;&lt;strong&gt;Step 2:&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Split the dataset to create &lt;em&gt;training data&lt;/em&gt; (or &lt;em&gt;training set&lt;/em&gt;) and &lt;em&gt;test data&lt;/em&gt; (or &lt;em&gt;test set&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;In standardized machine learning task, use &lt;strong&gt;capital X&lt;/strong&gt; to represent data and use &lt;strong&gt;lowercase y&lt;/strong&gt; to represent labels.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sklearn.model_selection&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_test_split&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_test_split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# train_test_split(features, targets, random_state) returns&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# X_train, X_test, y_train, y_test&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;X_train shape: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;y_train shape: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;X_test shape: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;y_test shape: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;X_train shape: (112, 4)
-y_train shape: (112,)
-X_test shape: (38, 4)
-y_test shape: (38,)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;step-3&quot;&gt;&lt;strong&gt;Step 3:&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Explore the data with basic visualizations&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Pair Plot&lt;/strong&gt; creates scatterplots for each one of the possible pairs specified in the analysis.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# To visualize the data, we need to transfer the numpy arrays into&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# pandas dataframe&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;iris_dataframe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                              &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;feature_names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Create a scatter matrix from the data frame, color by y_train&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;grr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scatter_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iris_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                       &lt;span class=&quot;n&quot;&gt;marker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'o'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hist_kwds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'bins'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                       &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cmap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mglearn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cm3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/intro-ml-ch1/2.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;A quick glance from the data confirms that the dot categories are well seperated for most of the feature pairs, indicating that a machine learning model is doable.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-4&quot;&gt;&lt;strong&gt;Step 4:&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;We will build a &lt;em&gt;k-Nearest Neighbors model&lt;/em&gt; on the dataset.&lt;/p&gt;
-
-&lt;p&gt;All machine learning models in scikit-learn are implemented in their own classes, which are called &lt;em&gt;Estimator&lt;/em&gt; classes. The k-nearest neighbors classification algorithm is implemented in the &lt;em&gt;KNeighborsClassifier&lt;/em&gt; class in the &lt;strong&gt;neighbors&lt;/strong&gt; module. Before
-we can use the model, we need to instantiate the class into an object. This is when we will set any parameters of the model. The most important parameter of KNeighborsClassifier is the &lt;em&gt;number of neighbors&lt;/em&gt;, which we will set to 1.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Instantiate a knn class while defining its major parameter: number&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# of neighbors&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sklearn.neighbors&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KNeighborsClassifier&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KNeighborsClassifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_neighbors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Call .fit() method on the knn object to run the algorithm on the&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# training data&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
-           metric_params=None, n_jobs=1, n_neighbors=1, p=2,
-           weights='uniform')
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The resulted knn model will be automatically modified by the algorithm to best reflect on the training set.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-5&quot;&gt;&lt;strong&gt;Step 5:&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;Use the knn model to predict the category of a unlabeled flower.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Suppose we have a new unlabeled flower as X_new&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;X_new&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Be sure to always create two-dimensional array for scikit-learn&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;X_new.shape: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_new&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;X_new.shape: (1, 4)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Call the .predict() method of the knn object with X_new as argument to calculate the estimated Target value.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;prediction&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Prediction: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prediction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Predicted target name: {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target_names'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prediction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Prediction: [0]
-Predicted target name: ['setosa']
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;However, since we don’t have the actual “correct” answer about this X_new flower, we won’t be able to evaluate the model. Using the X_test and y_test, however, will help us evaluate the model.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Calculate the predicted values for the X_test&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;y_pred&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Test set predictions:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; {}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_pred&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Test set predictions:
- [2 1 0 2 0 2 0 1 1 1 2 1 1 1 1 0 1 1 0 0 2 1 0 0 2 0 0 1 1 0 2 1 0 2 2 1 0
- 2]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Calculate the accuracy of the model&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Test set score: {:.2f}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_pred&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Alternatively, use the .score() method for the knn object&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Test set score: {:.2f}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Test set score: 0.97
-Test set score: 0.97
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The &lt;em&gt;knn&lt;/em&gt; model gives a high accuracy of 0.97 on future cases. For an easier access in future, below is the &lt;strong&gt;snippet&lt;/strong&gt; for &lt;strong&gt;knn&lt;/strong&gt; models:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_test_split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'target'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_state&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KNeighborsClassifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_neighbors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Test set score: {:.2f}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;knn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Test set score: 0.97
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="Python" /><category term="machine-learning" /><summary type="html">Essential Tools for Python Machine Learning</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name>Chuanye (Elvin) Ouyang</name></author><category term="Python" /><category term="machine-learning" /><summary type="html">```python import sys print(“Python version: {}”.format(sys.version)) import pandas as pd print(“pandas version: {}”.format(pd.version)) import matplotlib print(“matplotlib version: {}”.format(matplotlib.version)) import numpy as np print(“NumPy version: {}”.format(np.version)) import scipy as sp print(“SciPy version: {}”.format(sp.version)) import IPython print(“IPython version: {}”.format(IPython.version)) import sklearn print(“scikit-learn version: {}”.format(sklearn.version)) import mglearn print(“mglearn version: {}”.format(mglearn.version)) import matplotlib.pyplot as plt</summary></entry></feed>
