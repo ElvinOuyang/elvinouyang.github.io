@@ -1,5 +1,5 @@
-FROM jekyll/jekyll:3
+FROM jekyll/jekyll:4
 COPY . /srv/jekyll/
-RUN  jekyll build
+RUN  bundle && jekyll build
 ENTRYPOINT [ "jekyll", "serve", "--incremental", "--watch"]
 EXPOSE 4000
