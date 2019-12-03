@@ -1,0 +1,576 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.3.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>            Exploratory Data Analytics on Capital Bikeshare Data 2015      Elvin Ouyang’s Blog      </title>
+
+
+
+
+<meta name="description" content="Project Introduction">
+
+
+
+
+<meta name="author" content="Chuanye (Elvin) Ouyang">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Elvin Ouyang's Blog">
+<meta property="og:title" content="Exploratory Data Analytics on Capital Bikeshare Data 2015">
+
+
+  <link rel="canonical" href="http://localhost:4000/project/capital-bikeshare-explorative-analysis/">
+  <meta property="og:url" content="http://localhost:4000/project/capital-bikeshare-explorative-analysis/">
+
+
+
+  <meta property="og:description" content="Project Introduction">
+
+
+
+
+
+  
+
+  
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/capital-bikeshare/capital-bikeshare-header.jpg">
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2016-12-05T00:00:00-05:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Elvin Ouyang",
+      "url" : "http://localhost:4000",
+      "sameAs" : ["https://twitter.com/elvinouyang","https://www.linkedin.com/in/ouyangchuanye/"]
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Elvin Ouyang's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://localhost:4000/">Elvin Ouyang's Blog</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/about/">About</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/projects/">Projects</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/study-notes/">Study Notes</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/categories/">Category</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/tags/">Tag</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/resources/">Resources</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/sitemap/">Sitemap</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" "
+>
+  
+    <img src="http://localhost:4000/assets/images/capital-bikeshare/capital-bikeshare-header.jpg" alt="Exploratory Data Analytics on Capital Bikeshare Data 2015" class="page__hero-image">
+  
+  
+    <span class="page__hero-caption">Photo credit - Capital Bikeshare Website
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://localhost:4000/assets/images/bio-photo.jpeg" class="author__avatar" alt="Chuanye (Elvin) Ouyang" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Chuanye (Elvin) Ouyang</h3>
+    
+      <p class="author__bio" itemprop="description">
+        Chuanye (Elvin) Ouyang is a young professional in data science, risk analysis, compliance evaluation, and forensic analytics.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> <span itemprop="name">Washington, DC</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/elvinouyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/ouyangchuanye" itemprop="sameAs">
+            <i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/ElvinOuyang" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Exploratory Data Analytics on Capital Bikeshare Data 2015">
+    <meta itemprop="description" content="Project Introduction">
+    <meta itemprop="datePublished" content="December 05, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Exploratory Data Analytics on Capital Bikeshare Data 2015
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <h3 id="project-introduction">Project Introduction</h3>
+
+<p>In the last decade there has been increasing concern regarding the environment and the quality of life, especially in big cities. From increasing taxation to financial incentives, different approaches and public policies have been proposed and tested all around the world to address these concerns. In this scenario, shared cars and shared bicycles have became popular solutions in many cities to help mitigate traffic and environmental impact.  How can these programs be set up for success? Due to the increasing importance and popularity of the <strong>Capital Bikeshare program</strong> in the District of Columbia, this project aims to:</p>
+
+<ol>
+  <li>Identify the variables that most impact hourly ridership</li>
+  <li>Develop a model to predict hourly bikeshare demand in the Greater Washington DC region based on historical ridership and weather data for 2015.</li>
+</ol>
+
+<h3 id="explorative-data-analysis-and-visualization">Explorative Data Analysis and Visualization</h3>
+
+<p>In this report, I will focus on the explorative analysis of the capital bikeshare data for 2015. The aim of the EDA process is to generate a high-level understanding of the underlying data and identify potential relationships amongst variables. This data exploration stage then focused on visualizing these relationships and patterns to make it easier for the audience to understand.</p>
+
+<p>The following sequence of commentary and code showcases the EDA that was conducted.</p>
+
+<p>The first thing I’ll do is to run <strong>distribution analysis</strong> on the main continuous variables in the dataset: <em>total.rides</em> and <em>avg.duration</em>. We will use levels in five categorical variables, i.e. <em>Subscription.Type</em>, <em>weekend_holiday</em>, <em>rushhour</em>, <em>season</em>, and <em>AdverseWeather</em>, as grouping color to generate high level between-group distribution comparison.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-6-1.svg" alt="plot of chunk unnamed-chunk-6" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-6-2.svg" alt="plot of chunk unnamed-chunk-6" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-6-3.svg" alt="plot of chunk unnamed-chunk-6" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-6-4.svg" alt="plot of chunk unnamed-chunk-6" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-6-5.svg" alt="plot of chunk unnamed-chunk-6" /></p>
+
+<p>My first impression is that the distribution of total.rides is skewing right, while the distribution of avg.duration has two modes.</p>
+
+<p>More specifically, the avg.duration distribution by Subscription.Type graph indicates that registered bikers are contributing to the lower duration mode while the casual bikers are contributing to the higher mode. Casual bikers have much less total.rides than the registered bikers. In the distribution by rushhour graph, commuting hour rides are dominating hours that have higher count of total.rides. Rushhour rides are also contributing more to the lower avg.duration mode. Another interesting finding from the distribution by season graph is that winter has much more short-duration rides than other seasons, while spring and summer have more long-duration rides among casual riders.</p>
+
+<p>The above analysis indicates that time-related factors are having a strong impact on the dependent variables. In my next step, I will create heat maps for hour of the day / day of the week to further explore the patterns.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-8-1.svg" alt="plot of chunk unnamed-chunk-8" />
+Here I find some interesting patterns from the hour-weekday heat map. It seems that more rides have taken place during rush hours on work days, while total.rides distributes evenly in day time on weekend. The avg.duration of the rides appears to be longer during day time over the weekend.</p>
+
+<p>After having a general understanding of the data, I move on to explore the geospatial distribution of total.rides across the DC metro area. First let us plot the bike stations.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">## # A tibble: 6 × 6
+##                   Start.station total.rides avg.duration
+##                          &lt;fctr&gt;       &lt;int&gt;        &lt;dbl&gt;
+## 1                10th &amp; E St NW       13611     25.61816
+## 2         10th &amp; Florida Ave NW        8316     12.16949
+## 3                10th &amp; K St NW        9895     15.84791
+## 4           10th &amp; Monroe St NE        3916     15.95705
+## 5                10th &amp; U St NW       13463     12.52403
+## 6 10th St &amp; Constitution Ave NW       19128     28.62108
+## # ... with 3 more variables: subscriber.percentage &lt;dbl&gt;, lat &lt;dbl&gt;,
+## #   lon &lt;dbl&gt;</code></pre></figure>
+
+<p>Below I can see the locations of all the bike share stations across the DMV area, with the circle size representing total.rides and color representing avg.rides. It appears that bike stations are spreading out well in the DMV area, with stations located in DMV outskirts such as Alexandria, VA, Bethesda, MD, and Silver Spring, MD.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-11-1.svg" alt="plot of chunk unnamed-chunk-11" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-11-2.svg" alt="plot of chunk unnamed-chunk-11" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-11-3.svg" alt="plot of chunk unnamed-chunk-11" /></p>
+
+<p>But how does the actual count of total.rides distribute across the area? Will it go in line with the bike station locations? I then move on to create a density map based on the density of total.rides on the map. The graph below indicates that total.rides are way more condensed than the distribution of the bike stations, with the most rides happening in the DC heart area, such as Dupont Circle, Logan Circle, National Mall, Metro Center, Gallery Place, World Bank, and Lincoln Memorial.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-13-1.svg" alt="plot of chunk unnamed-chunk-13" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-13-2.svg" alt="plot of chunk unnamed-chunk-13" /><img src="/assets/images/capital-bikeshare/unnamed-chunk-13-3.svg" alt="plot of chunk unnamed-chunk-13" /></p>
+
+<p>Since I now have a general idea of where the most rides are happening in DC, my next step is to slice the ridership data with factors I generated from time and weather and compare the patterns. I wanted to see if the popularity of the stations changed under different time and weather conditions.</p>
+
+<p>My next step is to slice the ridership data according to factors I generated from weather and time. I wanted to see if the popularity of the stations changed under different time and weather conditions.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-16-1.svg" alt="plot of chunk unnamed-chunk-16" /></p>
+
+<p>The first graph shows the distribution of rides in each season of the year of 2015. In Spring and Summer, both Lincoln Memorial and National Mall enjoy more rides from other time of the year. During winter, however, it seems that more people are taking bike rides around Logan Circle, Foggy Bottom, and Metro Center, i.e. the inner center of the District.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-17-1.svg" alt="plot of chunk unnamed-chunk-17" /></p>
+
+<p>Another similar comparison based on time of the day shows that people are taking more rides in central to northeastern DC in the morning and more in central to southwestern DC in the afternoon. Bikers start their rides mostly around DuPont circle, Logan Circle, Metro Center, and Gallery Place at night. Few people will start their rides in late night, of course; but we are seeing relatively more rides in the central to northwestern DC area. It seems that people’s daily routine is contributing to this pattern, considering that these areas correspond to the residence area, working area, and entertaining/event area in DC.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-18-1.svg" alt="plot of chunk unnamed-chunk-18" /></p>
+
+<p>Since time is creating interesting impact on total.rides and bikes can be a useful tool for commuting, I want to check out specifically the allocation of rides for rush hours against other time of the day. In the above graph, we notice that more people are taking bike rides near Metro Center, Gallery Place, and Capital Hill during rush hours, while more people are taking rides near Lincoln Memorial and National Mall during non-rush hours. This information is interesting, since Metro center, Gallery place, and Capital Hill are places where many people go to work, while (apparently) Lincoln Memorial and National Mall are popular tourist sites.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-19-1.svg" alt="plot of chunk unnamed-chunk-19" />
+Since Lincoln Memorial and National Mall are enjoying much love in non-rush hours, I am interested to check out if leisure time will have a different pattern for total.rides distribution. Comparing the left two graphs in the above chart, it is apparent that the distribution of ridership is sparse for leisure days in good weather: riders are of course starting their rides from many different stations across the District. Interestingly, the second left graph shows that bikers mostly still ride in the central DC during working days despite the good weather. Commuting really seems to be a major function of the shared bikes!</p>
+
+<p>Since commuting seems to be a really big factor for the distribution of rides, I am interested to dig a bit deeper into the type of subscription for each ride. Since bike share subscribers are more likely to use bikes for commute, will I see a clear difference between casual and registered bikers?</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-20-1.svg" alt="plot of chunk unnamed-chunk-20" /></p>
+
+<p>The above graph shows that casual bikers are (apparently) taking more rides around the tourist attraction sites in DC, no matter if it’s in rush hour or not. For the subscribers, however, the distribution of rides are surprisingly even no matter it’s rush hour or not. If we really consider the nature of commuting, this actually makes sense: for people that ride bikes based on their daily commuting needs, they will need to use bikes to get to work or go home. The green area in the right two graphs actually shows the routine start stations for the registered users!</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-21-1.svg" alt="plot of chunk unnamed-chunk-21" /></p>
+
+<p>A quick comparison of adverse weather against non-adverse weather shows not much difference for the ridership. This might be due to the nature of our integrated weather data: the weather information is the mean values for a whole day, thus making it hard for the slicers to differentiate ridership distribution on a lower grain level.</p>
+
+<p><img src="/assets/images/capital-bikeshare/unnamed-chunk-22-1.svg" alt="plot of chunk unnamed-chunk-22" /></p>
+
+<p>Again, in the graph shown above here, we observe a bigger difference from Rush Hour than the weather. This seems to be related to the same challenge I was having from the weather variables.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#eda" class="page__taxonomy-item" rel="tag">EDA</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#geospatial" class="page__taxonomy-item" rel="tag">geospatial</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#r-programming" class="page__taxonomy-item" rel="tag">R-programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/categories/#project" class="page__taxonomy-item" rel="tag">Project</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-12-05T00:00:00-05:00">December 05, 2016</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="http://localhost:4000/study%20notes/oop-with-r-s3-and-r6/" class="pagination--pager" title="Object-Oriented Programming with R
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+    <h4 class="page__comments-title">Leave a Comment</h4>
+    <section id="disqus_thread"></section>
+  
+</div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/ElvinOuyang"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 Elvin Ouyang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96112090-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  <script type="text/javascript">
+  	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  	var disqus_shortname = 'elvinouyang-github-io';
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function() {
+  		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  	})();
+
+  	/* * * DON'T EDIT BELOW THIS LINE * * */
+  	(function () {
+  		var s = document.createElement('script'); s.async = true;
+  		s.type = 'text/javascript';
+  		s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  		(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  	}());
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+  </body>
+</html>
