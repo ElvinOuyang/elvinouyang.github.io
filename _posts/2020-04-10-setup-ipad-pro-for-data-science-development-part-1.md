@@ -4,7 +4,7 @@ date: 2020-04-10
 header:
   image: /assets/images/ipad-pro-set-up/ipad_shot.jpeg
   teaser: /assets/images/ipad-pro-set-up/ipad_shot.jpeg
-  caption: Spectrograms from WAV files
+  caption: My iPad Pro Running Jupyter Hub & Blink Shell
 tags:
 - devops
 - cloud-computing
