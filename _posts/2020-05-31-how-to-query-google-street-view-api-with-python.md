@@ -15,9 +15,7 @@ categories:
 - Project
 ---
 
-The [Google Street View Static API](https://developers.google.com/maps/documentation/streetview/intro) is Google's straightforward HTTP-based API for developers to access its massive collection of street view pictures. Although it's a paid service, being able to query the service with large batches enables us to create our own image-based modeling dataset.
-;lcd 
-In this post, I will walk you through how I created a Python class for accesss the street view API.
+The [Google Street View Static API](https://developers.google.com/maps/documentation/streetview/intro) is Google's straightforward HTTP-based API for developers to access its massive collection of street view pictures. Although it's a paid service, being able to query the service with large batches enables us to create our own image-based modeling dataset. In this post, I will walk you through how I created a Python class for accesss the street view API.
 
 ## Key Facts about the Street View Static API (as of May 2020)
 
@@ -25,14 +23,15 @@ Before we get started on the codes, I am listing some of the key specs about the
 
 * In order to query the API, you will need to register your own Google Cloud Platform account, enable billing for your project, and create a Google API key for the Street View API. Follow [this official guidance](https://developers.google.com/maps/documentation/streetview/get-api-key) to obtain your API key
 * The cost of each request for a static Street View panorama is around 0.007 USD - 0.0056 USD at the time this post is published (May, 2020)
+    * Google's API policies, including the pricing policy, are known to be changing over time. Be sure to check the pricing before doing your queries.
 * The API is a standard HTTP-based API. The parameters of the API can be found [here](https://developers.google.com/maps/documentation/streetview/intro#url_parameters)
-* You also have the possibility to request the image metadata from the API without requesting the actual street view picture. **The metadata request is free of charge!**. You can access the documentation of the metadata request [here](https://developers.google.com/maps/documentation/streetview/metadata#url_parameters).
+* You also have the possibility to request the image metadata from the API without requesting the actual street view picture. **The metadata request is free of charge!** You can access the documentation of the metadata request [here](https://developers.google.com/maps/documentation/streetview/metadata#url_parameters).
     * The metadata includes a field called `status`. If your street view request will return available street view picture, this `status` field will have the value `"OK"`. In other words, using the metadata requests to pre-screen any of your street view request will save you from paying for invalid request where no street view is available.
-* There is a open-source Python package [`google_streetview`](https://pypi.org/project/google-streetview/) available for direct Python usage. However, I did not find the option to interact with the Metadata as precreening as described above. If you would rather skip the mechanism around Metadata, using this package will be an easier option than writing your own codes for the API.
+* There is an open-source Python package [`google_streetview`](https://pypi.org/project/google-streetview/) available for direct Python usage. However, I did not find the option to interact with the Metadata as precreening as described above. If you would rather skip the mechanism around Metadata, using this package will be an easier option than writing your own codes for the API.
 
 ## Experiment with Single API Request
 
-In this section, I will be testing the Street View API with a valid address and an invalid address, just to showcase the expected results from requests. Throughout this notebook, I will be using the powerful Python package [`requests`](https://requests.readthedocs.io/en/master/) to fulfill the requests I send to the API service.
+In this section, I will be testing the Street View API with a valid address, just to showcase the expected results from requests. Throughout this notebook, I will be using the powerful Python package [`requests`](https://requests.readthedocs.io/en/master/) to fulfill the requests I send to the API service.
 
 
 ```python
@@ -49,7 +48,7 @@ api_key = 'your_api_key'
 location = '2121 I St NW, Washington, DC 20052'
 ```
 
-The `requests` package allows for http request parameter input with the format of Python `dict`. Hence creating the parameters below in this format
+The `requests` package allows for http request parameter input with the format of Python `dict`. I'm creating the parameters below in this format:
 
 
 ```python
@@ -85,10 +84,6 @@ meta_response.json()
      'location': {'lat': 38.90070052863041, 'lng': -77.04765170627219},
      'pano_id': 'D9eMOXkf78VujC2w_0AmCA',
      'status': 'OK'}
-
-
-
-If an address request did not return 
 
 The metadata here indicates the `status` is `"OK"`. Therefore, the request will be able to return valid information.
 
